@@ -16,6 +16,9 @@ void main(List<String> args) {
   print(vote.length); // 12
   print(vote.codeUnits.length); // 12
   print(vote.runes.length); // 11
+  
+  // create a new project, open file pubspec.yaml to set dependencies (or run command 'dart pub get' interminal) and import package characters.
+  // print length of Unicode grapheme clusters.
 
   // challenge 4: Find the error
   const name = 'Ray';
