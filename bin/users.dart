@@ -30,11 +30,11 @@ void main(List<String> args) {
   findByEmail(users);
   print('---');
   print('Filter:');
+  filterRole(users);
   print('---');
   print('Delete User:');
   deleteUser(users);
   print(users);
-  // filterRole(users);
 }
 
 class Users {
@@ -79,7 +79,7 @@ class Users {
         '\ndateOfBirth: $dateOfBirth'
         '\nid: $id'
         '\nname: $name'
-        '\nrole: $role\n';
+        '\nrole: $role';
   }
 }
 
@@ -141,9 +141,9 @@ void findById(List<Users> users) {
   stdout.write('Find By ID: ');
   int? findId = int.parse(stdin.readLineSync()!);
 
-  users.forEach((user) {
+  for (var user in users) {
     if (user.id == findId) return print(user);
-  });
+  }
   return print('User not found.');
 }
 
@@ -151,9 +151,9 @@ void findByName(List<Users> users) {
   stdout.write('Find By Name: ');
   String? findName = stdin.readLineSync();
 
-  users.forEach((user) {
+  for (var user in users) {
     if (user.name.contains(findName!)) return print(user);
-  });
+  }
   return print('User not found.');
 }
 
@@ -161,17 +161,17 @@ void findByEmail(List<Users> users) {
   stdout.write('Find By Email: ');
   String? findEmail = stdin.readLineSync();
 
-  users.forEach((user) {
+  for (var user in users) {
     if (user.email.contains(findEmail!)) return print(user);
-  });
+  }
   return print('User not found.');
 }
 
-// void filterRole(List<Users> users) {
-//   stdout.write('Email: ');
-//   String? findRole = stdin.readLineSync();
+void filterRole(List<Users> users) {
+  stdout.write('Filter By Role: ');
+  String? findRole = stdin.readLineSync();
 
-//   users.forEach((user) {
-//     if (user.role == findRole!) return print(user);
-//   });
-// }
+  users.forEach((user) {
+    if (user.role == findRole!) return print(user);
+  });
+}
