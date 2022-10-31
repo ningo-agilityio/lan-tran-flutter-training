@@ -30,6 +30,10 @@ void main(List<String> args) {
   findByEmail(users);
   print('---');
   print('Filter:');
+  print('---');
+  print('Delete User:');
+  deleteUser(users);
+  print(users);
   // filterRole(users);
 }
 
@@ -66,7 +70,8 @@ class Users {
   @override
   String toString() {
     // TODO: implement toString
-    return 'address: $address'
+    return '\nUser:'
+        '\naddress: $address'
         '\ncompany: $company'
         '\nemail: $email'
         '\nphone: $phone'
@@ -74,7 +79,7 @@ class Users {
         '\ndateOfBirth: $dateOfBirth'
         '\nid: $id'
         '\nname: $name'
-        '\nrole: $role';
+        '\nrole: $role\n';
   }
 }
 
@@ -104,9 +109,6 @@ void createUser(List<Users> users) {
   String? country = stdin.readLineSync();
   stdout.write('Date of birth: ');
   String? dateOfBirth = stdin.readLineSync();
-  // stdout.write('ID: ');
-  // int? id = int.parse(stdin.readLineSync()!);
-  // user.id = id;
   stdout.write('Name: ');
   String? name= stdin.readLineSync();
   stdout.write('Role: ');
@@ -126,6 +128,13 @@ void createUser(List<Users> users) {
   }
 
   return users.add(user);
+}
+
+void deleteUser(List<Users> users) {
+  stdout.write('Find By ID: ');
+  int? deleteId = int.parse(stdin.readLineSync()!);
+
+  return users.removeWhere((user) => user.id == deleteId);
 }
 
 void findById(List<Users> users) {
