@@ -137,7 +137,7 @@ class User {
         '\naddress: $address'
         '\ncompany: $company'
         '\nemail: $_email'
-        '\nphone: ${_phone.replaceAllMapped(RegExp(r'(\d{3})(\d{3})(\d+)'), (match) => '(${match[1]}) ${match[2]}-${match[3]}')}'
+        '\nphone: ${formatPhone(_phone)}'
         '\ncountry: $country'
         '\ndateOfBirth: ${formatDate(_dateOfBirth)}'
         '\nid: $_id'
@@ -317,18 +317,26 @@ void updateUser(List<User> users) {
   }
 
   print('\nWhich property do you want to update?');
-  print('1. Address\n'
-      '2. Company\n'
-      '3. Email\n'
-      '4. Phone\n'
-      '5. Country\n'
-      '6. Date Of Birth\n'
-      '7. Name\n'
-      '8. Role\n'
+  print('1. Address: ${userUpdated.address}\n'
+      '2. Company: ${userUpdated.company}\n'
+      '3. Email: ${userUpdated.email}\n'
+      '4. Phone: ${formatPhone(userUpdated.phone)}\n'
+      '5. Country: ${userUpdated.country}\n'
+      '6. Date Of Birth: ${formatDate(userUpdated.dateOfBirth)}\n'
+      '7. Name: ${userUpdated.name}\n'
+      '8. Role: ${userUpdated.role}\n'
       '0. Exit\n');
 
+  print('\nUpdate Property: ');
   // enter an integer to select a property want to update
-  int? select = int.parse(stdin.readLineSync()!);
+  int? select;
+  try {
+    select = int.parse(
+        stdin.readLineSync()!); // enter an integer to select a property
+  } catch (error) {
+    print('\n$error');
+  }
+
   switch (select) {
     case 1: // update Address
       print('\nAddress: ');
@@ -462,6 +470,12 @@ void filterRole(List<User> users) {
     return print(
         'Not exist role.'); // if no user printed then role not exist in users list
   }
+}
+
+String formatPhone(String phone) {
+  String formattedPhone = phone.replaceAllMapped(RegExp(r'(\d{3})(\d{3})(\d+)'),
+      (match) => '(${match[1]}) ${match[2]}-${match[3]}');
+  return formattedPhone;
 }
 
 // function: format date to "dd MMM yyyy" (EX: 23 May 1988)
