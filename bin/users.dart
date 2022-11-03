@@ -1,19 +1,63 @@
 import 'dart:core';
 import 'dart:io';
 import 'dart:math';
+import 'package:intl/intl.dart';
 
-List<String> rolesList = ["Editor", "Author", "Maintainer", "Subscriber"];
 var continueProgram = true;
-// var newFormat = DateFormat('dd MMM yyyy');
 List<User> users = [];
+List<String> addresses = [
+  '78 Hoa Son 6',
+  '75 Hoa Son 3',
+  '549 Tran Thi Ly',
+  '119 Ngo Van So',
+  '53 Ton Dan'
+];
+
+List<String> companies = ['Agility', 'Axon Active', 'Enclave', 'VNG', 'KMS'];
+List<String> emails = [
+  'lantrannk@gmail.com',
+  'nhitran@gmail.com',
+  'ni.ngo@gmail.com',
+  'vuint@gmail.com',
+  'baochauleanh@gmail.com'
+];
+
+List<String> phones = [
+  '0794542105',
+  '0905929922',
+  '0946439269',
+  '0905494951',
+  '0934923012'
+];
+List<String> countries = [
+  'Vietnam',
+  'Canada',
+  'America',
+  'Australia',
+  'Britain'
+];
+List<String> dateOfBirths = [
+  '20010902',
+  '20000504',
+  '19830928',
+  '19850826',
+  '19820709'
+];
+List<String> names = ['Lan Tran', 'Nhi Tran', 'Hung Le', 'Ni Ngo', 'Dung Tran'];
+List<String> roles = ["Editor", "Author", "Maintainer", "Subscriber"];
 
 void main(List<String> args) {
   final user = User(
-      email: "don85@johnson.com",
-      phone: "6168654180",
-      dateOfBirth: DateTime.parse('19880523'),
-      id: Random().nextInt(10000),
-      name: "Jordan Stevenson");
+    address: "7777 Mendez Plains",
+    company: "Hall-Robbins PLC",
+    email: "don85@johnson.com",
+    phone: "6168654180",
+    country: "USA",
+    dateOfBirth: DateTime.parse("19880523"),
+    id: Random().nextInt(8999) + 1000,
+    name: "Jordan Stevenson",
+    role: "Editor",
+  );
 
   users.add(user);
 
@@ -48,15 +92,10 @@ class User {
         _id = id,
         _name = name;
 
-  String get getEmail => _email;
   set setEmail(String email) => _email = email;
-  String get getPhone => _phone;
   set setPhone(String phone) => _phone = phone;
-  DateTime get getDate => _dateOfBirth;
   set setDate(DateTime dateOfBirth) => _dateOfBirth = dateOfBirth;
-  int get getId => _id;
   set setId(int id) => _id = id;
-  String get getName => _name;
   set setName(String name) => _name = name;
 
   String _email, _phone, _name;
@@ -100,7 +139,7 @@ class User {
         '\nemail: $_email'
         '\nphone: ${_phone.replaceAllMapped(RegExp(r'(\d{3})(\d{3})(\d+)'), (match) => '(${match[1]}) ${match[2]}-${match[3]}')}'
         '\ncountry: $country'
-        '\ndateOfBirth: $_dateOfBirth'
+        '\ndateOfBirth: ${formatDate(_dateOfBirth)}'
         '\nid: $_id'
         '\nname: $_name'
         '\nrole: $role\n';
@@ -142,8 +181,13 @@ void menuFunctions() {
 // select an option to execute
 void menuOption() {
   stdout.write('\nSelect an option: ');
-  int? option = int.parse(
-      stdin.readLineSync()!); // enter an integer to select an option in menu
+  int? option;
+  try {
+    option = int.parse(
+        stdin.readLineSync()!); // enter an integer to select an option in menu
+  } catch (error) {
+    print('\n$error');
+  }
   print('\n');
 
   switch (option) {
@@ -153,16 +197,17 @@ void menuOption() {
       break;
     case 2: // execute function create a user
       createUser(users);
-      print('\nCreate Successful.');
+      print('\nCreate Finished.');
       print('\n---');
       break;
     case 3: // execute function update a user
       updateUser(users);
-      print('\nUpdate Successful.');
+      print('\nUpdate Finished.');
       print('\n---');
       break;
     case 4: // execute function delete a user
       deleteUser(users);
+      print('\nDelete Finished.');
       print('\n---');
       break;
     case 5: // execute function find a user by id
@@ -196,64 +241,64 @@ void readUser(List<User> users) {
 
 // function: create a user in form
 void createUser(List<User> users) {
-  // define an empty user
-  var user = User(
-    address: '',
-    company: '',
-    email: '',
-    phone: '',
-    country: '',
-    dateOfBirth: DateTime.now(),
-    id: Random().nextInt(10000),
-    name: '',
-    role: '',
-  );
-
-  // enter information of a user
   print('Create a user:\n');
-  stdout.write('Address: ');
-  String? address = stdin.readLineSync(); // enter a string for address
-  stdout.write('Company: ');
-  String? company = stdin.readLineSync(); // enter a string for company
-  stdout.write('Email: ');
-  String? email = stdin.readLineSync(); // enter a string for email
-  stdout.write('Phone: ');
-  String? phone = stdin.readLineSync(); // enter a string for phone
-  stdout.write('Country: ');
-  String? country = stdin.readLineSync(); // enter a string for phone
-  stdout.write('Date of birth (Format: YYYYMMDD): ');
-  String? dateOfBirth = stdin.readLineSync()!; // enter a string for dateOfBirth
-  stdout.write('Name: ');
-  String? name = stdin.readLineSync(); // enter a string for name
-  // stdout.write('Role: ');
-  // String? role = stdin.readLineSync(); // enter a string for role
 
-  // add values to variable 'user'
-  user.address = address!;
-  user.company = company!;
-  // email validation: example@gmail.com
-  var exp = RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
-  if (exp.hasMatch(email!)) {
-    user.setEmail = email;
-  }
-  // phone validation: length = 10
-  // phone format: (xxx) xxx-xxxx
-  if (phone!.length == 10) {
-    user.setPhone = phone.replaceAllMapped(RegExp(r'(\d{3})(\d{3})(\d+)'),
-        (match) => '(${match[1]}) ${match[2]}-${match[3]}');
-  }
-  user.country = country!;
-  // date of birth: set now() as default
-  if (dateOfBirth.isEmpty) {
-    user.setDate = DateTime.now();
-  } else {
-    user.setDate = DateTime.parse(dateOfBirth);
-  }
-  user.setName = name!;
-  // role validation: must be in rolesList
-  user.role = rolesList[Random().nextInt(4)];
+  var user = User(
+      address: addresses[Random().nextInt(5)],
+      company: companies[Random().nextInt(5)],
+      email: emails[Random().nextInt(5)],
+      phone: phones[Random().nextInt(5)],
+      country: countries[Random().nextInt(5)],
+      dateOfBirth: DateTime.parse(dateOfBirths[Random().nextInt(5)]),
+      id: Random().nextInt(8999) + 1000,
+      name: names[Random().nextInt(5)],
+      role: roles[Random().nextInt(4)]);
 
-  return users.add(user); // add a user to users list
+  // String? email, phone, dateOfBirth, name;
+
+  // print('\nEmail: ');
+  // email = stdin.readLineSync();
+  // var exp = RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
+  // while (email == '' || !exp.hasMatch(email!)) {
+  //   print('Invalid Email.');
+  //   print('\nEmail: ');
+  //   email = stdin.readLineSync();
+  // }
+  // user.setEmail = email;
+
+  // print('\nPhone: ');
+  // phone = stdin.readLineSync();
+  // while (phone == '' || phone!.length != 10) {
+  //   print('Invalid Phone.');
+  //   print('\nPhone: ');
+  //   phone = stdin.readLineSync();
+  // }
+  // user.setPhone = phone;
+
+  // print('\nDate Of Birth: ');
+  // dateOfBirth = stdin.readLineSync();
+  // while (dateOfBirth == '' || dateOfBirth!.length != 8) {
+  //   print('Invalid Date Of Birth.');
+  //   print('\nDate Of Birth ("yyyymmdd"): ');
+  //   dateOfBirth = stdin.readLineSync();
+  //   try {
+  //     user.setDate = DateTime.parse(dateOfBirth!);
+  //   } catch (error) {
+  //     print('\n$error\n');
+  //     print('---');
+  //   }
+  // }
+
+  // print('\nName: ');
+  // name = stdin.readLineSync();
+  // while (name == '') {
+  //   print('Invalid Name.');
+  //   print('\nName: ');
+  //   name = stdin.readLineSync();
+  // }
+  // user.setName = name!;
+
+  return users.add(user);
 }
 
 // function: update an information of a user
@@ -261,7 +306,7 @@ void updateUser(List<User> users) {
   print('Which user do you want to update?');
   // define the user want to update
   User userUpdated;
-  // execute function findById
+  // execute function findById for index
   int updateId = findById(users);
 
   if (updateId == -1) {
@@ -296,10 +341,12 @@ void updateUser(List<User> users) {
     case 3: // Update Email
       print('\nEmail: ');
       String? email = stdin.readLineSync();
-      //Email Validation
       var exp = RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
+      // Email Validation
       if (exp.hasMatch(email!)) {
         userUpdated.setEmail = email;
+      } else {
+        print('\nInvalid Email.');
       }
       break;
     case 4: // Update Phone
@@ -307,10 +354,9 @@ void updateUser(List<User> users) {
       String? phone = stdin.readLineSync();
       // Phone Validation: length = 10
       if (phone!.length == 10) {
-        userUpdated.setPhone = phone.replaceAllMapped(
-            // Phone Format: (xxx) xxx-xxxx
-            RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'),
-            (match) => '(${match[1]}) ${match[2]}-${match[3]}');
+        userUpdated.setPhone = phone;
+      } else {
+        print('\nInvalid Phone.');
       }
       break;
     case 5: // Update Country
@@ -320,21 +366,22 @@ void updateUser(List<User> users) {
     case 6: // Update Date Of Birth
       print('\nDate Of Birth: ');
       String? dateOfBirth = stdin.readLineSync();
-      if (dateOfBirth!.isEmpty) {
-        userUpdated.setDate = DateTime.now();
-      } else {
+
+      if (dateOfBirth!.isNotEmpty) {
         userUpdated.setDate = DateTime.parse(dateOfBirth);
+      } else {
+        print('\nInvalid Date.');
       }
       break;
-    case 7:
+    case 7: // Update Name
       print('\nName: ');
-      userUpdated.name = stdin.readLineSync()!;
+      userUpdated.setName = stdin.readLineSync()!;
       break;
-    case 8:
+    case 8: // Update Role
       print('\nRole (Editor, Author, Maintainer, Subscriber): ');
       userUpdated.role = stdin.readLineSync()!;
       break;
-    case 0:
+    case 0: // Close function
       print('\nClosed.');
       break;
     default:
@@ -347,37 +394,29 @@ void updateUser(List<User> users) {
 
 // function: delete a user by id
 void deleteUser(List<User> users) {
-  // stdout.write('Delete ID: ');
-  // int? deleteId = int.parse(stdin.readLineSync()!);
-
-  // for (var user in users) {
-  //   if (user.id == deleteId) {
-  //     return users.removeWhere((user) => user.id == deleteId);
-  //   } // delete the user has the input id
-  // }
-
-  int deleteId = findById(users);
-  if (deleteId == -1) {
-    return print('\nNot exist ID.\n');
+  int deleteIndex = findById(users); // execute function findById for index
+  if (deleteIndex == -1) {
+    return print('\nNot exist ID.\n'); // not exist index
   } else {
-    users.removeWhere((user) => user.id == deleteId);
-    return print('\nDelete Successful.');
+    users.removeAt(deleteIndex); // remove the user has input id
+    return print(users);
   }
 }
 
 // function: find a user by id
 int findById(List<User> users) {
   stdout.write('\nEnter an ID: ');
-  String? stringId = stdin.readLineSync();
+  String? stringId = stdin.readLineSync(); // input a string
   int? findId;
   int index;
 
   if (stringId != null) {
-    findId = int.tryParse(stringId);
-    index = users.indexWhere((user) => user.id == findId);
-    return index;
+    findId = int.tryParse(stringId); // convert input from string to int
+    index = users.indexWhere(
+        (user) => user.id == findId); // find index the user has input id
+    return index; // return index if id exists
   } else {
-    return -1;
+    return -1; // return -1 if not exist id
   }
 }
 
@@ -411,10 +450,23 @@ void findByEmail(List<User> users) {
 void filterRole(List<User> users) {
   stdout.write('Filter By Role: ');
   String? findRole = stdin.readLineSync();
+  int flag = 0;
 
   for (var user in users) {
     if (user.role == findRole!) {
+      flag = 1; // role exist
       print(user);
     } // print every user has the input role
   }
+  if (flag == 0) {
+    return print(
+        'Not exist role.'); // if no user printed then role not exist in users list
+  }
+}
+
+// function: format date to "dd MMM yyyy" (EX: 23 May 1988)
+String formatDate(DateTime date) {
+  var newFormat = DateFormat("dd MMM yyyy"); // create a new date format
+  String formattedDate = newFormat.format(date); // format input
+  return formattedDate; // return formatted date
 }
