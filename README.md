@@ -15,6 +15,7 @@ Run command: dart run bin/users.dart
 - **updateUser**: Enter the id of user that you want to update. Then enter the property that you want to change and the changed information. Program will update that user and display on terminal.
     + Enter an integer to select property to update.
     + Enter other characters then Program will close function.
+    + Enter wrong formatted update value then Program will close function.
 - **deleteUser**: Enter an id. Program will delete the user has that id if it exists.
     + Enter wrong id then Program will close function.
 - **findById**: Enter the id that you want to find. Program will show you the user has that id if it exists.

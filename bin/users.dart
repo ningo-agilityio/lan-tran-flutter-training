@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 var continueProgram = true;
 List<User> users = [];
+
 List<String> addresses = [
   '78 Hoa Son 6',
   '75 Hoa Son 3',
@@ -12,7 +13,6 @@ List<String> addresses = [
   '119 Ngo Van So',
   '53 Ton Dan'
 ];
-
 List<String> companies = ['Agility', 'Axon Active', 'Enclave', 'VNG', 'KMS'];
 List<String> emails = [
   'lantrannk@gmail.com',
@@ -21,7 +21,6 @@ List<String> emails = [
   'vuint@gmail.com',
   'baochauleanh@gmail.com'
 ];
-
 List<String> phones = [
   '0794542105',
   '0905929922',
@@ -351,21 +350,23 @@ void updateUser(List<User> users) {
       String? email = stdin.readLineSync();
       var exp = RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$');
       // Email Validation
-      if (exp.hasMatch(email!)) {
-        userUpdated.setEmail = email;
-      } else {
-        print('\nInvalid Email.');
+      while (email == '' || !exp.hasMatch(email!)) {
+        print('Invalid Email.');
+        print('\nEmail: ');
+        email = stdin.readLineSync();
       }
+      userUpdated.setEmail = email;
       break;
     case 4: // Update Phone
       print('\nPhone: ');
       String? phone = stdin.readLineSync();
       // Phone Validation: length = 10
-      if (phone!.length == 10) {
-        userUpdated.setPhone = phone;
-      } else {
-        print('\nInvalid Phone.');
+      while (phone == '' || phone!.length != 10) {
+        print('Invalid Phone.');
+        print('\nPhone: ');
+        phone = stdin.readLineSync();
       }
+      userUpdated.setPhone = phone;
       break;
     case 5: // Update Country
       print('\nCountry: ');
@@ -375,15 +376,27 @@ void updateUser(List<User> users) {
       print('\nDate Of Birth: ');
       String? dateOfBirth = stdin.readLineSync();
 
-      if (dateOfBirth!.isNotEmpty) {
-        userUpdated.setDate = DateTime.parse(dateOfBirth);
-      } else {
-        print('\nInvalid Date.');
+      while (dateOfBirth == '' || dateOfBirth!.length != 8) {
+        print('Invalid Date.');
+        print('\nDate Of Birth ("yyyymmdd"): ');
+        dateOfBirth = stdin.readLineSync();
+        try {
+          userUpdated.setDate = DateTime.parse(dateOfBirth!);
+        } catch (error) {
+          print('\n$error\n');
+          print('---');
+        }
       }
       break;
     case 7: // Update Name
       print('\nName: ');
-      userUpdated.setName = stdin.readLineSync()!;
+      String? name = stdin.readLineSync()!;
+      while (name == '') {
+        print('Invalid Name.');
+        print('\nName: ');
+        name = stdin.readLineSync();
+      }
+      userUpdated.setName = name!;
       break;
     case 8: // Update Role
       print('\nRole (Editor, Author, Maintainer, Subscriber): ');
@@ -392,12 +405,7 @@ void updateUser(List<User> users) {
     case 0: // Close function
       print('\nClosed.');
       break;
-    default:
-      print('\nNot exist option.');
-      break;
   }
-
-  return print(userUpdated);
 }
 
 // function: delete a user by id
@@ -432,13 +440,12 @@ int findById(List<User> users) {
 void findByName(List<User> users) {
   stdout.write('Find By Name: ');
   String? findName = stdin.readLineSync();
-
   for (var user in users) {
-    if (user.name.contains(findName!)) {
+    if (user.name.contains(findName!) && findName != '') {
       return print(user);
     } // print the user has the input name
   }
-  return print('User not found.');
+  return print('\nUser not found.');
 }
 
 // find a user by email
@@ -447,11 +454,11 @@ void findByEmail(List<User> users) {
   String? findEmail = stdin.readLineSync();
 
   for (var user in users) {
-    if (user.email.contains(findEmail!)) {
+    if (user.email.contains(findEmail!) && findEmail != '') {
       return print(user);
     } // print the user has the input email
   }
-  return print('User not found.');
+  return print('\nUser not found.');
 }
 
 // function: filter users by roles
@@ -468,7 +475,7 @@ void filterRole(List<User> users) {
   }
   if (flag == 0) {
     return print(
-        'Not exist role.'); // if no user printed then role not exist in users list
+        '\nNot exist role.'); // if no user printed then role not exist in users list
   }
 }
 
