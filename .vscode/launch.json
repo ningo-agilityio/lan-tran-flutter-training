@@ -1,0 +1,62 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "armstrong-numbers",
+            "cwd": "armstrong-numbers",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "bob",
+            "cwd": "bob",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "difference-of-squares",
+            "cwd": "difference-of-squares",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "forth",
+            "cwd": "forth",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "gigasecond",
+            "cwd": "gigasecond",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "hello-world",
+            "cwd": "hello-world",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "leap",
+            "cwd": "leap",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "scrabble-score",
+            "cwd": "scrabble-score",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "two-fer",
+            "cwd": "two-fer",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}
