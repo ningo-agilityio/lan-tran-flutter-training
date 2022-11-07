@@ -27,8 +27,8 @@ int score(String word) {
   List<String> value3Char = ['B', 'b', 'C', 'c', 'M', 'm', 'P', 'p'];
   List<String> value4Char = ['F', 'f', 'H', 'h', 'V', 'v', 'W', 'w', 'Y', 'y'];
   List<String> value5Char = ['K', 'k'];
-  List<String> value8Char = ['J', 'j', 'X', 'j'];
-  List<String> value10Char = ['Q', 'q', 'Z', 'z'];
+  List<String> value8Char = ['J', 'j', 'X', 'x'];
+  // List<String> value10Char = ['Q', 'q', 'Z', 'z'];
   int scrabbleScore = 0;
   for (String char in characters) {
     if (value1Char.contains(char)) {
@@ -43,7 +43,7 @@ int score(String word) {
       scrabbleScore += 5;
     } else if (value8Char.contains(char)) {
       scrabbleScore += 8;
-    } else if (value10Char.contains(char)) {
+    } else {
       scrabbleScore += 10;
     }
   }
