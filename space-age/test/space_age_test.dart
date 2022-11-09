@@ -10,7 +10,7 @@ void main() {
 void ageOnPlanetTests() {
   test('age on Earth', () {
     expect(spaceAge.age(planet: 'Earth', seconds: 1000000000), equals(31.69));
-  }, skip: true);
+  }, skip: false);
 
   test('age on Mercury', () {
     expect(
