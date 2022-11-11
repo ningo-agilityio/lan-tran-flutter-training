@@ -1,0 +1,24 @@
+{
+  "authors": [
+    "jvarness"
+  ],
+  "contributors": [
+    "Stargator",
+    "Zureka",
+    "kytrinyx"
+  ],
+  "files": {
+    "solution": [
+      "lib/diamond.dart"
+    ],
+    "test": [
+      "test/diamond_test.dart"
+    ],
+    "example": [
+      ".meta/lib/example.dart"
+    ]
+  },
+  "blurb": "Given a letter, print a diamond starting with 'A' with the supplied letter at the widest point.",
+  "source": "Seb Rose",
+  "source_url": "https://web.archive.org/web/20220807163751/http://claysnow.co.uk/recycling-tests-in-tdd/"
+}
