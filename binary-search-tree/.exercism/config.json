@@ -1,0 +1,23 @@
+{
+  "authors": [
+    "devkabiir"
+  ],
+  "contributors": [
+    "amscotti",
+    "Stargator"
+  ],
+  "files": {
+    "solution": [
+      "lib/binary_search_tree.dart"
+    ],
+    "test": [
+      "test/binary_search_tree_test.dart"
+    ],
+    "example": [
+      ".meta/lib/example.dart"
+    ]
+  },
+  "blurb": "Insert and search for numbers in a binary tree.",
+  "source": "Josh Cheek",
+  "source_url": "https://twitter.com/josh_cheek"
+}
