@@ -1,0 +1,8 @@
+version: "Apple Swift version 5.7.1 (swiftlang-5.7.1.135.3 clang-1400.0.29.51)"
+options: "1dc7b49d1f59a7af937c9651fa462950af4cefa2d589b5f57c5558038a9d1610"
+build_start_time: [1668584297, 212779045]
+build_end_time: [1668584325, 835420131]
+inputs:
+  "/Users/lantran/Flutter_Project/flutter_layout/macos/Flutter/GeneratedPluginRegistrant.swift": [1668584238, 124369621]
+  "/Users/lantran/Flutter_Project/flutter_layout/macos/Runner/AppDelegate.swift": [1668411222, 289454221]
+  "/Users/lantran/Flutter_Project/flutter_layout/macos/Runner/MainFlutterWindow.swift": [1668411222, 291805744]
