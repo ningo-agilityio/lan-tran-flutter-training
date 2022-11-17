@@ -10,7 +10,7 @@
 		</data>
 		<key>Resources/Assets.car</key>
 		<data>
-		veCQQAhNFGqFRVmcxNkjeK4550w=
+		uOacKBAbcQEyH3vXGpx1geJSbW0=
 		</data>
 		<key>Resources/Base.lproj/MainMenu.nib</key>
 		<data>
@@ -23,10 +23,10 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			7FXasK0kQCqWybpttsQVUgPkcZQ=
+			ZLYkimfhoPDc0BGurq7VmpHX/7c=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"ec55dab0ad24402a96c9ba6db6c4155203e47194"</string>
+			<string>cdhash H"64b6248a67e1a0f0dcd011aeaeaed59a91d7ffb7"</string>
 		</dict>
 		<key>Frameworks/FlutterMacOS.framework</key>
 		<dict>
@@ -190,6 +190,15 @@
 			<key>requirement</key>
 			<string>cdhash H"3406aab10f486b91c2d9334de341504de56a5631" or cdhash H"73e04119822f2d8cd5eeb426ddac2b2b98295def"</string>
 		</dict>
+		<key>Frameworks/path_provider_macos.framework</key>
+		<dict>
+			<key>cdhash</key>
+			<data>
+			qwgODTConYBiojMpeXv/j8K22jE=
+			</data>
+			<key>requirement</key>
+			<string>cdhash H"ab080e0d30a89d8062a23329797bff8fc2b6da31"</string>
+		</dict>
 		<key>Resources/AppIcon.icns</key>
 		<dict>
 			<key>hash2</key>
@@ -201,7 +210,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Mfmvp57xiExjokDheH3owN2AhO6rYZIuR/s960mOeZA=
+			2ov+JXKKKTbV7nrcPfCUKAk4WVSCVRRfcqtlWS4elBo=
 			</data>
 		</dict>
 		<key>Resources/Base.lproj/MainMenu.nib</key>
