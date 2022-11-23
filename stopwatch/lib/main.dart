@@ -14,7 +14,6 @@ class StopwatchApp extends StatelessWidget {
         StopWatch.route: (context) => StopWatch(),
       },
       initialRoute: '/',
-      // home: LoginScreen(),
     );
   }
 }

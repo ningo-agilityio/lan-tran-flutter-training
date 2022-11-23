@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import 'platform_alert.dart';
+
 class StopWatch extends StatefulWidget {
   static const route = '/stopwatch';
   final String name;
@@ -14,11 +16,11 @@ class StopWatch extends StatefulWidget {
 
 class StopWatchState extends State<StopWatch> {
   int milliseconds = 0;
-  late Timer timer = Timer.periodic(const Duration(seconds: 1), _onTick);
+  late Timer timer;
   final laps = <int>[];
   final itemHeight = 60.0;
   final scrollController = ScrollController();
-  bool isTicking = true;
+  bool isTicking = false;
 
   // @override
   // void initState() {
@@ -89,7 +91,7 @@ class StopWatchState extends State<StopWatch> {
         ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            // foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
           ),
           child: Text('Start'),
           onPressed: isTicking ? null : _startTimer,
@@ -103,13 +105,17 @@ class StopWatchState extends State<StopWatch> {
           onPressed: isTicking ? _lap : null,
         ),
         SizedBox(width: 20),
-        TextButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          ),
-          child: Text('Stop'),
-          onPressed: isTicking ? _stopTimer : null,
+        Builder(
+          builder: (context) {
+            return TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
+              child: Text('Stop'),
+              onPressed: isTicking ? () => _stopTimer(context) : null,
+            );
+          },
         ),
       ],
     );
@@ -136,11 +142,47 @@ class StopWatchState extends State<StopWatch> {
     });
   }
 
-  void _stopTimer() {
+  void _stopTimer(BuildContext context) {
     timer.cancel();
     setState(() {
       isTicking = false;
     });
+
+    // final totalRuntime = laps.fold(milliseconds, (total, lap) => total + lap);
+    // final alert = PlatformAlert(
+    //   title: 'Run Completed!',
+    //   message: 'Total Run Time is ${_secondsText(totalRuntime)}.',
+    // );
+    // alert.show(context);
+
+    // showBottomSheet(context: context, builder: _buildRunCompleteSheet);
+
+    final controller =
+        showBottomSheet(context: context, builder: _buildRunCompleteSheet);
+    Future.delayed(Duration(seconds: 5)).then((_) {
+      controller.close();
+    });
+  }
+
+  Widget _buildRunCompleteSheet(BuildContext context) {
+    final totalRuntime = laps.fold(milliseconds, (total, lap) => total + lap);
+    final textTheme = Theme.of(context).textTheme;
+    return SafeArea(
+      child: Container(
+        color: Theme.of(context).cardColor,
+        width: double.infinity,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 30.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Run Finished!', style: textTheme.headline6),
+              Text('Total Run Time is ${_secondsText(totalRuntime)}.')
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   String _secondsText(int milliseconds) {
@@ -150,7 +192,7 @@ class StopWatchState extends State<StopWatch> {
 
   // Widget _buildLapDisplay() {
   //   return ListView(
-  //     // physics: BouncingScrollPhysics(),
+  //     physics: BouncingScrollPhysics(),
   //     children: [
   //       for (int milliseconds in laps)
   //         ListTile(
