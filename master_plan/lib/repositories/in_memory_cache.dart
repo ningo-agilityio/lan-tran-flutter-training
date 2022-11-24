@@ -6,7 +6,7 @@ class InMemoryCache implements Repository {
   @override
   Model create() {
     final ids = _storage.keys.toList()..sort();
-    final id = (ids.length == 0) ? 1 : ids.last + 1;
+    final id = (ids.isEmpty) ? 1 : ids.last + 1;
     final model = Model(id: id);
     _storage[id] = model;
     return model;
