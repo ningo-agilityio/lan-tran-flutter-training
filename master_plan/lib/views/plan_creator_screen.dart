@@ -33,7 +33,9 @@ class _PlanCreatorScreenState extends State<PlanCreatorScreen> {
         child: TextField(
           controller: textController,
           decoration: InputDecoration(
-              labelText: 'Add a plan', contentPadding: EdgeInsets.all(20)),
+            labelText: 'Add a plan',
+            contentPadding: EdgeInsets.all(20),
+          ),
           onEditingComplete: addPlan,
         ),
       ),
