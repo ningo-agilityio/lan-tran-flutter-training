@@ -1,4 +1,4 @@
-import '../repositories/repository.dart';
+import 'repository.dart';
 
 class InMemoryCache implements Repository {
   final _storage = Map<int, Model>();
@@ -13,8 +13,8 @@ class InMemoryCache implements Repository {
   }
 
   @override
-  Model get(int id) {
-    return _storage[id]!;
+  Model? get(int id) {
+    return _storage[id];
   }
 
   @override

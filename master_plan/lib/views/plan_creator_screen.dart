@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:master_plan/plan_provider.dart';
 import '../models/plan.dart';
-import '../plan_provider.dart';
-import 'plan_screen.dart';
+import './plan_screen.dart';
 
 class PlanCreatorScreen extends StatefulWidget {
   const PlanCreatorScreen({super.key});
@@ -33,30 +33,16 @@ class _PlanCreatorScreenState extends State<PlanCreatorScreen> {
         child: TextField(
           controller: textController,
           decoration: InputDecoration(
-            labelText: 'Add a plan',
-            contentPadding: EdgeInsets.all(20),
-          ),
+              labelText: 'Add a plan', contentPadding: EdgeInsets.all(20)),
           onEditingComplete: addPlan,
         ),
       ),
     );
   }
 
-  // void addPlan() {
-  //   final text = textController.text;
-  //   if (text.isEmpty) {
-  //     return;
-  //   }
-  //   final plan = Plan()..name = text;
-  //   PlanProvider.of(context).add(plan);
-  //   textController.clear();
-  //   FocusScope.of(context).requestFocus(FocusNode());
-  //   setState(() {});
-  // }
-
   void addPlan() {
     final text = textController.text;
-    // All the business logic has been removed from this 'view' method!
+    // All the business logic has been removed from this 'view'method!
     final controller = PlanProvider.of(context);
     controller.addNewPlan(text);
     textController.clear();
@@ -66,13 +52,16 @@ class _PlanCreatorScreenState extends State<PlanCreatorScreen> {
 
   Widget _buildMasterPlans() {
     final plans = PlanProvider.of(context).plans;
+
     if (plans.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(Icons.note, size: 100, color: Colors.grey),
-          Text('You do not have any plans yet.',
-              style: Theme.of(context).textTheme.headline5),
+          Text(
+            'You do not have any plans yet.',
+            style: Theme.of(context).textTheme.headline5,
+          )
         ],
       );
     }

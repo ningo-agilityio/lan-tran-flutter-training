@@ -1,6 +1,6 @@
 import '../models/data_layer.dart';
 import 'package:flutter/material.dart';
-import 'package:master_plan/plan_provider.dart';
+import '../plan_provider.dart';
 
 class PlanScreen extends StatefulWidget {
   final Plan plan;
@@ -11,9 +11,8 @@ class PlanScreen extends StatefulWidget {
 }
 
 class _PlanScreenState extends State<PlanScreen> {
+  late ScrollController scrollController;
   Plan get plan => widget.plan;
-  // final plan = Plan();
-  ScrollController? scrollController;
 
   @override
   void initState() {
@@ -26,7 +25,6 @@ class _PlanScreenState extends State<PlanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final plan = PlanProvider.of(context);
     return WillPopScope(
       onWillPop: () {
         final controller = PlanProvider.of(context);
@@ -47,13 +45,9 @@ class _PlanScreenState extends State<PlanScreen> {
   }
 
   Widget _buildAddTaskButton() {
-    // final plan = PlanProvider.of(context);
     return FloatingActionButton(
       child: Icon(Icons.add),
       onPressed: () {
-        // setState(() {
-        //   plan.tasks.add(Task());
-        // });
         final controller = PlanProvider.of(context);
         controller.createNewTask(plan);
         setState(() {});
@@ -62,7 +56,6 @@ class _PlanScreenState extends State<PlanScreen> {
   }
 
   Widget _buildList() {
-    // final plan = PlanProvider.of(context);
     return ListView.builder(
       controller: scrollController,
       itemCount: plan.tasks.length,
@@ -102,7 +95,7 @@ class _PlanScreenState extends State<PlanScreen> {
 
   @override
   void dispose() {
-    scrollController!.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 }

@@ -2,21 +2,15 @@ import 'package:flutter/foundation.dart';
 import '../repositories/repository.dart';
 
 class Task {
-  final int id;
+  final int? id;
   String description;
   bool complete;
-
-  Task({
-    required this.id,
-    this.complete = false,
-    this.description = '',
-  });
+  Task({@required this.id, this.complete = false, this.description = ''});
 
   Task.fromModel(Model model)
       : id = model.id,
         description = model.data['description'],
         complete = model.data['complete'];
-
   Model toModel() =>
-      Model(id: id, data: {'description': description, 'complete': complete});
+      Model(id: id!, data: {'description': description, 'complete': complete});
 }
