@@ -15,7 +15,7 @@ class _LocationScreenState extends State<LocationScreen> {
   void initState() {
     getPosition().then((Position myPos) {
       myPosition =
-          'Latitude: ${myPos.latitude} - Longitude: ${myPos.longitude}';
+          'Latitude: ${myPos.latitude}\nprLongitude: ${myPos.longitude}';
       setState(() {
         myPosition = myPosition;
       });
@@ -27,24 +27,48 @@ class _LocationScreenState extends State<LocationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Current Location')),
-      body: Center(child: Text(myPosition)),
+      body: Center(
+        child: FutureBuilder(
+          future: getPosition(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return Text('Something terrible happened!');
+              }
+              final data = snapshot.data.toString();
+              return Text(data);
+            } else {
+              return Text('');
+            }
+          },
+        ),
+      ),
     );
   }
 
   Future<Position> getPosition() async {
-    LocationPermission permission;
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        return Future.error('Location Not Available');
-      }
-    }
-
-    // Position? position = await Geolocator.getCurrentPosition(
-    //     desiredAccuracy: LocationAccuracy.high);
-
-    Position position = (await Geolocator.getLastKnownPosition())!;
+    await Future.delayed(const Duration(seconds: 3));
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     return position;
   }
+
+  // Future<Position> getPosition() async {
+  //   LocationPermission permission;
+  //   permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.deniedForever) {
+  //       return Future.error('Location Not Available');
+  //     }
+  //   }
+
+  //   Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high);
+
+  //   // Position position = (await Geolocator.getLastKnownPosition())!;
+  //   return position;
+  // }
 }
