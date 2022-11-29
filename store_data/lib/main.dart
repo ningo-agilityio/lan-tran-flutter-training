@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import './pizza.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,10 +29,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String pizzaString = '';
+  late int appCounter = 0;
+  String documentsPath = '';
+  String tempPath = '';
 
   @override
   void initState() {
-    readJsonFile();
+    getPaths();
     super.initState();
   }
 
@@ -39,20 +44,43 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(title: Text('JSON')),
       body: Container(
-        child: FutureBuilder(
-          future: readJsonFile(),
-          builder: (BuildContext context, AsyncSnapshot<List<Pizza>> pizzas) {
-            return ListView.builder(
-              itemCount: (pizzas.data == null) ? 0 : pizzas.data!.length,
-              itemBuilder: (BuildContext context, int position) {
-                return ListTile(
-                  title: Text(pizzas.data![position].pizzaName),
-                  subtitle: Text(
-                      '${pizzas.data![position].description} - € ${pizzas.data![position].price}'),
-                );
-              },
-            );
-          },
+        // child: FutureBuilder(
+        //   future: readJsonFile(),
+        //   builder: (BuildContext context, AsyncSnapshot<List<Pizza>> pizzas) {
+        //     return ListView.builder(
+        //       itemCount: (pizzas.data == null) ? 0 : pizzas.data!.length,
+        //       itemBuilder: (BuildContext context, int position) {
+        //         return ListTile(
+        //           title: Text(pizzas.data![position].pizzaName),
+        //           subtitle: Text(
+        //               '${pizzas.data![position].description} - € ${pizzas.data![position].price}'),
+        //         );
+        //       },
+        //     );
+        //   },
+        // ),
+
+        // child: Center(
+        //   child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //     children: [
+        //       Text('You have opened the app $appCounter times.'),
+        //       ElevatedButton(
+        //         onPressed: () {
+        //           deletePreference();
+        //         },
+        //         child: Text('Reset counter'),
+        //       )
+        //     ],
+        //   ),
+        // ),
+
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text('Doc path: ' + documentsPath),
+            Text('Temp path' + tempPath),
+          ],
         ),
       ),
     );
@@ -64,6 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     List myMap = jsonDecode(myString);
     List<Pizza> myPizzas = [];
+
     // myMap.forEach((dynamic pizza) {
     //   Pizza myPizza = Pizza.fromJson(pizza);
     //   myPizzas.add(myPizza);
@@ -87,5 +116,35 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     json += ']';
     return json;
+  }
+
+  Future readAndWritePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    appCounter = (prefs.getInt('appCounter') == null)
+        ? 1
+        : prefs.getInt('appCounter')! + 1;
+    await prefs.setInt('appCounter', appCounter);
+
+    setState(() {
+      appCounter = appCounter;
+    });
+  }
+
+  Future deletePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      appCounter = 0;
+    });
+  }
+
+  Future getPaths() async {
+    final docDir = await getApplicationDocumentsDirectory();
+    final tempDir = await getTemporaryDirectory();
+    setState(() {
+      documentsPath = docDir.path;
+      tempPath = tempDir.path;
+    });
   }
 }
