@@ -3,6 +3,9 @@ import 'dart:convert';
 import './pizza.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'httphelper.dart';
+import 'pizza_detail.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,10 +35,17 @@ class _MyHomePageState extends State<MyHomePage> {
   late int appCounter = 0;
   String documentsPath = '';
   String tempPath = '';
+  late File myFile;
+  String fileText = '';
 
   @override
   void initState() {
-    getPaths();
+    // getPaths().then((_) {
+    //   myFile = File('$documentsPath/pizzas.txt');
+    //   writeFile();
+    // });
+
+    callPizzas();
     super.initState();
   }
 
@@ -75,13 +85,67 @@ class _MyHomePageState extends State<MyHomePage> {
         //   ),
         // ),
 
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text('Doc path: ' + documentsPath),
-            Text('Temp path' + tempPath),
-          ],
+        // child: Column(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     Text('Doc path: ' + documentsPath),
+        //     Text('Temp path: ' + tempPath),
+        //     ElevatedButton(
+        //       child: Text('Read File'),
+        //       onPressed: () => readFile(),
+        //     ),
+        //     Text(fileText),
+        //   ],
+        // ),
+
+        child: FutureBuilder(
+          future: callPizzas(),
+          builder: (BuildContext context, AsyncSnapshot<List<Pizza>> pizzas) {
+            // return ListView.builder(
+            // itemCount: (pizzas.data == null) ? 0 : pizzas.data!.length,
+            // itemBuilder: (BuildContext context, int position) {
+            //   return ListTile(
+            return ListView.builder(
+              itemCount: (pizzas.data == null) ? 0 : pizzas.data!.length,
+              itemBuilder: (BuildContext context, int position) {
+                return Dismissible(
+                  onDismissed: (item) {
+                    HttpHelper helper = HttpHelper();
+                    pizzas.data!.removeWhere(
+                        (element) => element.id == pizzas.data![position].id);
+                    helper.deletePizza(pizzas.data![position].id);
+                  },
+                  key: Key(position.toString()),
+                  child: ListTile(
+                    title: Text(pizzas.data![position].pizzaName),
+                    subtitle: Text(
+                        '${pizzas.data![position].description} - € ${pizzas.data![position].price}'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PizzaDetail(pizzas.data![position], false),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            );
+          },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PizzaDetail(Pizza(), false),
+            ),
+          );
+        },
       ),
     );
   }
@@ -147,4 +211,116 @@ class _MyHomePageState extends State<MyHomePage> {
       tempPath = tempDir.path;
     });
   }
+
+  Future<bool> writeFile() async {
+    try {
+      await myFile.writeAsString('Margherita, Capricciosa, Napoli');
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> readFile() async {
+    try {
+      // Read the file.
+      String fileContent = await myFile.readAsString();
+      setState(() {
+        fileText = fileContent;
+      });
+      return true;
+    } catch (e) {
+      // On error, return false.
+      return false;
+    }
+  }
+
+  Future<List<Pizza>> callPizzas() async {
+    HttpHelper helper = HttpHelper();
+    List<Pizza>? pizzas = await helper.getPizzaList();
+    return pizzas!;
+  }
 }
+
+// import 'package:flutter/material.dart';
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         primarySwatch: Colors.deepPurple,
+//         visualDensity: VisualDensity.adaptivePlatformDensity,
+//       ),
+//       home: MyHomePage(),
+//     );
+//   }
+// }
+
+// class MyHomePage extends StatefulWidget {
+//   @override
+//   _MyHomePageState createState() => _MyHomePageState();
+// }
+
+// class _MyHomePageState extends State<MyHomePage> {
+//   final pwdController = TextEditingController();
+//   String myPass = '';
+//   final storage = FlutterSecureStorage();
+//   final myKey = 'myPass';
+
+//   @override
+//   void initState() {
+//     super.initState();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('Path Provider')),
+//       body: Container(
+//         child: SingleChildScrollView(
+//           child: Padding(
+//             padding: const EdgeInsets.all(16.0),
+//             child: Column(
+//               children: [
+//                 TextField(
+//                   controller: pwdController,
+//                 ),
+//                 ElevatedButton(
+//                     child: Text('Save Value'),
+//                     onPressed: () {
+//                       writeToSecureStorage();
+//                     }),
+//                 ElevatedButton(
+//                     child: Text('Read Value'),
+//                     onPressed: () {
+//                       readFromSecureStorage().then((value) {
+//                         setState(() {
+//                           myPass = value;
+//                         });
+//                       });
+//                     }),
+//                 Text(myPass),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Future writeToSecureStorage() async {
+//     await storage.write(key: myKey, value: pwdController.text);
+//   }
+
+//   Future<String> readFromSecureStorage() async {
+//     String? secret = await storage.read(key: myKey);
+//     return secret!;
+//   }
+// }
