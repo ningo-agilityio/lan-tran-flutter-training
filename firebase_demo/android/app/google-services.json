@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "177123739027",
+    "project_id": "flutter-cookbook-194ee",
+    "storage_bucket": "flutter-cookbook-194ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177123739027:android:5ebd70001d4c594b161466",
+        "android_client_info": {
+          "package_name": "it.lantran.firebase_demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "177123739027-a8976bdpebs1219v6g3h9kli9kurhcrl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDakmNeXtoiy-Z2HLBRkSWEwDDBGapB59I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "177123739027-a8976bdpebs1219v6g3h9kli9kurhcrl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
