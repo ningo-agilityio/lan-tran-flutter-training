@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'my_animation.dart';
 import 'shape_animation.dart';
+import 'listscreen.dart';
+import 'fade_transition.dart';
+import 'animatedlist.dart';
+import 'dismissible.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ShapeAnimation(),
+      home: DismissibleScreen(),
     );
   }
 }

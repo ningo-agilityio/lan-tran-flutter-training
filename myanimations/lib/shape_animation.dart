@@ -24,10 +24,15 @@ class _ShapeAnimationState extends State<ShapeAnimation>
 
   @override
   void initState() {
+    // controller = AnimationController(
+    //   duration: const Duration(seconds: 3),
+    //   vsync: this,
+    // );
+
     controller = AnimationController(
       duration: const Duration(seconds: 3),
       vsync: this,
-    );
+    )..repeat(reverse: true);
 
     // animationLeft = Tween<double>(begin: 0, end: 200).animate(controller);
     // animationTop = Tween<double>(begin: 0, end: 400).animate(controller)
@@ -39,10 +44,12 @@ class _ShapeAnimationState extends State<ShapeAnimation>
       parent: controller,
       curve: Curves.easeInOut,
     );
+
     animation
       ..addListener(() {
         moveBall();
       });
+
     super.initState();
   }
 
@@ -51,15 +58,15 @@ class _ShapeAnimationState extends State<ShapeAnimation>
     return Scaffold(
       appBar: AppBar(
         title: Text('Animation Controller'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              controller.reset();
-              controller.forward();
-            },
-            icon: Icon(Icons.run_circle),
-          )
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {
+        //       controller.reset();
+        //       controller.forward();
+        //     },
+        //     icon: Icon(Icons.run_circle),
+        //   )
+        // ],
       ),
       // body: Stack(
       //   children: [
@@ -72,11 +79,16 @@ class _ShapeAnimationState extends State<ShapeAnimation>
           builder: (BuildContext context, BoxConstraints constraints) {
             maxLeft = constraints.maxWidth - ballSize;
             maxTop = constraints.maxHeight - ballSize;
-            return Stack(
-              children: [
-                Positioned(left: posLeft, top: posTop, child: Ball()),
-              ],
-            );
+            return Stack(children: [
+              AnimatedBuilder(
+                  animation: controller,
+                  child: Positioned(left: posLeft, top: posTop, child: Ball()),
+                  builder: (BuildContext context, Widget? child) {
+                    moveBall();
+                    return Positioned(
+                        left: posLeft, top: posTop, child: Ball());
+                  })
+            ]);
           },
         ),
       ),
@@ -84,15 +96,18 @@ class _ShapeAnimationState extends State<ShapeAnimation>
   }
 
   void moveBall() {
-    setState(() {
-      // pos = animation.value;
+    // setState(() {
+    //   // pos = animation.value;
 
-      // posTop = animationTop.value;
-      // posLeft = animationLeft.value;
+    //   // posTop = animationTop.value;
+    //   // posLeft = animationLeft.value;
 
-      posTop = animation.value * maxTop;
-      posLeft = animation.value * maxLeft;
-    });
+    //   posTop = animation.value * maxTop;
+    //   posLeft = animation.value * maxLeft;
+    // });
+
+    posTop = animation.value * maxTop;
+    posLeft = animation.value * maxLeft;
   }
 }
 
