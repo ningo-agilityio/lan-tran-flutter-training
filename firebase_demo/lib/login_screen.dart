@@ -15,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController txtUserName = TextEditingController();
   final TextEditingController txtPassword = TextEditingController();
 
-  late FirebaseAuthentication? auth;
+  late FirebaseAuthentication auth = FirebaseAuthentication();
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () {
-              auth!.logout().then((value) {
+              auth.logout().then((value) {
                 if (value) {
                   setState(() {
                     _message = 'User Logged Out';
@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onPressed: () {
             String userId = '';
             if (_isLogin) {
-              auth!.login(txtUserName.text, txtPassword.text).then((value) {
+              auth.login(txtUserName.text, txtPassword.text).then((value) {
                 if (value == null) {
                   setState(() {
                     _message = 'Login Error';
@@ -134,9 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
               });
             } else {
-              auth!
-                  .createUser(txtUserName.text, txtPassword.text)
-                  .then((value) {
+              auth.createUser(txtUserName.text, txtPassword.text).then((value) {
                 if (value == null) {
                   setState(() {
                     _message = 'Registration Error';

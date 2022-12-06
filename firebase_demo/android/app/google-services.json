@@ -29,6 +29,13 @@
             {
               "client_id": "177123739027-a8976bdpebs1219v6g3h9kli9kurhcrl.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "177123739027-5603l75sd0n2b5af290en7os22r2o3i7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "it.lantran.firebaseDemo"
+              }
             }
           ]
         }
