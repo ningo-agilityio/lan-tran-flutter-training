@@ -1,6 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'shared/firebase_authentication.dart';
+import './happy_screen.dart';
+import './poll.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import './upload_file.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,12 +20,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController txtPassword = TextEditingController();
 
   late FirebaseAuthentication auth = FirebaseAuthentication();
+  final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   @override
   void initState() {
     super.initState();
     Firebase.initializeApp().whenComplete(() {
       auth = FirebaseAuthentication();
+      FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessageReceived);
       setState(() {});
     });
   }
@@ -56,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
             passwordInput(),
             btnMain(),
             btnSecondary(),
+            btnGoogle(),
             txtMessage(),
           ],
         ),
@@ -65,12 +72,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget userInput() {
     return Padding(
-      padding: EdgeInsets.only(top: 128),
+      padding: EdgeInsets.only(top: 24),
       child: TextFormField(
         controller: txtUserName,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          hintText: 'User Name',
+          hintText: 'Email',
           icon: Icon(Icons.verified_user),
         ),
         validator: (text) => text!.isEmpty ? 'User Name is required' : '',
@@ -131,6 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   setState(() {
                     _message = 'User $userId successfully logged in';
                   });
+                  changeScreen();
                 }
               });
             } else {
@@ -175,4 +183,60 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  Widget btnGoogle() {
+    return Padding(
+      padding: EdgeInsets.only(top: 128),
+      child: Container(
+        height: 60,
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all(Theme.of(context).primaryColorLight),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24.0),
+                side: BorderSide(color: Colors.red),
+              ),
+            ),
+          ),
+          onPressed: () {
+            // auth.loginWithGoogle().then((value) {
+            //   if (value == null) {
+            //     setState(() {
+            //       _message = 'Google Login Error';
+            //     });
+            //   } else {
+            //     setState(() {
+            //       _message = 'User $value successfully logged in with Google';
+            //     });
+            //     changeScreen();
+            //   }
+            // });
+          },
+          child: Text(
+            'Log in with Google',
+            style: TextStyle(
+              fontSize: 18,
+              color: Theme.of(context).primaryColorDark,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void changeScreen() {
+    // Navigator.push(
+    //     context, MaterialPageRoute(builder: (context) => HappyScreen()));
+    // Navigator.push(
+    //     context, MaterialPageRoute(builder: (context) => PollScreen()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => UploadFileScreen()));
+  }
+}
+
+Future _firebaseBackgroundMessageReceived(RemoteMessage message) async {
+  print(
+      "Notification: ${message.notification!.title} - ${message.notification!.body}");
 }

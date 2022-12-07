@@ -67,6 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '177123739027',
     projectId: 'flutter-cookbook-194ee',
     storageBucket: 'flutter-cookbook-194ee.appspot.com',
+    androidClientId: '177123739027-t7giuhkct5nv0369kllfrcv4vjv1bksl.apps.googleusercontent.com',
     iosClientId: '177123739027-5603l75sd0n2b5af290en7os22r2o3i7.apps.googleusercontent.com',
     iosBundleId: 'it.lantran.firebaseDemo',
   );
@@ -77,6 +78,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '177123739027',
     projectId: 'flutter-cookbook-194ee',
     storageBucket: 'flutter-cookbook-194ee.appspot.com',
+    androidClientId: '177123739027-t7giuhkct5nv0369kllfrcv4vjv1bksl.apps.googleusercontent.com',
     iosClientId: '177123739027-d5gsh3mkl0tk6ssfrqic9ge2vk6tqh52.apps.googleusercontent.com',
     iosBundleId: 'com.example.firebaseDemo',
   );

@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "177123739027-80e296jikmlrs4vrjhmrq5p4ss09qjh2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.lantran.firebase_demo",
+            "certificate_hash": "377d6208b3e0d27bcaa7f7529da092fecc95da0a"
+          }
+        },
+        {
+          "client_id": "177123739027-rdgkfco8tjhapdeousd6bm62bfksb0a5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.lantran.firebase_demo",
+            "certificate_hash": "c05dbae45264cc667408742b156975fa7d7e2474"
+          }
+        },
+        {
           "client_id": "177123739027-a8976bdpebs1219v6g3h9kli9kurhcrl.apps.googleusercontent.com",
           "client_type": 3
         }
