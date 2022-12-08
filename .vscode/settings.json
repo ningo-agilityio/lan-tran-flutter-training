@@ -2,5 +2,6 @@
     "nuxt.isNuxtApp": false,
     "cSpell.words": [
         "geolocator"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

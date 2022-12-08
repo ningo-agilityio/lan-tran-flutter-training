@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "736978907269",
+    "project_id": "flutter-chapter13",
+    "storage_bucket": "flutter-chapter13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736978907269:android:ec2817f3abb0aebe77b9ec",
+        "android_client_info": {
+          "package_name": "it.lantran.flutter_chapter13"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736978907269-87pj49rs46n9i44k876vgprg5m5kci2v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcCK0IH0QymvhrYQdNGjHEs2vcbU9_81A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736978907269-87pj49rs46n9i44k876vgprg5m5kci2v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
