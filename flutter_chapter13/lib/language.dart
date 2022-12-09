@@ -30,20 +30,21 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   InputDecoration(labelText: 'Enter some text in any language'),
             ),
             Center(
-                child: ElevatedButton(
-              child: Text('Detect Language'),
-              onPressed: () {
-                MLHelper helper = MLHelper();
+              child: ElevatedButton(
+                child: Text('Detect Language'),
+                onPressed: () {
+                  MLHelper helper = MLHelper();
 
-                helper.identifyLanguage(txtLanguage.text).then((result) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ResultScreen(result)),
-                  );
-                });
-              },
-            ))
+                  helper.identifyLanguage(txtLanguage.text).then((result) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ResultScreen(result)),
+                    );
+                  });
+                },
+              ),
+            ),
           ],
         ),
       ),
