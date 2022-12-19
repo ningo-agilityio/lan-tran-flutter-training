@@ -72,6 +72,9 @@ class WidgetbookHotReload extends StatelessWidget {
           data: ThemeData.dark(),
         )
       ],
+      devices: [
+        Apple.iPhoneXs,
+      ],
     );
   }
 }
