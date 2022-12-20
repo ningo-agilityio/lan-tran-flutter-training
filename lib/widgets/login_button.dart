@@ -12,7 +12,10 @@ class LoginButton extends StatelessWidget {
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(24.0),
-              side: BorderSide(width: 10.0, color: Color(0xFFFFFFFF)),
+              side: const BorderSide(
+                width: 10.0,
+                color: Color(0xFFFFFFFF),
+              ),
             ),
           ),
           alignment: Alignment.center,
