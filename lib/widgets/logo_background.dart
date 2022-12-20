@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class Logo extends StatelessWidget {
-  const Logo({super.key});
+class LogoBackground extends StatelessWidget {
+  const LogoBackground({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      'avisit',
+      'av',
       style: TextStyle(
-        fontSize: 70,
+        fontSize: 220,
         fontFamily: 'Poppins',
-        color: Colors.white,
+        color: Colors.white.withOpacity(0.24),
       ),
     );
   }
