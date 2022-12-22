@@ -49,6 +49,12 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   widgetbook: ^2.4.1
+  table_calendar: ^3.0.8
+  firebase_auth: ^4.2.1
+  firebase_core: ^2.4.0
+  firebase_messaging: ^14.1.4
+  firebase_storage: ^11.0.8
+  cloud_firestore: ^4.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

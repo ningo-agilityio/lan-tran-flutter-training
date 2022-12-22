@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/screens/login_screen.dart';
 import 'package:salon_appointment/widgets/logo.dart';
@@ -12,7 +14,18 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    Timer(
+      Duration(seconds: 3),
+      () => Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
+      ),
+    );
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -44,13 +57,6 @@ class _SplashScreenState extends State<SplashScreen> {
           ],
         ),
       ),
-    );
-  }
-
-  void _buildLoginScreen() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
 }
