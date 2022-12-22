@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/screens/calendar.dart';
 
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key});
@@ -6,7 +7,7 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: OutlinedButton(
+      child: ElevatedButton(
         style: ButtonStyle(
           fixedSize: MaterialStateProperty.all(Size(311, 44)),
           shape: MaterialStateProperty.all(
@@ -14,13 +15,20 @@ class LoginButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(24.0),
               side: const BorderSide(
                 width: 10.0,
-                color: Color(0xFFFFFFFF),
+                color: Colors.white,
               ),
             ),
           ),
           alignment: Alignment.center,
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Calendar(),
+            ),
+          );
+        },
         child: const Text(
           'Login',
           style: TextStyle(
