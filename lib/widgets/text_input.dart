@@ -5,7 +5,10 @@ final _textController = TextEditingController();
 
 Widget TextInput({text}) {
   return Container(
-    color: Color.fromRGBO(255, 255, 255, 0.24),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8.0),
+      color: Color(0x3CFFFFFF),
+    ),
     child: TextFormField(
       controller: _textController,
       decoration: InputDecoration(
