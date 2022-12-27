@@ -7,6 +7,12 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Color(0xFFFFFFFF),
+        ),
+        borderRadius: BorderRadius.circular(24.0),
+      ),
       child: ElevatedButton(
         style: ButtonStyle(
           fixedSize: MaterialStateProperty.all(Size(311, 44)),
@@ -14,11 +20,11 @@ class LoginButton extends StatelessWidget {
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(24.0),
               side: const BorderSide(
-                width: 10.0,
-                color: Colors.white,
+                width: 0.0,
               ),
             ),
           ),
+          backgroundColor: MaterialStateProperty.all(Color(0x00FFFFFF)),
           alignment: Alignment.center,
         ),
         onPressed: () {
@@ -35,6 +41,7 @@ class LoginButton extends StatelessWidget {
             fontSize: 16,
             fontFamily: 'Poppins',
             color: Color(0xFFFFFFFF),
+            backgroundColor: Color(0xFFFFFF),
           ),
         ),
       ),
