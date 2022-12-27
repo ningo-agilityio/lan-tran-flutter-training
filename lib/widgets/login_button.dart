@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/screens/calendar.dart';
+import 'package:salon_appointment/screens/calendar_screen.dart';
 
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key});
@@ -25,7 +25,7 @@ class LoginButton extends StatelessWidget {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Calendar(),
+              builder: (context) => CalendarScreen(),
             ),
           );
         },
