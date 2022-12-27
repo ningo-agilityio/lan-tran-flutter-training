@@ -48,6 +48,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  floating_bottom_bar: ^0.0.1
   widgetbook: ^2.4.1
   table_calendar: ^3.0.8
   firebase_auth: ^4.2.1

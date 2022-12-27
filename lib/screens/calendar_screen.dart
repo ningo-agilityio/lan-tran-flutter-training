@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:salon_appointment/widgets/bottom_app_bar.dart';
+import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 
 import '../utils.dart';
 
-class Calendar extends StatefulWidget {
-  const Calendar({super.key});
+class CalendarScreen extends StatefulWidget {
+  const CalendarScreen({super.key});
 
   @override
-  State<Calendar> createState() => _CalendarState();
+  State<CalendarScreen> createState() => _CalendarScreenState();
 }
 
-class _CalendarState extends State<Calendar> {
+class _CalendarScreenState extends State<CalendarScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -51,7 +52,17 @@ class _CalendarState extends State<Calendar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calendar'),
+        title: Text(
+          'Calendar',
+          style: TextStyle(
+            color: Color(0xFF0C122A),
+            fontWeight: FontWeight.w500,
+            fontFamily: 'Poppins',
+            fontSize: 20,
+            height: 30,
+          ),
+        ),
+        backgroundColor: Colors.white,
       ),
       body: TableCalendar(
         firstDay: kFirstDay,
@@ -88,33 +99,7 @@ class _CalendarState extends State<Calendar> {
           _focusedDay = focusedDay;
         },
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.check),
-      //       label: 'Recent',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.schedule),
-      //       label: 'Schedule',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.person),
-      //       label: 'Profile',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.notifications),
-      //       label: 'Notifications',
-      //     ),
-      //   ],
-      //   selectedItemColor: Color(0xFF553BA3),
-      //   unselectedItemColor: Color(0xFFBFC8DC),
-      //   type: BottomNavigationBarType.fixed,
-      //   currentIndex: _selectedIndex,
-      //   iconSize: 40,
-      //   onTap: _onItemTapped,
-      //   elevation: 5,
-      // ),
+
       floatingActionButton: _showFab
           ? FloatingActionButton(
               onPressed: () {},
@@ -127,6 +112,49 @@ class _CalendarState extends State<Calendar> {
         fabLocation: _fabLocation,
         shape: _showNotch ? const CircularNotchedRectangle() : null,
       ),
+
+      // bottomNavigationBar: AnimatedBottomNavigationBar(
+      //   bottomBarItems: [
+      //     BottomBarItemsModel(
+      //       icon: Icon(Icons.home, size: 24),
+      //       iconSelected: Icon(Icons.home,
+      //           color: Theme.of(context).colorScheme.onSecondary, size: 24),
+      //       dotColor: Theme.of(context).colorScheme.onSecondary,
+      //       onTap: () {},
+      //     ),
+      //     BottomBarItemsModel(
+      //       icon: Icon(Icons.search, size: 24),
+      //       iconSelected: Icon(Icons.search,
+      //           color: Theme.of(context).colorScheme.onSecondary, size: 24),
+      //       dotColor: Theme.of(context).colorScheme.onSecondary,
+      //       onTap: () {},
+      //     ),
+      //     BottomBarItemsModel(
+      //       icon: Icon(Icons.person, size: 24),
+      //       iconSelected: Icon(Icons.person,
+      //           color: Theme.of(context).colorScheme.onSecondary, size: 24),
+      //       dotColor: Theme.of(context).colorScheme.onSecondary,
+      //       onTap: () {},
+      //     ),
+      //     BottomBarItemsModel(
+      //       icon: Icon(Icons.settings, size: 24),
+      //       iconSelected: Icon(Icons.settings,
+      //           color: Theme.of(context).colorScheme.onSecondary, size: 24),
+      //       dotColor: Theme.of(context).colorScheme.onSecondary,
+      //       onTap: () {},
+      //     ),
+      //   ],
+      //   bottomBarCenterModel: BottomBarCenterModel(
+      //     centerBackgroundColor: Theme.of(context).colorScheme.onSecondary,
+      //     centerIcon: FloatingCenterButton(
+      //       child: Icon(
+      //         Icons.add,
+      //         color: Theme.of(context).colorScheme.onSecondary,
+      //       ),
+      //     ),
+      //     centerIconChild: [],
+      //   ),
+      // ),
     );
   }
 }
@@ -151,6 +179,7 @@ class _DemoBottomAppBar extends StatelessWidget {
     return BottomAppBar(
       shape: shape,
       color: Colors.white,
+      padding: EdgeInsets.only(left: 18.0, right: 18.0),
       child: IconTheme(
         data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
         child: Row(
@@ -162,7 +191,7 @@ class _DemoBottomAppBar extends StatelessWidget {
               iconSize: 24,
               onPressed: () {},
             ),
-            SizedBox(width: 20),
+            SizedBox(width: 21),
             IconButton(
               tooltip: 'Schedule',
               icon: const Icon(Icons.schedule),
@@ -178,7 +207,7 @@ class _DemoBottomAppBar extends StatelessWidget {
               iconSize: 24,
               onPressed: () {},
             ),
-            SizedBox(width: 20),
+            SizedBox(width: 21),
             IconButton(
               tooltip: 'Notifications',
               icon: const Icon(Icons.notifications),
