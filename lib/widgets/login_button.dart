@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/screens/calendar_screen.dart';
+import 'package:salon_appointment/theme/theme.dart';
+import 'text.dart';
 
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key});
@@ -35,15 +37,16 @@ class LoginButton extends StatelessWidget {
             ),
           );
         },
-        child: const Text(
-          'Login',
-          style: TextStyle(
-            fontSize: 16,
-            fontFamily: 'Poppins',
-            color: Color(0xFFFFFFFF),
-            backgroundColor: Color(0xFFFFFF),
-          ),
-        ),
+        child: LoginText(),
+        // Text(
+        //   'Login',
+        //   style: appointmentLightTheme.textTheme.bodyMedium!.copyWith(
+        //     // fontSize: 16,
+        //     fontFamily: 'Poppins',
+        //     fontWeight: FontWeight.w500,
+        //     color: Color(0xFFFFFFFF),
+        //   ),
+        // ),
       ),
     );
   }

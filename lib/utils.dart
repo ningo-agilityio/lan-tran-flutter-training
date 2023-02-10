@@ -5,26 +5,28 @@ import 'package:salon_appointment/widgets/time.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 /// Example event class.
-class Event {
+class Appointment {
   String services = '';
   TimeOfDay startTime = TimeOfDay(hour: 0, minute: 0);
   TimeOfDay endTime = TimeOfDay(hour: 0, minute: 0);
   String customer = '';
   String description = '';
+  bool isCompleted = false;
 
-  Event({
+  Appointment({
     required this.customer,
     required this.startTime,
     required this.endTime,
     required this.services,
     required this.description,
+    required this.isCompleted,
   });
 }
 
 /// Example events.
 ///
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
-final kEvents = LinkedHashMap<DateTime, List<Event>>(
+final kEvents = LinkedHashMap<DateTime, List<Appointment>>(
   equals: isSameDay,
   hashCode: getHashCode,
 )..addAll(_kEventSource);
@@ -34,31 +36,34 @@ final _kEventSource = Map.fromIterable(
   key: (item) => DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5),
   value: (item) => List.generate(
     item % 4 + 1,
-    (index) => Event(
+    (index) => Appointment(
       customer: '',
       startTime: TimeOfDay(hour: 0, minute: 0),
       endTime: TimeOfDay(hour: 0, minute: 0),
       services: '',
       description: '',
+      isCompleted: false,
     ),
   ),
 )..addAll({
     kToday: [
-      Event(
+      Appointment(
         customer: 'Hailee Steinfeld',
         startTime: TimeOfDay(hour: 12, minute: 0),
         endTime: TimeOfDay(hour: 15, minute: 20),
         services: 'Non-Invasive Body Contouring, Back, Neck & Shoulders',
         description:
             'There is a distinction between a beauty salon and a hair salon and although many small businesses do offer both sets of treatments; beauty salons provide extended services related to skin health, facial aesthetic, foot care, nail manicures, aromatherapy — even meditation, oxygen therapy, mud baths and many other services.',
+        isCompleted: true,
       ),
-      Event(
+      Appointment(
         customer: 'Hailee Steinfeld',
         startTime: TimeOfDay(hour: 12, minute: 0),
         endTime: TimeOfDay(hour: 15, minute: 20),
         services: 'Back, Neck & Shoulders',
         description:
             'There is a distinction between a beauty salon and a hair salon and although many small businesses do offer both sets of treatments; beauty salons provide extended services related to skin health, facial aesthetic, foot care, nail manicures, aromatherapy — even meditation, oxygen therapy, mud baths and many other services.',
+        isCompleted: false,
       ),
     ],
   });

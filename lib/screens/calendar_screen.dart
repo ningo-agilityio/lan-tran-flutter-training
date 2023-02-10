@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/screens/appointments_screen.dart';
+import 'package:salon_appointment/theme/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:salon_appointment/widgets/bottom_app_bar.dart';
-import 'package:floating_bottom_bar/animated_bottom_navigation_bar.dart';
 
 import '../utils.dart';
 
@@ -13,9 +13,75 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  late final ValueNotifier<List<Appointment>> _selectedEvents;
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
+      .toggledOff; // Can be toggled on/off by long pressing a date
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  DateTime? _rangeStart;
+  DateTime? _rangeEnd;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedDay = _focusedDay;
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+  }
+
+  @override
+  void dispose() {
+    _selectedEvents.dispose();
+    super.dispose();
+  }
+
+  List<Appointment> _getEventsForDay(DateTime day) {
+    // Implementation example
+    return kEvents[day] ?? [];
+  }
+
+  List<Appointment> _getEventsForRange(DateTime start, DateTime end) {
+    // Implementation example
+    final days = daysInRange(start, end);
+
+    return [
+      for (final d in days) ..._getEventsForDay(d),
+    ];
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+        _rangeStart = null; // Important to clean those
+        _rangeEnd = null;
+        _rangeSelectionMode = RangeSelectionMode.toggledOff;
+      });
+
+      _selectedEvents.value = _getEventsForDay(selectedDay);
+    }
+  }
+
+  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
+    setState(() {
+      _selectedDay = null;
+      _focusedDay = focusedDay;
+      _rangeStart = start;
+      _rangeEnd = end;
+      _rangeSelectionMode = RangeSelectionMode.toggledOn;
+    });
+
+    // `start` or `end` could be null
+    if (start != null && end != null) {
+      _selectedEvents.value = _getEventsForRange(start, end);
+    } else if (start != null) {
+      _selectedEvents.value = _getEventsForDay(start);
+    } else if (end != null) {
+      _selectedEvents.value = _getEventsForDay(end);
+    }
+  }
 
   int _selectedIndex = 0;
 
@@ -54,57 +120,84 @@ class _CalendarScreenState extends State<CalendarScreen> {
       appBar: AppBar(
         title: Text(
           'Calendar',
-          style: TextStyle(
-            color: Color(0xFF0C122A),
-            fontWeight: FontWeight.w500,
-            fontFamily: 'Poppins',
-            fontSize: 20,
-            height: 30,
+          style: SATheme.lightTheme.textTheme.titleLarge!.copyWith(
+            color: ColorName.textColor,
           ),
+          // TextStyle(
+          //   color: Color(0xFF0C122A),
+          //   fontWeight: FontWeight.w500,
+          //   fontFamily: 'Poppins',
+          //   fontSize: 20,
+          //   height: 30,
+          // ),
         ),
         backgroundColor: Colors.white,
       ),
-      body: TableCalendar(
-        firstDay: kFirstDay,
-        lastDay: kLastDay,
-        focusedDay: _focusedDay,
-        calendarFormat: _calendarFormat,
-        selectedDayPredicate: (day) {
-          // Use `selectedDayPredicate` to determine which day is currently selected.
-          // If this returns true, then `day` will be marked as selected.
-
-          // Using `isSameDay` is recommended to disregard
-          // the time-part of compared DateTime objects.
-          return isSameDay(_selectedDay, day);
-        },
-        onDaySelected: (selectedDay, focusedDay) {
-          if (!isSameDay(_selectedDay, selectedDay)) {
-            // Call `setState()` when updating the selected day
-            setState(() {
-              _selectedDay = selectedDay;
+      body: Column(
+        children: [
+          TableCalendar(
+            firstDay: kFirstDay,
+            lastDay: kLastDay,
+            focusedDay: _focusedDay,
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            rangeStartDay: _rangeStart,
+            rangeEndDay: _rangeEnd,
+            calendarFormat: _calendarFormat,
+            rangeSelectionMode: _rangeSelectionMode,
+            eventLoader: _getEventsForDay,
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            onDaySelected: _onDaySelected,
+            onRangeSelected: _onRangeSelected,
+            onFormatChanged: (format) {
+              if (_calendarFormat != format) {
+                setState(() {
+                  _calendarFormat = format;
+                });
+              }
+            },
+            onPageChanged: (focusedDay) {
+              // No need to call `setState()` here
               _focusedDay = focusedDay;
-            });
-          }
-        },
-        // onFormatChanged: (format) {
-        //   if (_calendarFormat != format) {
-        //     // Call `setState()` when updating calendar format
-        //     setState(() {
-        //       _calendarFormat = format;
-        //     });
-        //   }
-        // },
-        onPageChanged: (focusedDay) {
-          // No need to call `setState()` here
-          _focusedDay = focusedDay;
-        },
+            },
+          ),
+          const SizedBox(height: 8.0),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              height: 228,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF553BA3),
+                    Color(0xFF7D32BA),
+                  ],
+                ),
+              ),
+              child: TextButton(
+                onPressed: () => Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => AppointmentsScreen(),
+                  ),
+                ),
+                child: Text(
+                  'Show appointments (${_getEventsForDay(DateTime.now()).length})',
+                  style: SATheme.lightTheme.textTheme.bodySmall!
+                      .copyWith(color: Color(0xFFFFFFFF)),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-
       floatingActionButton: _showFab
           ? FloatingActionButton(
               onPressed: () {},
-              tooltip: 'Create',
-              child: const Icon(Icons.add),
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
             )
           : null,
       floatingActionButtonLocation: _fabLocation,
@@ -112,49 +205,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
         fabLocation: _fabLocation,
         shape: _showNotch ? const CircularNotchedRectangle() : null,
       ),
-
-      // bottomNavigationBar: AnimatedBottomNavigationBar(
-      //   bottomBarItems: [
-      //     BottomBarItemsModel(
-      //       icon: Icon(Icons.home, size: 24),
-      //       iconSelected: Icon(Icons.home,
-      //           color: Theme.of(context).colorScheme.onSecondary, size: 24),
-      //       dotColor: Theme.of(context).colorScheme.onSecondary,
-      //       onTap: () {},
-      //     ),
-      //     BottomBarItemsModel(
-      //       icon: Icon(Icons.search, size: 24),
-      //       iconSelected: Icon(Icons.search,
-      //           color: Theme.of(context).colorScheme.onSecondary, size: 24),
-      //       dotColor: Theme.of(context).colorScheme.onSecondary,
-      //       onTap: () {},
-      //     ),
-      //     BottomBarItemsModel(
-      //       icon: Icon(Icons.person, size: 24),
-      //       iconSelected: Icon(Icons.person,
-      //           color: Theme.of(context).colorScheme.onSecondary, size: 24),
-      //       dotColor: Theme.of(context).colorScheme.onSecondary,
-      //       onTap: () {},
-      //     ),
-      //     BottomBarItemsModel(
-      //       icon: Icon(Icons.settings, size: 24),
-      //       iconSelected: Icon(Icons.settings,
-      //           color: Theme.of(context).colorScheme.onSecondary, size: 24),
-      //       dotColor: Theme.of(context).colorScheme.onSecondary,
-      //       onTap: () {},
-      //     ),
-      //   ],
-      //   bottomBarCenterModel: BottomBarCenterModel(
-      //     centerBackgroundColor: Theme.of(context).colorScheme.onSecondary,
-      //     centerIcon: FloatingCenterButton(
-      //       child: Icon(
-      //         Icons.add,
-      //         color: Theme.of(context).colorScheme.onSecondary,
-      //       ),
-      //     ),
-      //     centerIconChild: [],
-      //   ),
-      // ),
     );
   }
 }

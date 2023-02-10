@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/widgets/text.dart';
 
 class ForgetPassword extends StatelessWidget {
   const ForgetPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextButton(
-        onPressed: () {},
-        child: Text(
-          'Forget password?',
-          style: TextStyle(
-            fontSize: 12,
-            fontFamily: 'Poppins',
-            color: Color.fromRGBO(255, 255, 255, 0.642861),
+    return SizedBox(
+      height: 18,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              'Forget password?',
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    // height: 18,
+                    fontFamily: 'Poppins',
+                    color: Color(0xFFFFFFFF).withOpacity(0.64),
+                  ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

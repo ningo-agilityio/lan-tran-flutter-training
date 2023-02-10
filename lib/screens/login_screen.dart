@@ -35,11 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 16),
               TextInput(text: 'Password'),
               SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ForgetPassword(),
-                ],
+              Container(
+                height: 18,
+                child: ForgetPassword(),
               ),
               SizedBox(height: 24),
               LoginButton(),
