@@ -14,7 +14,9 @@ class AppointmentCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: Time(),
+            leading: Time(
+                startTime: TimeOfDay(hour: 12, minute: 00),
+                endTime: TimeOfDay(hour: 15, minute: 20)),
             subtitle: Text('Beauty Salon'),
           )
         ],

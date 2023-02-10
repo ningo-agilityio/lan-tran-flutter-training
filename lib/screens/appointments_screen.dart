@@ -3,6 +3,7 @@ import 'package:salon_appointment/screens/calendar_screen.dart';
 import 'package:salon_appointment/theme/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:salon_appointment/widgets/appointment.dart';
+import 'package:salon_appointment/widgets/time.dart';
 
 import '../utils.dart';
 
@@ -137,9 +138,18 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                         border: Border.all(),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
-                      child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
+                      child: Card(
+                        shadowColor: Color(0xFF553BA3).withOpacity(0.16),
+                        child: SizedBox(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Time(
+                                  startTime: TimeOfDay(hour: 12, minute: 00),
+                                  endTime: TimeOfDay(hour: 15, minute: 20)),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
