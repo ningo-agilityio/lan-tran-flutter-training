@@ -11,14 +11,20 @@ class AppointmentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        // mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
             leading: Time(
-                startTime: TimeOfDay(hour: 12, minute: 00),
-                endTime: TimeOfDay(hour: 15, minute: 20)),
+              startTime: TimeOfDay(hour: 12, minute: 00),
+              endTime: TimeOfDay(hour: 15, minute: 20),
+            ),
             subtitle: Text('Beauty Salon'),
-          )
+          ),
+          Customer(
+            customerName: 'Hailee Steinfeld',
+          ),
+          Services(
+              services: 'Non-Invasive Body Contouring, Back, Neck & Shoulders'),
         ],
       ),
     );

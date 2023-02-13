@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/theme/theme.dart';
 
 class Time extends StatelessWidget {
   final TimeOfDay startTime;
@@ -23,16 +24,18 @@ class Time extends StatelessWidget {
               Text(
                 '${startTime.format(context)}-${endTime.format(context)}',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 14,
                   color: Color(0xFF0C122A),
                 ),
               )
             ],
           ),
-          Text(
-            'Beauty Salon',
-            textAlign: TextAlign.left,
-          ),
+          // Text(
+          //   'Beauty Salon',
+          //   style: SATheme.lightTheme.textTheme.bodySmall!.copyWith(
+          //     color: Color(0xFFA4A8B2),
+          //   ),
+          // ),
         ],
       ),
     );

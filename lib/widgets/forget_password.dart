@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/theme/theme.dart';
 import 'package:salon_appointment/widgets/text.dart';
 
 class ForgetPassword extends StatelessWidget {
@@ -15,11 +16,11 @@ class ForgetPassword extends StatelessWidget {
             onPressed: () {},
             child: Text(
               'Forget password?',
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    // height: 18,
-                    fontFamily: 'Poppins',
-                    color: Color(0xFFFFFFFF).withOpacity(0.64),
-                  ),
+              style: SATheme.lightTheme.textTheme.bodySmall!.copyWith(
+                // height: 18,
+                fontFamily: 'Poppins',
+                color: Color(0xFFFFFFFF).withOpacity(0.64),
+              ),
             ),
           ),
         ],

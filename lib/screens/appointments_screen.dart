@@ -4,6 +4,9 @@ import 'package:salon_appointment/theme/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:salon_appointment/widgets/appointment.dart';
 import 'package:salon_appointment/widgets/time.dart';
+import 'package:salon_appointment/widgets/services.dart';
+import 'package:salon_appointment/widgets/customer.dart';
+import 'package:salon_appointment/widgets/description.dart';
 
 import '../utils.dart';
 
@@ -95,7 +98,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_sharp, color: Colors.white),
-          onPressed: () {},
+          onPressed: () {
+            // Navigator.of(context).pop();
+          },
         ),
       ),
       body: Column(
@@ -126,33 +131,51 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             child: ValueListenableBuilder<List<Appointment>>(
               valueListenable: _selectedEvents,
               builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: Card(
-                        shadowColor: Color(0xFF553BA3).withOpacity(0.16),
-                        child: SizedBox(
+                return Scrollbar(
+                  child: ListView.builder(
+                    itemCount: value.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Card(
+                          shadowColor: Color(0xFF553BA3).withOpacity(0.16),
+                          elevation: 1,
+                          borderOnForeground: false,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Time(
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 12.0),
+                                child: Time(
                                   startTime: TimeOfDay(hour: 12, minute: 00),
-                                  endTime: TimeOfDay(hour: 15, minute: 20)),
+                                  endTime: TimeOfDay(hour: 15, minute: 20),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 12.0),
+                                child: Customer(
+                                    customerName: value[index].customer),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 12.0),
+                                child:
+                                    Services(services: value[index].services),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 12.0),
+                                child: Description(
+                                    description: value[index].description),
+                              ),
                             ],
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 );
               },
             ),

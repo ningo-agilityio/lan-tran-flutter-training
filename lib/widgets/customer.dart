@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Customer extends StatelessWidget {
-  const Customer({super.key});
+  final String customerName;
+  Customer({super.key, required this.customerName});
 
   @override
   Widget build(BuildContext context) {
@@ -9,19 +10,25 @@ class Customer extends StatelessWidget {
       child: SafeArea(
         child: Row(
           children: [
-            Image.asset(
-              'assets/bg.jpeg',
-              width: 20,
-              height: 20,
-              fit: BoxFit.fill,
+            Container(
+              width: 18,
+              height: 18,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage('assets/bg.jpeg'),
+                ),
+              ),
             ),
             SizedBox(
               width: 10.0,
             ),
             Text(
-              'Hailee Steinfeld',
+              '${customerName}',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 14,
                 color: Color(0xFF553BA3),
               ),
             )

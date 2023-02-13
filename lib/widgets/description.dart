@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class Services extends StatelessWidget {
-  final String services;
-  Services({super.key, required this.services});
+class Description extends StatelessWidget {
+  final String description;
+  Description({super.key, required this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -11,16 +11,16 @@ class Services extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: 34.0,
+            width: 24.0,
           ),
           Expanded(
             child: Text(
-              '${services}',
+              '${description}',
               style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: "Poppins",
-                  color: Color(0xFF0C122A),
-                  fontWeight: FontWeight.w500),
+                fontSize: 12,
+                fontFamily: "Poppins",
+                color: Color(0xFFA4A8B2),
+              ),
             ),
           ),
         ],
