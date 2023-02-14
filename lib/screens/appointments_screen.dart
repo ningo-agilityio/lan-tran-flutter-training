@@ -3,10 +3,6 @@ import 'package:salon_appointment/screens/calendar_screen.dart';
 import 'package:salon_appointment/theme/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:salon_appointment/widgets/appointment.dart';
-import 'package:salon_appointment/widgets/time.dart';
-import 'package:salon_appointment/widgets/services.dart';
-import 'package:salon_appointment/widgets/customer.dart';
-import 'package:salon_appointment/widgets/description.dart';
 
 import '../utils.dart';
 
@@ -141,37 +137,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                           border: Border.all(),
                           borderRadius: BorderRadius.circular(8.0),
                         ),
-                        child: Card(
-                          shadowColor: Color(0xFF553BA3).withOpacity(0.16),
-                          elevation: 1,
-                          borderOnForeground: false,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 12.0),
-                                child: Time(
-                                  startTime: TimeOfDay(hour: 12, minute: 00),
-                                  endTime: TimeOfDay(hour: 15, minute: 20),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 12.0),
-                                child: Customer(
-                                    customerName: value[index].customer),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 12.0),
-                                child:
-                                    Services(services: value[index].services),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 12.0),
-                                child: Description(
-                                    description: value[index].description),
-                              ),
-                            ],
-                          ),
+                        child: AppointmentCard(
+                          startTime: value[index].startTime,
+                          endTime: value[index].endTime,
+                          customer: value[index].customer,
+                          services: value[index].services,
+                          description: value[index].description,
                         ),
                       );
                     },

@@ -1,31 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/widgets/time.dart';
 import './time.dart';
 import './customer.dart';
 import './services.dart';
+import './description.dart';
 
 class AppointmentCard extends StatelessWidget {
-  const AppointmentCard({super.key});
+  String services = '';
+  TimeOfDay startTime = TimeOfDay(hour: 0, minute: 0);
+  TimeOfDay endTime = TimeOfDay(hour: 0, minute: 0);
+  String customer = '';
+  String description = '';
+
+  AppointmentCard({
+    super.key,
+    required this.startTime,
+    required this.endTime,
+    required this.customer,
+    required this.services,
+    required this.description,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        // mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: Time(
-              startTime: TimeOfDay(hour: 12, minute: 00),
-              endTime: TimeOfDay(hour: 15, minute: 20),
-            ),
-            subtitle: Text('Beauty Salon'),
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xFF553BA3).withOpacity(0.16),
+            blurRadius: 10.0,
           ),
-          Customer(
-            customerName: 'Hailee Steinfeld',
-          ),
-          Services(
-              services: 'Non-Invasive Body Contouring, Back, Neck & Shoulders'),
         ],
+      ),
+      child: Card(
+        // shadowColor: Color(0xFF553BA3).withOpacity(0.16),
+        // elevation: 8,
+        borderOnForeground: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 12.0),
+              child: Time(
+                startTime: startTime,
+                endTime: endTime,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 12.0),
+              child: Customer(customerName: customer),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 12.0),
+              child: Services(services: services),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 12.0),
+              child: Description(description: description),
+            ),
+          ],
+        ),
       ),
     );
   }
