@@ -32,29 +32,27 @@ class AppointmentCard extends StatelessWidget {
         ],
       ),
       child: Card(
-        // shadowColor: Color(0xFF553BA3).withOpacity(0.16),
-        // elevation: 8,
         borderOnForeground: false,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.0),
+              padding: EdgeInsets.all(12.0),
               child: Time(
                 startTime: startTime,
                 endTime: endTime,
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.0),
+              padding: EdgeInsets.all(12.0),
               child: Customer(customerName: customer),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.0),
+              padding: EdgeInsets.all(12.0),
               child: Services(services: services),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.0),
+              padding: EdgeInsets.all(12.0),
               child: Description(description: description),
             ),
           ],

@@ -131,12 +131,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                   child: ListView.builder(
                     itemCount: value.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: AppointmentCard(
                           startTime: value[index].startTime,
                           endTime: value[index].endTime,
