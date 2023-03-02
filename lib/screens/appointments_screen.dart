@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/screens/calendar_screen.dart';
 import 'package:salon_appointment/theme/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:salon_appointment/widgets/appointment.dart';
+import 'package:intl/intl.dart';
 
 import '../utils.dart';
 
@@ -21,6 +21,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+  DateFormat format = DateFormat('dd MMMM, EEEE');
 
   @override
   void initState() {
@@ -93,11 +94,13 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
               .copyWith(color: ColorName.textColor),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_sharp, color: Colors.white),
-          onPressed: () {
-            // Navigator.of(context).pop();
-          },
-        ),
+            icon: Icon(
+              Icons.arrow_back_ios_new_sharp,
+              color: ColorName.textColor,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
       ),
       body: Column(
         children: [
@@ -121,6 +124,15 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
+          ),
+          Container(
+            child: Text(
+              '${DateFormat('dd MMMM, EEEE').format(_selectedDay!)}',
+              style: SATheme.lightTheme.textTheme.labelLarge!.copyWith(
+                color: Color(0xFF0C122A),
+                fontSize: 13,
+              ),
+            ),
           ),
           const SizedBox(height: 8.0),
           Expanded(

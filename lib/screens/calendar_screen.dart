@@ -118,20 +118,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Calendar',
-          style: SATheme.lightTheme.textTheme.titleLarge!.copyWith(
-            color: ColorName.textColor,
+        title: SizedBox(
+          child: Text(
+            'Calendar',
+            style: SATheme.lightTheme.textTheme.titleLarge!.copyWith(
+              color: ColorName.textColor,
+            ),
+            // style: TextStyle(
+            //   color: Color(0xFF0C122A),
+            //   fontWeight: FontWeight.w500,
+            //   fontFamily: 'Poppins',
+            //   fontSize: 20,
+            //   height: 30,
+            // ),
           ),
-          // TextStyle(
-          //   color: Color(0xFF0C122A),
-          //   fontWeight: FontWeight.w500,
-          //   fontFamily: 'Poppins',
-          //   fontSize: 20,
-          //   height: 30,
-          // ),
         ),
-        backgroundColor: Colors.white,
       ),
       body: Column(
         children: [
@@ -156,7 +157,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
               }
             },
             onPageChanged: (focusedDay) {
-              // No need to call `setState()` here
               _focusedDay = focusedDay;
             },
           ),
@@ -176,13 +176,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ),
               ),
               child: TextButton(
-                onPressed: () => Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => AppointmentsScreen(),
-                  ),
-                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AppointmentsScreen(),
+                    ),
+                  );
+                },
                 child: Text(
-                  'Show appointments (${_getEventsForDay(DateTime.now()).length})',
+                  'Show appointments (${_getEventsForDay(_selectedDay!).length})',
                   style: SATheme.lightTheme.textTheme.bodySmall!
                       .copyWith(color: Color(0xFFFFFFFF)),
                 ),

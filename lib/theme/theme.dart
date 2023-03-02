@@ -40,7 +40,7 @@ class SATheme {
       fontStyle: FontStyle.normal,
       fontSize: fontSize,
       fontWeight: fontWeight,
-      height: height,
+      height: height / fontSize,
       color: ColorName.primaryColor,
     );
   }
@@ -51,7 +51,7 @@ class SATheme {
     appBarTheme: AppBarTheme(
       color: _lightColorScheme.background,
       elevation: 0,
-      centerTitle: true,
+      centerTitle: false,
     ),
     scaffoldBackgroundColor: _lightColorScheme.background,
     primaryColor: _lightColorScheme.primary,

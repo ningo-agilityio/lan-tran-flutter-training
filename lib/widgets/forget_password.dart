@@ -7,24 +7,19 @@ class ForgetPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 18,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          TextButton(
-            onPressed: () {},
-            child: Text(
-              'Forget password?',
-              style: SATheme.lightTheme.textTheme.bodySmall!.copyWith(
-                // height: 18,
-                fontFamily: 'Poppins',
-                color: Color(0xFFFFFFFF).withOpacity(0.64),
-              ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        TextButton(
+          onPressed: () {},
+          child: Text(
+            'Forget password?',
+            style: SATheme.lightTheme.textTheme.bodySmall!.copyWith(
+              color: Color(0xFFFFFFFF).withOpacity(0.64),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

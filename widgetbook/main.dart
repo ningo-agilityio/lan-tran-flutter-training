@@ -26,38 +26,38 @@ class WidgetbookHotReload extends StatelessWidget {
         WidgetbookCategory(
           name: 'widgets',
           folders: [
-            WidgetbookFolder(
-              name: 'Appointment',
-              widgets: [
-                WidgetbookComponent(
-                  name: '$Time',
-                  useCases: [
-                    WidgetbookUseCase(
-                      name: 'Schedule Time',
-                      builder: (context) => Time(),
-                    ),
-                  ],
-                ),
-                WidgetbookComponent(
-                  name: 'Customer',
-                  useCases: [
-                    WidgetbookUseCase(
-                      name: 'Customer Name',
-                      builder: (context) => Customer(),
-                    ),
-                  ],
-                ),
-                WidgetbookComponent(
-                  name: 'Services',
-                  useCases: [
-                    WidgetbookUseCase(
-                      name: 'Services',
-                      builder: (context) => Services(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            // WidgetbookFolder(
+            //   name: 'Appointment',
+            //   widgets: [
+            //     WidgetbookComponent(
+            //       name: '$Time',
+            //       useCases: [
+            //         WidgetbookUseCase(
+            //           name: 'Schedule Time',
+            //           builder: (context) => Time(),
+            //         ),
+            //       ],
+            //     ),
+            //     WidgetbookComponent(
+            //       name: 'Customer',
+            //       useCases: [
+            //         WidgetbookUseCase(
+            //           name: 'Customer Name',
+            //           builder: (context) => Customer(),
+            //         ),
+            //       ],
+            //     ),
+            //     WidgetbookComponent(
+            //       name: 'Services',
+            //       useCases: [
+            //         WidgetbookUseCase(
+            //           name: 'Services',
+            //           builder: (context) => Services(),
+            //         ),
+            //       ],
+            //     ),
+            //   ],
+            // ),
             WidgetbookFolder(
               name: 'Form Input',
               widgets: [
@@ -68,12 +68,14 @@ class WidgetbookHotReload extends StatelessWidget {
                       name: 'Phone number',
                       builder: (context) => TextInput(
                         text: 'Phone number',
+                        keyboardType: TextInputType.number,
                       ),
                     ),
                     WidgetbookUseCase(
                       name: 'Password',
                       builder: (context) => TextInput(
                         text: 'Password',
+                        keyboardType: TextInputType.text,
                       ),
                     ),
                   ],
@@ -107,9 +109,15 @@ class WidgetbookHotReload extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              TextInput(text: 'Phone number'),
+                              TextInput(
+                                text: 'Phone number',
+                                keyboardType: TextInputType.number,
+                              ),
                               SizedBox(height: 16),
-                              TextInput(text: 'Password'),
+                              TextInput(
+                                text: 'Password',
+                                keyboardType: TextInputType.text,
+                              ),
                               SizedBox(height: 16),
                               ForgetPassword(),
                               SizedBox(height: 24),
