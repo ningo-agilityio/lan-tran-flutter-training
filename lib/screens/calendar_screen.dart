@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:salon_appointment/screens/appointments_screen.dart';
 import 'package:salon_appointment/theme/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:salon_appointment/widgets/common/buttons.dart';
+import 'package:salon_appointment/widgets/add_button.dart';
 
 import '../utils.dart';
 
@@ -124,13 +126,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
             style: SATheme.lightTheme.textTheme.titleLarge!.copyWith(
               color: ColorName.textColor,
             ),
-            // style: TextStyle(
-            //   color: Color(0xFF0C122A),
-            //   fontWeight: FontWeight.w500,
-            //   fontFamily: 'Poppins',
-            //   fontSize: 20,
-            //   height: 30,
-            // ),
           ),
         ),
       ),
@@ -194,15 +189,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ),
         ],
       ),
-      floatingActionButton: _showFab
-          ? FloatingActionButton(
-              onPressed: () {},
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-            )
-          : null,
+      floatingActionButton: _showFab ? AddButton(onPress: () {}) : null,
       floatingActionButtonLocation: _fabLocation,
       bottomNavigationBar: _DemoBottomAppBar(
         fabLocation: _fabLocation,
@@ -236,37 +223,24 @@ class _DemoBottomAppBar extends StatelessWidget {
       child: IconTheme(
         data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            IconButton(
-              tooltip: 'Recent',
+            SAButton.icon(
+              onPress: () {},
               icon: const Icon(Icons.check),
-              color: Color(0xFFBFC8DC),
-              iconSize: 24,
-              onPressed: () {},
             ),
-            SizedBox(width: 21),
-            IconButton(
-              tooltip: 'Schedule',
+            SAButton.icon(
+              onPress: () {},
               icon: const Icon(Icons.schedule),
-              color: Color(0xFFBFC8DC),
-              iconSize: 24,
-              onPressed: () {},
             ),
-            if (centerLocations.contains(fabLocation)) const Spacer(),
-            IconButton(
-              tooltip: 'Profile',
+            if (centerLocations.contains(fabLocation)) const SizedBox(),
+            SAButton.icon(
+              onPress: () {},
               icon: const Icon(Icons.person),
-              color: Color(0xFFBFC8DC),
-              iconSize: 24,
-              onPressed: () {},
             ),
-            SizedBox(width: 21),
-            IconButton(
-              tooltip: 'Notifications',
+            SAButton.icon(
+              onPress: () {},
               icon: const Icon(Icons.notifications),
-              color: Color(0xFFBFC8DC),
-              iconSize: 24,
-              onPressed: () {},
             ),
           ],
         ),
