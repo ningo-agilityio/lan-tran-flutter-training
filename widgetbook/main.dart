@@ -6,7 +6,7 @@ import 'package:salon_appointment/widgets/logo.dart';
 import 'package:salon_appointment/widgets/time.dart';
 import 'package:salon_appointment/widgets/customer.dart';
 import 'package:salon_appointment/widgets/services.dart';
-import 'package:salon_appointment/widgets/text_input.dart';
+import 'package:salon_appointment/widgets/input.dart';
 import 'package:salon_appointment/widgets/login_button.dart';
 import 'package:salon_appointment/widgets/forget_password.dart';
 
@@ -66,65 +66,15 @@ class WidgetbookHotReload extends StatelessWidget {
                   useCases: [
                     WidgetbookUseCase(
                       name: 'Phone number',
-                      builder: (context) => TextInput(
+                      builder: (context) => Input(
                         text: 'Phone number',
                         keyboardType: TextInputType.number,
                       ),
                     ),
                     WidgetbookUseCase(
                       name: 'Password',
-                      builder: (context) => TextInput(
+                      builder: (context) => Input(
                         text: 'Password',
-                        keyboardType: TextInputType.text,
-                      ),
-                    ),
-                  ],
-                ),
-                WidgetbookComponent(
-                  name: 'Forget password',
-                  useCases: [
-                    WidgetbookUseCase(
-                      name: 'Forget password',
-                      builder: (context) => ForgetPassword(),
-                    ),
-                  ],
-                ),
-                WidgetbookComponent(
-                  name: 'Login button',
-                  useCases: [
-                    WidgetbookUseCase(
-                      name: 'Login button',
-                      builder: (context) => LoginButton(),
-                    ),
-                  ],
-                ),
-                WidgetbookComponent(
-                  name: 'FormInput',
-                  useCases: [
-                    WidgetbookUseCase(
-                      name: 'FormInput',
-                      builder: (context) => Form(
-                        child: Padding(
-                          padding: EdgeInsets.all(32.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextInput(
-                                text: 'Phone number',
-                                keyboardType: TextInputType.number,
-                              ),
-                              SizedBox(height: 16),
-                              TextInput(
-                                text: 'Password',
-                                keyboardType: TextInputType.text,
-                              ),
-                              SizedBox(height: 16),
-                              ForgetPassword(),
-                              SizedBox(height: 24),
-                              LoginButton()
-                            ],
-                          ),
-                        ),
                       ),
                     ),
                   ],

@@ -36,7 +36,6 @@ class SATheme {
     required double height,
   }) {
     return TextStyle(
-      fontFamily: 'Poppins',
       fontStyle: FontStyle.normal,
       fontSize: fontSize,
       fontWeight: fontWeight,
@@ -48,6 +47,7 @@ class SATheme {
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     colorScheme: _lightColorScheme,
+    fontFamily: 'Poppins',
     appBarTheme: AppBarTheme(
       color: _lightColorScheme.background,
       elevation: 0,

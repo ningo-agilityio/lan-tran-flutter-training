@@ -25,11 +25,9 @@ class ForgetPasswordText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'Forget password?',
-      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            height: 18,
-            fontFamily: 'Poppins',
-            color: Color(0xFFFFFFFF).withOpacity(0.64),
-          ),
+      style: SATheme.lightTheme.textTheme.bodySmall!.copyWith(
+        color: Color(0xFFFFFFFF).withOpacity(0.64),
+      ),
     );
   }
 }
