@@ -9,7 +9,7 @@ class Logo extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Positioned(
-          top: 192.0,
+          top: 210.0,
           child: Text(
             'avisit',
             style: TextStyle(

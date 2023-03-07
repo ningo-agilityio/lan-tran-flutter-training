@@ -4,6 +4,8 @@ import 'package:salon_appointment/theme/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:salon_appointment/widgets/common/buttons.dart';
 import 'package:salon_appointment/widgets/add_button.dart';
+import 'package:salon_appointment/widgets/date_picker.dart';
+import 'package:salon_appointment/widgets/time_picker.dart';
 
 import '../utils.dart';
 
@@ -123,9 +125,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
         title: SizedBox(
           child: Text(
             'Calendar',
-            style: SATheme.lightTheme.textTheme.titleLarge!.copyWith(
-              color: ColorName.textColor,
-            ),
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.onSecondary,
+                ),
           ),
         ),
       ),
@@ -141,7 +143,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             calendarFormat: _calendarFormat,
             rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
+            startingDayOfWeek: StartingDayOfWeek.sunday,
             onDaySelected: _onDaySelected,
             onRangeSelected: _onRangeSelected,
             onFormatChanged: (format) {
@@ -189,7 +191,30 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ),
         ],
       ),
-      floatingActionButton: _showFab ? AddButton(onPress: () {}) : null,
+      floatingActionButton: _showFab
+          ? AddButton(onPress: () {
+              showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                      height: 500,
+                      child: Column(
+                        children: [
+                          DatePicker(dateTime: DateTime.now()),
+                          TimePicker(
+                            startTime: TimeOfDay.now(),
+                            endTime: TimeOfDay(
+                              hour: DateTime.now().hour,
+                              minute: DateTime.now().minute + 30,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+            })
+          : null,
       floatingActionButtonLocation: _fabLocation,
       bottomNavigationBar: _DemoBottomAppBar(
         fabLocation: _fabLocation,

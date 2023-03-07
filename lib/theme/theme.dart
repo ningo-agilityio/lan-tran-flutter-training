@@ -4,94 +4,126 @@ import 'package:flutter/material.dart';
 
 class ColorName {
   static const primaryColor = const Color(0xFF553BA3);
-  static const secondaryColor = const Color(0xFF7D32BA);
-  static const scheduleIconColor = const Color(0xFFFDA901);
-  static const textColor = const Color(0xFF0C122A);
-  static const breakTextColor = const Color(0xFF474F63);
-  static const scheduleTextColor = const Color(0xFFA4A8B2);
+  static const onPrimaryColor = const Color(0xFF7D32BA);
+  static const textColor = const Color(0xFFFFFFFF);
+  static const servicesColor = const Color(0xFF0C122A);
+  static const descriptionColor = const Color(0xFFA4A8B2);
+  static const breakTimeColor = const Color(0xFF474F63);
+  static const timeIconColor = const Color(0xFFFDA901);
   static const iconButtonColor = const Color(0xFFBFC8DC);
   static const errorColor = const Color(0xFFF44336);
+  static const surfaceColor = const Color(0xFF000000);
   static const backgroundColor = const Color(0xFFFFFFFF);
-  static const surfacecolor = const Color(0xFF553BA3);
 }
 
-ColorScheme _lightColorScheme = const ColorScheme(
-  brightness: Brightness.light,
-  primary: ColorName.primaryColor,
-  onPrimary: ColorName.primaryColor,
-  secondary: ColorName.secondaryColor,
-  onSecondary: ColorName.secondaryColor,
-  error: ColorName.errorColor,
-  onError: ColorName.errorColor,
-  background: ColorName.backgroundColor,
-  onBackground: ColorName.backgroundColor,
-  surface: ColorName.surfacecolor,
-  onSurface: ColorName.surfacecolor,
-);
+class SAColorScheme {
+  static final ColorScheme _lightColorScheme = ColorScheme(
+    brightness: Brightness.light,
+    primary: ColorName.primaryColor,
+    onPrimary: ColorName.onPrimaryColor,
+    secondary: ColorName.textColor,
+    onSecondary: ColorName.servicesColor,
+    secondaryContainer: ColorName.descriptionColor,
+    onSecondaryContainer: ColorName.breakTimeColor,
+    tertiary: ColorName.timeIconColor,
+    onTertiary: ColorName.iconButtonColor,
+    error: ColorName.errorColor,
+    onError: ColorName.errorColor,
+    background: ColorName.backgroundColor,
+    onBackground: ColorName.backgroundColor,
+    surface: ColorName.surfaceColor,
+    onSurface: ColorName.surfaceColor,
+  );
+}
 
-class SATheme {
+class SATextTheme {
   static TextStyle _defaultTextStyle({
     required double fontSize,
     required FontWeight? fontWeight,
     required double height,
   }) {
     return TextStyle(
-      fontFamily: 'Poppins',
       fontStyle: FontStyle.normal,
       fontSize: fontSize,
       fontWeight: fontWeight,
       height: height / fontSize,
-      color: ColorName.primaryColor,
+      color: SAColorScheme._lightColorScheme.onSecondary,
     );
   }
 
+  static final TextTheme _lightTextTheme = TextTheme(
+    titleLarge: _defaultTextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
+      height: 30,
+    ),
+    titleMedium: _defaultTextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.w500,
+      height: 25.5,
+    ),
+    titleSmall: _defaultTextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      height: 20,
+    ),
+    labelLarge: _defaultTextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      height: 24,
+    ),
+    labelMedium: _defaultTextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      height: 20,
+    ),
+    labelSmall: _defaultTextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.w500,
+      height: 20,
+    ),
+    bodyLarge: _defaultTextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      height: 18,
+    ),
+    bodyMedium: _defaultTextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      height: 16,
+    ),
+    bodySmall: _defaultTextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      height: 16,
+    ),
+  );
+}
+
+class SATheme {
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
-    colorScheme: _lightColorScheme,
+    colorScheme: SAColorScheme._lightColorScheme,
+    fontFamily: 'Poppins',
     appBarTheme: AppBarTheme(
-      color: _lightColorScheme.background,
+      color: SAColorScheme._lightColorScheme.background,
       elevation: 0,
       centerTitle: false,
     ),
-    scaffoldBackgroundColor: _lightColorScheme.background,
-    primaryColor: _lightColorScheme.primary,
+    scaffoldBackgroundColor: SAColorScheme._lightColorScheme.background,
+    primaryColor: SAColorScheme._lightColorScheme.primary,
     iconTheme: IconThemeData(
-      color: ColorName.scheduleIconColor,
+      color: SAColorScheme._lightColorScheme.tertiary,
       size: 16,
     ),
     iconButtonTheme: IconButtonThemeData(
       style: ButtonStyle(
-        iconColor: MaterialStatePropertyAll<Color>(ColorName.iconButtonColor),
+        iconColor: MaterialStatePropertyAll<Color>(
+            SAColorScheme._lightColorScheme.onTertiary),
         iconSize: MaterialStatePropertyAll<double>(24.0),
       ),
     ),
-    textTheme: TextTheme(
-      titleLarge: _defaultTextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w500,
-        height: 30,
-      ),
-      titleSmall: _defaultTextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
-        height: 24,
-      ),
-      labelLarge: _defaultTextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        height: 20,
-      ),
-      bodySmall: _defaultTextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
-        height: 16,
-      ),
-      bodyLarge: _defaultTextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        height: 20,
-      ),
-    ),
+    textTheme: SATextTheme._lightTextTheme,
   );
 
   static ThemeData darkTheme = ThemeData(

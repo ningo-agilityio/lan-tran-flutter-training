@@ -18,7 +18,7 @@ class Customer extends StatelessWidget {
                 color: Colors.white,
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: AssetImage('assets/bg.jpeg'),
+                  image: AssetImage('assets/user.png'),
                 ),
               ),
             ),

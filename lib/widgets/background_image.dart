@@ -10,7 +10,7 @@ class BackgroundImage extends StatelessWidget {
       height: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/background.jpeg'),
+          image: AssetImage('assets/background.png'),
           colorFilter: ColorFilter.mode(
             Color(0xFF553BA3).withOpacity(0.5),
             BlendMode.multiply,

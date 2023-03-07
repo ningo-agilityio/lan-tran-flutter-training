@@ -11,19 +11,17 @@ class Input extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        color: Color(0x3CFFFFFF),
+        color: Theme.of(context).colorScheme.secondary.withOpacity(0.235),
       ),
       child: TextFormField(
         controller: _textController,
         keyboardType: keyboardType,
         // onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         decoration: InputDecoration(
-          hintText: '$text',
-          hintStyle: TextStyle(
-            fontFamily: 'Poppins',
-            fontSize: 15,
-            color: Color(0xFFFFFFFF),
-          ),
+          hintText: text,
+          hintStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
           border: OutlineInputBorder(
             borderSide: BorderSide(width: 5.0),
             borderRadius: BorderRadius.circular(8.0),

@@ -90,13 +90,13 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       appBar: AppBar(
         title: Text(
           'Appointments',
-          style: SATheme.lightTheme.textTheme.titleLarge!
-              .copyWith(color: ColorName.textColor),
+          style: SATheme.lightTheme.textTheme.titleLarge!.copyWith(
+            color: SATheme.lightTheme.colorScheme.onSecondary,
+          ),
         ),
         leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios_new_sharp,
-              color: ColorName.textColor,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -114,9 +114,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             calendarFormat: CalendarFormat.week,
             rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
+            startingDayOfWeek: StartingDayOfWeek.sunday,
             calendarStyle: CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
             ),
             onDaySelected: _onDaySelected,
@@ -125,13 +124,11 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
               _focusedDay = focusedDay;
             },
           ),
-          Container(
-            child: Text(
-              '${DateFormat('dd MMMM, EEEE').format(_selectedDay!)}',
-              style: SATheme.lightTheme.textTheme.labelLarge!.copyWith(
-                color: Color(0xFF0C122A),
-                fontSize: 13,
-              ),
+          Text(
+            DateFormat('dd MMMM, EEEE').format(_selectedDay!),
+            style: SATheme.lightTheme.textTheme.labelLarge!.copyWith(
+              color: SATheme.lightTheme.colorScheme.onSecondary,
+              fontSize: 13,
             ),
           ),
           const SizedBox(height: 8.0),

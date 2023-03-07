@@ -8,12 +8,9 @@ class LoginText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'Login',
-      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            // fontSize: 16,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w500,
-            color: Color(0xFFFFFFFF),
-          ),
+      style: SATheme.lightTheme.textTheme.titleSmall!.copyWith(
+        color: SATheme.lightTheme.colorScheme.secondary,
+      ),
     );
   }
 }
@@ -25,11 +22,9 @@ class ForgetPasswordText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'Forget password?',
-      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            height: 18,
-            fontFamily: 'Poppins',
-            color: Color(0xFFFFFFFF).withOpacity(0.64),
-          ),
+      style: SATheme.lightTheme.textTheme.bodyLarge!.copyWith(
+        color: SATheme.lightTheme.colorScheme.secondary.withOpacity(0.6429),
+      ),
     );
   }
 }

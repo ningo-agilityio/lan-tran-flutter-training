@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/theme/theme.dart';
 
 class SAButton extends StatelessWidget {
   const SAButton({
@@ -50,9 +51,9 @@ class _SAOutlinedButton extends SAButton {
       onPressed: onPress,
       style: OutlinedButton.styleFrom(
         fixedSize: const Size(311, 44),
-        side: const BorderSide(
+        side: BorderSide(
           width: 2,
-          color: Color(0xFFFFFFFF),
+          color: SATheme.lightTheme.colorScheme.secondary,
         ),
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -76,7 +77,7 @@ class _SAIconButton extends SAButton {
   Widget build(BuildContext context) {
     return IconButton(
       icon: icon,
-      color: Color(0xFFBFC8DC),
+      color: SATheme.lightTheme.colorScheme.onTertiary,
       iconSize: 24,
       onPressed: onPress,
     );
@@ -111,13 +112,13 @@ class _SAFloatingButton extends SAButton {
       child: Container(
         height: 56.0,
         width: 56.0,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF553BA3),
-              Color(0xFF8A39BF),
+              SATheme.lightTheme.colorScheme.primary,
+              SATheme.lightTheme.colorScheme.onPrimary,
             ],
           ),
           shape: BoxShape.circle,
