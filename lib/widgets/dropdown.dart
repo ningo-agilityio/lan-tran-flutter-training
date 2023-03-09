@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/theme/theme.dart';
 
-class MultiSelect extends StatefulWidget {
+class DropDown extends StatefulWidget {
   final List<String> items;
-  const MultiSelect({Key? key, required this.items}) : super(key: key);
+  const DropDown({Key? key, required this.items}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _MultiSelectState();
+  State<StatefulWidget> createState() => _DropDownState();
 }
 
-class _MultiSelectState extends State<MultiSelect> {
+class _DropDownState extends State<DropDown> {
   late String selectedValue;
 
   @override
