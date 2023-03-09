@@ -9,6 +9,7 @@ class DatePicker extends StatelessWidget {
   });
 
   DateTime dateTime;
+  DateFormat dateFormat = DateFormat('MM/dd/yyyy');
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class DatePicker extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSecondaryContainer,
           ),
           Text(
-            DateFormat('MM/dd/yyyy').format(dateTime),
+            dateFormat.format(dateTime),
             style: Theme.of(context).textTheme.labelLarge!.copyWith(
                   color: Theme.of(context).colorScheme.onSecondaryContainer,
                 ),
