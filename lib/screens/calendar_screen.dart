@@ -202,13 +202,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       child: Column(
                         children: [
                           DatePicker(dateTime: DateTime.now()),
-                          TimePicker(
-                            startTime: TimeOfDay.now(),
-                            endTime: TimeOfDay(
-                              hour: DateTime.now().hour,
-                              minute: DateTime.now().minute + 30,
-                            ),
-                          ),
+                          TimePicker(startTime: TimeOfDay.now()),
                         ],
                       ),
                     );
