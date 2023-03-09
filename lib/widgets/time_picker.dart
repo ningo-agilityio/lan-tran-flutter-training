@@ -2,22 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:salon_appointment/theme/theme.dart';
 import 'package:intl/intl.dart';
 
-class TimePicker extends StatelessWidget {
+class TimePicker extends StatefulWidget {
   TimePicker({
     super.key,
     required this.startTime,
   });
 
   TimeOfDay startTime;
-  TimeOfDay endTime = (DateTime.now().minute + 30) >= 60
-      ? TimeOfDay(
-          hour: DateTime.now().hour + 1,
-          minute: (DateTime.now().minute + 30) % 60,
-        )
-      : TimeOfDay(
-          hour: DateTime.now().hour,
-          minute: DateTime.now().minute + 30,
-        );
+
+  @override
+  State<TimePicker> createState() => _TimePickerState();
+}
+
+class _TimePickerState extends State<TimePicker> {
+  late TimeOfDay endTime;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      endTime = (widget.startTime.minute + 30) >= 60
+          ? TimeOfDay(
+              hour: widget.startTime.hour + 1,
+              minute: (widget.startTime.minute + 30) % 60,
+            )
+          : TimeOfDay(
+              hour: widget.startTime.hour,
+              minute: widget.startTime.minute + 30,
+            );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +47,7 @@ class TimePicker extends StatelessWidget {
         OutlinedButton(
           onPressed: () => showTimePicker(
             context: context,
-            initialTime: startTime,
+            initialTime: widget.startTime,
             builder: (context, child) {
               return Theme(
                 data: SATheme.lightTheme.copyWith(
@@ -45,7 +59,7 @@ class TimePicker extends StatelessWidget {
             },
           ),
           child: Text(
-            startTime.format(context),
+            widget.startTime.format(context),
             style: Theme.of(context).textTheme.labelLarge!.copyWith(
                   color: Theme.of(context).colorScheme.onSecondaryContainer,
                 ),
