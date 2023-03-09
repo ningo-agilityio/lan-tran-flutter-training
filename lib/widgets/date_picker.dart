@@ -33,9 +33,9 @@ class DatePicker extends StatelessWidget {
             child: IconButton(
               onPressed: () => showDatePicker(
                 context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime.now(),
-                lastDate: DateTime(DateTime.now().year + 5),
+                initialDate: dateTime,
+                firstDate: dateTime,
+                lastDate: DateTime(dateTime.year + 5),
                 builder: (context, child) {
                   return Theme(
                     data: SATheme.lightTheme.copyWith(
