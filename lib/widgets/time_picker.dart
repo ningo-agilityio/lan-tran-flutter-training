@@ -6,11 +6,18 @@ class TimePicker extends StatelessWidget {
   TimePicker({
     super.key,
     required this.startTime,
-    required this.endTime,
   });
 
   TimeOfDay startTime;
-  TimeOfDay endTime;
+  TimeOfDay endTime = (DateTime.now().minute + 30) >= 60
+      ? TimeOfDay(
+          hour: DateTime.now().hour + 1,
+          minute: (DateTime.now().minute + 30) % 60,
+        )
+      : TimeOfDay(
+          hour: DateTime.now().hour,
+          minute: DateTime.now().minute + 30,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,7 @@ class TimePicker extends StatelessWidget {
         OutlinedButton(
           onPressed: () => showTimePicker(
             context: context,
-            initialTime: TimeOfDay.now(),
+            initialTime: startTime,
             builder: (context, child) {
               return Theme(
                 data: SATheme.lightTheme.copyWith(
@@ -56,7 +63,7 @@ class TimePicker extends StatelessWidget {
         OutlinedButton(
           onPressed: () => showTimePicker(
             context: context,
-            initialTime: TimeOfDay.now(),
+            initialTime: endTime,
             builder: (context, child) {
               return Theme(
                 data: SATheme.lightTheme.copyWith(
