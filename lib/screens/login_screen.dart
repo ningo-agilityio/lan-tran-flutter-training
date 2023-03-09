@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/widgets/background_image.dart';
+import 'package:salon_appointment/widgets/common/text.dart';
 import 'package:salon_appointment/widgets/input.dart';
 import 'package:salon_appointment/widgets/forget_password.dart';
 import 'package:salon_appointment/widgets/login_button.dart';
@@ -22,8 +23,14 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             margin: EdgeInsets.all(32.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 60.0,
+                    bottom: 147.0,
+                  ),
+                  child: SACustomText.logoText,
+                ),
                 Input(
                   text: 'Phone number',
                   keyboardType: TextInputType.number,

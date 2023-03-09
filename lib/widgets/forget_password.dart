@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/theme/theme.dart';
-import 'package:salon_appointment/widgets/text.dart';
+import './common/text.dart';
 
 class ForgetPassword extends StatelessWidget {
   const ForgetPassword({
@@ -16,7 +16,7 @@ class ForgetPassword extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: TextButton(
         onPressed: onPress,
-        child: ForgetPasswordText(),
+        child: SACustomText.forgetPasswordText,
       ),
     );
   }
