@@ -8,7 +8,9 @@ import '../theme/theme.dart';
 import 'common/buttons.dart';
 
 class ModalBottomSheet extends StatelessWidget {
-  const ModalBottomSheet({super.key});
+  ModalBottomSheet({super.key});
+
+  final inputColor = SATheme.lightTheme.colorScheme.onSecondaryContainer;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,10 @@ class ModalBottomSheet extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 12.0),
-                Input(text: 'Customer Name'),
+                Input(
+                  text: 'Customer Name',
+                  color: inputColor,
+                ),
                 SizedBox(height: 12.0),
                 DatePicker(dateTime: DateTime.now()),
                 SizedBox(height: 12.0),
@@ -52,7 +57,10 @@ class ModalBottomSheet extends StatelessWidget {
                 SizedBox(height: 12.0),
                 DropDown(items: ['Back', 'Neck & Shoulders']),
                 SizedBox(height: 12.0),
-                Input(text: 'Description')
+                Input(
+                  text: 'Description',
+                  color: inputColor,
+                )
               ],
             ),
           ),
