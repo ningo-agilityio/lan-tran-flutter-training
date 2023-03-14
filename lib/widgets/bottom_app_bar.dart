@@ -1,48 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/widgets/common/buttons.dart';
 
-class _DemoBottomAppBar extends StatelessWidget {
-  const _DemoBottomAppBar({
-    this.fabLocation = FloatingActionButtonLocation.endDocked,
-    this.shape = const CircularNotchedRectangle(),
+class CusTomBottomAppBar extends StatelessWidget {
+  const CusTomBottomAppBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
   });
 
-  final FloatingActionButtonLocation fabLocation;
-  final NotchedShape? shape;
-
-  static final List<FloatingActionButtonLocation> centerLocations =
-      <FloatingActionButtonLocation>[
-    FloatingActionButtonLocation.centerDocked,
-    FloatingActionButtonLocation.centerFloat,
-  ];
+  final int currentIndex;
+  final Function(int) onTap;
 
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      shape: shape,
-      color: Colors.blue,
-      child: IconTheme(
-        data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
-        child: Row(
-          children: <Widget>[
-            IconButton(
-              tooltip: 'Open navigation menu',
-              icon: const Icon(Icons.menu),
-              onPressed: () {},
-            ),
-            if (centerLocations.contains(fabLocation)) const Spacer(),
-            IconButton(
-              tooltip: 'Search',
-              icon: const Icon(Icons.search),
-              onPressed: () {},
-            ),
-            IconButton(
-              tooltip: 'Favorite',
-              icon: const Icon(Icons.favorite),
-              onPressed: () {},
-            ),
-          ],
-        ),
+      shape: const CircularNotchedRectangle(),
+      clipBehavior: Clip.antiAlias,
+      child: BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        currentIndex: currentIndex,
+        onTap: onTap,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: Theme.of(context).colorScheme.onTertiary,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.check),
+            label: 'Appointments',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.schedule),
+            label: 'Calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notifications',
+          ),
+        ],
       ),
+      // IconButtonTheme(
+      //   data: IconButtonThemeData(),
+      //   child: Padding(
+      //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      //     child: Row(
+      //       children: <Widget>[
+      //         SAButton.icon(
+      //           icon: const Icon(Icons.check),
+      //           onPress: () {},
+      //         ),
+      //         SizedBox(width: 16.0),
+      //         SAButton.icon(
+      //           icon: const Icon(Icons.schedule),
+      //           onPress: () {},
+      //         ),
+      //         const Spacer(),
+      //         SAButton.icon(
+      //           icon: const Icon(Icons.person),
+      //           onPress: () {},
+      //         ),
+      //         SizedBox(width: 16.0),
+      //         SAButton.icon(
+      //           icon: const Icon(Icons.notifications),
+      //           onPress: () {},
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
