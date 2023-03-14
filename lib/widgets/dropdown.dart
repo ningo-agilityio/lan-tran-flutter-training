@@ -28,7 +28,7 @@ class _DropDownState extends State<DropDown> {
           color: SATheme.lightTheme.colorScheme.secondary,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: SATheme.lightTheme.colorScheme.onSecondary,
+            color: SATheme.lightTheme.colorScheme.onSecondaryContainer,
           )),
       child: DropdownButton<String>(
         hint: Text('Select Services'),

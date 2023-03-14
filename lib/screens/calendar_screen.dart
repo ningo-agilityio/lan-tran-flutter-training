@@ -8,6 +8,7 @@ import 'package:salon_appointment/widgets/date_picker.dart';
 import 'package:salon_appointment/widgets/time_picker.dart';
 
 import '../utils.dart';
+import 'scaffold.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -87,37 +88,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }
   }
 
-  int _selectedIndex = 0;
-
-  bool _showFab = true;
-  bool _showNotch = true;
-  FloatingActionButtonLocation _fabLocation =
-      FloatingActionButtonLocation.centerDocked;
-
-  void _onShowNotchChanged(bool value) {
-    setState(() {
-      _showNotch = value;
-    });
-  }
-
-  void _onShowFabChanged(bool value) {
-    setState(() {
-      _showFab = value;
-    });
-  }
-
-  void _onFabLocationChanged(FloatingActionButtonLocation? value) {
-    setState(() {
-      _fabLocation = value ?? FloatingActionButtonLocation.centerDocked;
-    });
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,102 +137,22 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Color(0xFF553BA3),
-                    Color(0xFF7D32BA),
+                    SATheme.lightTheme.colorScheme.primary,
+                    SATheme.lightTheme.colorScheme.onPrimary,
                   ],
                 ),
               ),
               child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AppointmentsScreen(),
-                    ),
-                  );
-                },
+                onPressed: () {},
                 child: Text(
                   'Show appointments (${_getEventsForDay(_selectedDay!).length})',
-                  style: SATheme.lightTheme.textTheme.bodySmall!
-                      .copyWith(color: Color(0xFFFFFFFF)),
+                  style: SATheme.lightTheme.textTheme.bodySmall!.copyWith(
+                      color: SATheme.lightTheme.colorScheme.secondary),
                 ),
               ),
             ),
           ),
         ],
-      ),
-      floatingActionButton: _showFab
-          ? AddButton(onPress: () {
-              showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (BuildContext context) {
-                    return SizedBox(
-                      height: 500,
-                      child: Column(
-                        children: [
-                          DatePicker(dateTime: DateTime.now()),
-                          TimePicker(startTime: TimeOfDay.now()),
-                        ],
-                      ),
-                    );
-                  });
-            })
-          : null,
-      floatingActionButtonLocation: _fabLocation,
-      bottomNavigationBar: _DemoBottomAppBar(
-        fabLocation: _fabLocation,
-        shape: _showNotch ? const CircularNotchedRectangle() : null,
-      ),
-    );
-  }
-}
-
-class _DemoBottomAppBar extends StatelessWidget {
-  const _DemoBottomAppBar({
-    this.fabLocation = FloatingActionButtonLocation.centerDocked,
-    this.shape = const CircularNotchedRectangle(),
-  });
-
-  final FloatingActionButtonLocation fabLocation;
-  final NotchedShape? shape;
-
-  static final List<FloatingActionButtonLocation> centerLocations =
-      <FloatingActionButtonLocation>[
-    FloatingActionButtonLocation.centerDocked,
-    FloatingActionButtonLocation.centerFloat,
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomAppBar(
-      shape: shape,
-      color: Colors.white,
-      padding: EdgeInsets.only(left: 18.0, right: 18.0),
-      child: IconTheme(
-        data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            SAButton.icon(
-              onPress: () {},
-              icon: const Icon(Icons.check),
-            ),
-            SAButton.icon(
-              onPress: () {},
-              icon: const Icon(Icons.schedule),
-            ),
-            if (centerLocations.contains(fabLocation)) const SizedBox(),
-            SAButton.icon(
-              onPress: () {},
-              icon: const Icon(Icons.person),
-            ),
-            SAButton.icon(
-              onPress: () {},
-              icon: const Icon(Icons.notifications),
-            ),
-          ],
-        ),
       ),
     );
   }

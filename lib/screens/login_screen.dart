@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/screens/scaffold.dart';
+import 'package:salon_appointment/theme/theme.dart';
 import 'package:salon_appointment/widgets/background_image.dart';
 import 'package:salon_appointment/widgets/common/text.dart';
 import 'package:salon_appointment/widgets/input.dart';
@@ -34,9 +36,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 Input(
                   text: 'Phone number',
                   keyboardType: TextInputType.number,
+                  color: SATheme.lightTheme.colorScheme.secondary,
                 ),
                 SizedBox(height: 16),
-                Input(text: 'Password'),
+                Input(
+                  text: 'Password',
+                  color: SATheme.lightTheme.colorScheme.secondary,
+                ),
                 SizedBox(height: 16),
                 ForgetPassword(
                   onPress: () {},
@@ -47,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CalendarScreen(),
+                        builder: (context) => MainScaffold(),
                       ),
                     );
                   },

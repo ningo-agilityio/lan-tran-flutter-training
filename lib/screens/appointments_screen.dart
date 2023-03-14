@@ -5,6 +5,7 @@ import 'package:salon_appointment/widgets/appointment.dart';
 import 'package:intl/intl.dart';
 
 import '../utils.dart';
+import 'scaffold.dart';
 
 class AppointmentsScreen extends StatefulWidget {
   const AppointmentsScreen({super.key});
@@ -21,7 +22,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
-  DateFormat format = DateFormat('dd MMMM, EEEE');
+  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
 
   @override
   void initState() {
@@ -94,13 +95,6 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             color: SATheme.lightTheme.colorScheme.onSecondary,
           ),
         ),
-        leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios_new_sharp,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
       ),
       body: Column(
         children: [
@@ -125,7 +119,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             },
           ),
           Text(
-            DateFormat('dd MMMM, EEEE').format(_selectedDay!),
+            dateFormat.format(_selectedDay!),
             style: SATheme.lightTheme.textTheme.labelLarge!.copyWith(
               color: SATheme.lightTheme.colorScheme.onSecondary,
               fontSize: 13,

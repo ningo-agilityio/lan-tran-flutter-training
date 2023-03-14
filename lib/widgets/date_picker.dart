@@ -25,8 +25,9 @@ class DatePicker extends StatelessWidget {
           ),
           Text(
             dateFormat.format(dateTime),
-            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: Theme.of(context).colorScheme.onSecondaryContainer,
+                  fontWeight: FontWeight.w400,
                 ),
           ),
           Align(
