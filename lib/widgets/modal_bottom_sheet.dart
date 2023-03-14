@@ -74,7 +74,7 @@ class ModalBottomSheet extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return (keyboardHeight > 0)
-        ? screenHeight - keyboardHeight
+        ? screenHeight * 0.9 - keyboardHeight
         : screenHeight * 0.9;
   }
 }
