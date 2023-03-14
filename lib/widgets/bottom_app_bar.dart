@@ -44,6 +44,35 @@ class CusTomBottomAppBar extends StatelessWidget {
           ),
         ],
       ),
+      // IconButtonTheme(
+      //   data: IconButtonThemeData(),
+      //   child: Padding(
+      //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      //     child: Row(
+      //       children: <Widget>[
+      //         SAButton.icon(
+      //           icon: const Icon(Icons.check),
+      //           onPress: () {},
+      //         ),
+      //         SizedBox(width: 16.0),
+      //         SAButton.icon(
+      //           icon: const Icon(Icons.schedule),
+      //           onPress: () {},
+      //         ),
+      //         const Spacer(),
+      //         SAButton.icon(
+      //           icon: const Icon(Icons.person),
+      //           onPress: () {},
+      //         ),
+      //         SizedBox(width: 16.0),
+      //         SAButton.icon(
+      //           icon: const Icon(Icons.notifications),
+      //           onPress: () {},
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
