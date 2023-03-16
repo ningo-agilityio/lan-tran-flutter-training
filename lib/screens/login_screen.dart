@@ -15,24 +15,28 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String? phoneNumberErrorText = '';
-  String? passwordErrorText = '';
+  String? phoneNumberErrorText;
+  String? passwordErrorText;
   String phoneNumber = '';
   String password = '';
+
+  List<Map<String, String>> users = [
+    {'phoneNumber': '0905123456', 'password': '111111'},
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          BackgroundImage(),
+          const BackgroundImage(),
           Container(
-            margin: EdgeInsets.all(32.0),
+            margin: const EdgeInsets.all(32.0),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       top: 60.0,
                       bottom: 147.0,
                     ),
@@ -42,11 +46,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 72.0,
                     child: Input(
                       text: 'Phone number',
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType.number,
                       color: SATheme.lightTheme.colorScheme.secondary,
-                      errorText: phoneNumberErrorText == ''
-                          ? null
-                          : phoneNumberErrorText,
+                      errorText: phoneNumberErrorText,
                       validator: (value) {
                         return isValidPhoneNumber(value!);
                       },
@@ -58,14 +60,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   SizedBox(
                     height: 72.0,
                     child: Input(
                       text: 'Password',
                       color: SATheme.lightTheme.colorScheme.secondary,
-                      errorText:
-                          passwordErrorText == '' ? null : passwordErrorText,
+                      errorText: passwordErrorText,
                       validator: (value) {
                         return isValidPassword(value!);
                       },
@@ -77,15 +78,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   ForgetPassword(
                     onPress: () {},
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   LoginButton(onPress: () {
                     disableLoginButton()
-                        ? showSnackBar(Text('Information is invalid.'))
-                        : isLoginSuccess();
+                        ? showSnackBar(
+                            const Text('Phone number or Password is invalid.'))
+                        : isLoginSuccess(users);
                   }),
                 ],
               ),
@@ -119,17 +121,17 @@ class _LoginScreenState extends State<LoginScreen> {
         isValidPhoneNumber(phoneNumber) != null;
   }
 
-  void isLoginSuccess() {
+  void isLoginSuccess(List<Map> users) {
     for (var user in users) {
       if (!user.containsValue(phoneNumber)) {
-        showSnackBar(Text('Phone number is not exist.'));
+        showSnackBar(const Text('Phone number is not exist.'));
       } else if (!user.containsValue(password)) {
-        showSnackBar(Text('Password is incorrect.'));
+        showSnackBar(const Text('Password is incorrect.'));
       } else {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => MainScaffold(),
+            builder: (context) => const MainScaffold(),
           ),
         );
       }
@@ -144,8 +146,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-  List<Map<String, String>> users = [
-    {'phoneNumber': '0905123456', 'password': '111111'},
-  ];
 }
