@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/constants/mock.dart';
+import 'package:salon_appointment/models/user.dart';
 import 'package:salon_appointment/screens/scaffold.dart';
 import 'package:salon_appointment/theme/theme.dart';
 import 'package:salon_appointment/widgets/background_image.dart';
@@ -20,9 +22,13 @@ class _LoginScreenState extends State<LoginScreen> {
   String phoneNumber = '';
   String password = '';
 
-  List<Map<String, String>> users = [
-    {'phoneNumber': '0905123456', 'password': '111111'},
-  ];
+  List<User> users = [];
+
+  @override
+  void initState() {
+    super.initState();
+    users = usersList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,11 +127,11 @@ class _LoginScreenState extends State<LoginScreen> {
         isValidPhoneNumber(phoneNumber) != null;
   }
 
-  void isLoginSuccess(List<Map> users) {
+  void isLoginSuccess(List<User> users) {
     for (var user in users) {
-      if (!user.containsValue(phoneNumber)) {
+      if (phoneNumber != user.phoneNumber) {
         showSnackBar(const Text('Phone number is not exist.'));
-      } else if (!user.containsValue(password)) {
+      } else if (password != user.password) {
         showSnackBar(const Text('Password is incorrect.'));
       } else {
         Navigator.pushReplacement(

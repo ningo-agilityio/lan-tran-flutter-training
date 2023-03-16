@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:salon_appointment/theme/theme.dart';
 
 class Input extends StatefulWidget {
-  Input({
+  const Input({
     super.key,
     required this.text,
     this.keyboardType,
@@ -12,11 +12,11 @@ class Input extends StatefulWidget {
     this.errorText,
   });
 
-  String text;
+  final String text;
   final TextInputType? keyboardType;
   final Color? color;
   final Function(String)? onChanged;
-  String? Function(String?)? validator;
+  final String? Function(String?)? validator;
   final String? errorText;
 
   @override
@@ -42,10 +42,10 @@ class _InputState extends State<Input> {
           hintStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
                 color: widget.color,
               ),
-          contentPadding: EdgeInsets.all(8.0),
+          contentPadding: const EdgeInsets.all(8.0),
           errorText: widget.errorText,
           border: OutlineInputBorder(
-            borderSide: BorderSide(width: 5.0),
+            borderSide: const BorderSide(width: 5.0),
             borderRadius: BorderRadius.circular(8.0),
           ),
           fillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.235),
