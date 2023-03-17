@@ -25,12 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   List<User> users = [];
 
   @override
-  void initState() {
-    super.initState();
-    users = usersList;
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
