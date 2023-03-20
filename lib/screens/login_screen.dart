@@ -25,6 +25,17 @@ class _LoginScreenState extends State<LoginScreen> {
   List<User> users = [];
 
   @override
+  void initState() {
+    super.initState();
+    final future = MockData.getUsers();
+    future.then((value) {
+      for (var user in value) {
+        users.add(user);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -125,8 +136,10 @@ class _LoginScreenState extends State<LoginScreen> {
     for (var user in users) {
       if (phoneNumber != user.phoneNumber) {
         showSnackBar(const Text('Phone number is not exist.'));
+        break;
       } else if (password != user.password) {
         showSnackBar(const Text('Password is incorrect.'));
+        break;
       } else {
         Navigator.pushReplacement(
           context,

@@ -5,14 +5,14 @@ class User {
     required this.id,
     required this.name,
     required this.phoneNumber,
-    required this.avatarPath,
+    required this.avatar,
     required this.password,
   });
 
   String id;
   String name;
   String phoneNumber;
-  String avatarPath;
+  String avatar;
   String password;
 
   factory User.fromJson(Map<String, dynamic> user) {
@@ -20,7 +20,7 @@ class User {
       id: user['id'] as String,
       name: user['name'] as String,
       phoneNumber: user['phoneNumber'] as String,
-      avatarPath: user['avatarPath'] as String,
+      avatar: user['avatar'] as String,
       password: user['password'] as String,
     );
   }
