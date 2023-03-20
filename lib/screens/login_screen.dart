@@ -8,6 +8,7 @@ import 'package:salon_appointment/widgets/common/text.dart';
 import 'package:salon_appointment/widgets/input.dart';
 import 'package:salon_appointment/widgets/forget_password.dart';
 import 'package:salon_appointment/widgets/login_button.dart';
+import 'package:salon_appointment/validations/login_validation.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -61,11 +62,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: SATheme.lightTheme.colorScheme.secondary,
                       errorText: phoneNumberErrorText,
                       validator: (value) {
-                        return isValidPhoneNumber(value!);
+                        return LoginValidations.isValidPhoneNumber(value!);
                       },
                       onChanged: (value) {
                         setState(() {
-                          phoneNumberErrorText = isValidPhoneNumber(value);
+                          phoneNumberErrorText =
+                              LoginValidations.isValidPhoneNumber(value);
                           phoneNumber = value;
                         });
                       },
@@ -79,11 +81,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: SATheme.lightTheme.colorScheme.secondary,
                       errorText: passwordErrorText,
                       validator: (value) {
-                        return isValidPassword(value!);
+                        return LoginValidations.isValidPassword(value!);
                       },
                       onChanged: (value) {
                         setState(() {
-                          passwordErrorText = isValidPassword(value);
+                          passwordErrorText =
+                              LoginValidations.isValidPassword(value);
                           password = value;
                         });
                       },
@@ -95,10 +98,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 24),
                   LoginButton(onPress: () {
-                    disableLoginButton()
+                    LoginValidations.isLoginSuccess(
+                                users, phoneNumber, password) !=
+                            null
                         ? showSnackBar(
-                            const Text('Phone number or Password is invalid.'))
-                        : isLoginSuccess(users);
+                            Text(LoginValidations.isLoginSuccess(
+                                users, phoneNumber, password)!),
+                          )
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MainScaffold()),
+                          );
                   }),
                 ],
               ),
@@ -107,48 +118,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
-  }
-
-  String? isValidPhoneNumber(String? phoneNumber) {
-    if (phoneNumber == '') {
-      return 'Phone number is blank.';
-    } else if (phoneNumber!.length != 10) {
-      return 'Phone number is invalid.';
-    }
-    return null;
-  }
-
-  String? isValidPassword(String? password) {
-    if (password == '') {
-      return 'Password is blank.';
-    } else if (password!.length < 6) {
-      return 'Password must be at least 6 characters.';
-    }
-    return null;
-  }
-
-  bool disableLoginButton() {
-    return isValidPassword(password) != null ||
-        isValidPhoneNumber(phoneNumber) != null;
-  }
-
-  void isLoginSuccess(List<User> users) {
-    for (var user in users) {
-      if (phoneNumber != user.phoneNumber) {
-        showSnackBar(const Text('Phone number is not exist.'));
-        break;
-      } else if (password != user.password) {
-        showSnackBar(const Text('Password is incorrect.'));
-        break;
-      } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainScaffold(),
-          ),
-        );
-      }
-    }
   }
 
   void showSnackBar(Widget content) {
