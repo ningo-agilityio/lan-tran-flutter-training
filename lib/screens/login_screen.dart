@@ -8,7 +8,7 @@ import 'package:salon_appointment/widgets/common/text.dart';
 import 'package:salon_appointment/widgets/input.dart';
 import 'package:salon_appointment/widgets/forget_password.dart';
 import 'package:salon_appointment/widgets/login_button.dart';
-import 'package:salon_appointment/validations/login_validation.dart';
+import 'package:salon_appointment/validations/validations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -62,12 +62,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: SATheme.lightTheme.colorScheme.secondary,
                       errorText: phoneNumberErrorText,
                       validator: (value) {
-                        return LoginValidations.isValidPhoneNumber(value!);
+                        return Validations.isValidPhoneNumber(value!);
                       },
                       onChanged: (value) {
                         setState(() {
                           phoneNumberErrorText =
-                              LoginValidations.isValidPhoneNumber(value);
+                              Validations.isValidPhoneNumber(value);
                           phoneNumber = value;
                         });
                       },
@@ -81,12 +81,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: SATheme.lightTheme.colorScheme.secondary,
                       errorText: passwordErrorText,
                       validator: (value) {
-                        return LoginValidations.isValidPassword(value!);
+                        return Validations.isValidPassword(value!);
                       },
                       onChanged: (value) {
                         setState(() {
                           passwordErrorText =
-                              LoginValidations.isValidPassword(value);
+                              Validations.isValidPassword(value);
                           password = value;
                         });
                       },
@@ -98,11 +98,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 24),
                   LoginButton(onPress: () {
-                    LoginValidations.isLoginSuccess(
-                                users, phoneNumber, password) !=
+                    Validations.isLoginSuccess(users, phoneNumber, password) !=
                             null
                         ? showSnackBar(
-                            Text(LoginValidations.isLoginSuccess(
+                            Text(Validations.isLoginSuccess(
                                 users, phoneNumber, password)!),
                           )
                         : Navigator.push(
