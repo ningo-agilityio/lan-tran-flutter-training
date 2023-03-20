@@ -62,12 +62,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: SATheme.lightTheme.colorScheme.secondary,
                       errorText: phoneNumberErrorText,
                       validator: (value) {
-                        return Validations.isValidPhoneNumber(value!);
+                        return FormValidation.isValidPhoneNumber(value!);
                       },
                       onChanged: (value) {
                         setState(() {
                           phoneNumberErrorText =
-                              Validations.isValidPhoneNumber(value);
+                              FormValidation.isValidPhoneNumber(value);
                           phoneNumber = value;
                         });
                       },
@@ -81,12 +81,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: SATheme.lightTheme.colorScheme.secondary,
                       errorText: passwordErrorText,
                       validator: (value) {
-                        return Validations.isValidPassword(value!);
+                        return FormValidation.isValidPassword(value!);
                       },
                       onChanged: (value) {
                         setState(() {
                           passwordErrorText =
-                              Validations.isValidPassword(value);
+                              FormValidation.isValidPassword(value);
                           password = value;
                         });
                       },
@@ -98,10 +98,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 24),
                   LoginButton(onPress: () {
-                    Validations.isLoginSuccess(users, phoneNumber, password) !=
+                    FormValidation.isLoginSuccess(
+                                users, phoneNumber, password) !=
                             null
                         ? showSnackBar(
-                            Text(Validations.isLoginSuccess(
+                            Text(FormValidation.isLoginSuccess(
                                 users, phoneNumber, password)!),
                           )
                         : Navigator.push(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/models/user.dart';
 
-class Validations {
+class FormValidation {
   static String? isValidPhoneNumber(String? phoneNumber) {
     if (phoneNumber == '') {
       return 'Phone number is blank.';
