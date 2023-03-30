@@ -1,11 +1,12 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/theme/theme.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:salon_appointment/widgets/appointment.dart';
 import 'package:intl/intl.dart';
-
-import '../utils.dart';
-import 'scaffold.dart';
+import 'package:salon_appointment/models/appointment.dart';
+import 'package:salon_appointment/theme/theme.dart';
+import 'package:salon_appointment/utils.dart';
+import 'package:table_calendar/table_calendar.dart';
+import '../controllers/appointment_controller.dart';
+import '../widgets/appointment.dart';
 
 class AppointmentsScreen extends StatefulWidget {
   const AppointmentsScreen({super.key});
@@ -15,74 +16,39 @@ class AppointmentsScreen extends StatefulWidget {
 }
 
 class _AppointmentsScreenState extends State<AppointmentsScreen> {
-  late final ValueNotifier<List<Appointment>> _selectedEvents;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
-      .toggledOff; // Can be toggled on/off by long pressing a date
+  final controller = AppointmentController();
+  final eventsController = StreamController<List<Appointment>?>();
+
+  // Can be toggled on/off by long pressing a date
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+
+  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
-  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
+
+  void _loadEvents() {
+    eventsController.sink.add(null);
+    controller.load(_selectedDay!).then((value) {
+      eventsController.sink.add(value);
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-
     _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+
+    if (_selectedDay != null) {
+      _loadEvents();
+    }
   }
 
   @override
   void dispose() {
-    _selectedEvents.dispose();
+    eventsController.close();
     super.dispose();
-  }
-
-  List<Appointment> _getEventsForDay(DateTime day) {
-    // Implementation example
-    return kEvents[day] ?? [];
-  }
-
-  List<Appointment> _getEventsForRange(DateTime start, DateTime end) {
-    // Implementation example
-    final days = daysInRange(start, end);
-
-    return [
-      for (final d in days) ..._getEventsForDay(d),
-    ];
-  }
-
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
-        _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
-      });
-
-      _selectedEvents.value = _getEventsForDay(selectedDay);
-    }
-  }
-
-  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
-    setState(() {
-      _selectedDay = null;
-      _focusedDay = focusedDay;
-      _rangeStart = start;
-      _rangeEnd = end;
-      _rangeSelectionMode = RangeSelectionMode.toggledOn;
-    });
-
-    // `start` or `end` could be null
-    if (start != null && end != null) {
-      _selectedEvents.value = _getEventsForRange(start, end);
-    } else if (start != null) {
-      _selectedEvents.value = _getEventsForDay(start);
-    } else if (end != null) {
-      _selectedEvents.value = _getEventsForDay(end);
-    }
   }
 
   @override
@@ -107,13 +73,25 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             rangeEndDay: _rangeEnd,
             calendarFormat: CalendarFormat.week,
             rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.sunday,
-            calendarStyle: CalendarStyle(
+            // eventLoader: _getEventsForDay,
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            calendarStyle: const CalendarStyle(
               outsideDaysVisible: false,
             ),
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
+            onDaySelected: (selectedDay, focusedDay) {
+              if (!isSameDay(_selectedDay, selectedDay)) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                  _rangeStart = null;
+                  _rangeEnd = null;
+                  _rangeSelectionMode = RangeSelectionMode.toggledOff;
+                });
+
+                _loadEvents();
+              }
+            },
+            // onRangeSelected: _onRangeSelected,
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
@@ -125,30 +103,40 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
               fontSize: 13,
             ),
           ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<Appointment>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return Scrollbar(
-                  child: ListView.builder(
-                    itemCount: value.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: AppointmentCard(
-                          startTime: value[index].startTime,
-                          endTime: value[index].endTime,
-                          customer: value[index].customer,
-                          services: value[index].services,
-                          description: value[index].description,
+          const SizedBox(height: 8),
+          StreamBuilder(
+            stream: eventsController.stream,
+            builder: (_, snapshot) {
+              if (snapshot.hasData) {
+                final events = snapshot.data ?? [];
+                if (events == []) {
+                  return const Center(
+                    child: Text('There is no appointment.'),
+                  );
+                } else {
+                  return Expanded(
+                    child: Scrollbar(
+                      child: ListView.builder(
+                        itemCount: events.length,
+                        itemBuilder: (_, index) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: AppointmentCard(
+                            startTime: events[index].startTime,
+                            endTime: events[index].endTime,
+                            customer: events[index].userId,
+                            services: events[index].services,
+                            description: events[index].description,
+                          ),
                         ),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
+                      ),
+                    ),
+                  );
+                }
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
           ),
         ],
       ),
