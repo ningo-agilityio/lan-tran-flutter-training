@@ -1,29 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/theme/theme.dart';
 
-// class PrimaryColorText extends SAButton {
-//   const _SATextButton({
-//     required super.style,
-//     required super.value,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Text(
-//       value,
-//       style: TextStyle(
-//         ...style,
-//         color: SATheme.lightTheme.colorScheme.onSecondary,
-//       ),
-//     );
-//   }
-// }
-
 class CommonLayout extends StatelessWidget {
   const CommonLayout({
     required this.child,
     this.bgColor,
     this.bgImage,
+    super.key,
   });
 
   final Widget child;
