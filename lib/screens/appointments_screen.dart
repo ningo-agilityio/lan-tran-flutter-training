@@ -24,6 +24,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   // Can be toggled on/off by long pressing a date
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
+  final DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
+
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -96,7 +98,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             },
           ),
           Text(
-            DateFormat('dd MMMM, EEEE').format(_selectedDay!),
+            dateFormat.format(_selectedDay!),
             style: SATheme.lightTheme.textTheme.labelSmall!.copyWith(
               color: SATheme.lightTheme.colorScheme.onSecondary,
             ),
