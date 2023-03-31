@@ -10,18 +10,18 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../controllers/appointment_controller.dart';
 
-class AppointmentsScreen extends StatefulWidget {
-  const AppointmentsScreen({super.key});
+class AppointmentScreen extends StatefulWidget {
+  const AppointmentScreen({super.key});
 
   @override
-  State<AppointmentsScreen> createState() => _AppointmentsScreenState();
+  State<AppointmentScreen> createState() => _AppointmentScreenState();
 }
 
-class _AppointmentsScreenState extends State<AppointmentsScreen> {
+class _AppointmentScreenState extends State<AppointmentScreen> {
   final controller = AppointmentController();
   final eventsController = StreamController<List<Appointment>?>();
+  final textColor = SATheme.lightTheme.colorScheme.onSecondary;
 
-  // Can be toggled on/off by long pressing a date
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
   final DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
@@ -61,7 +61,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         title: Text(
           'Appointments',
           style: SATheme.lightTheme.textTheme.titleLarge!.copyWith(
-            color: SATheme.lightTheme.colorScheme.onSecondary,
+            color: textColor,
           ),
         ),
       ),
@@ -100,7 +100,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
           Text(
             dateFormat.format(_selectedDay!),
             style: SATheme.lightTheme.textTheme.labelSmall!.copyWith(
-              color: SATheme.lightTheme.colorScheme.onSecondary,
+              color: textColor,
             ),
           ),
           const SizedBox(height: 8),
@@ -116,7 +116,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       child: Text(
                         'There are no appointments.',
                         style: SATheme.lightTheme.textTheme.bodyLarge!.copyWith(
-                          color: SATheme.lightTheme.colorScheme.onSecondary,
+                          color: textColor,
                         ),
                       ),
                     ),

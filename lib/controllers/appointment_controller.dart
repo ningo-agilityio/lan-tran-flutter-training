@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
-import 'package:salon_appointment/mock_apis/appointment_api.dart';
+import 'package:salon_appointment/apis/appointment_api.dart';
 import 'package:salon_appointment/models/appointment.dart';
 
 class AppointmentController {
