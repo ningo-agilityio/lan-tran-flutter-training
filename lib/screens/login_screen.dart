@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/controllers/user_controller.dart';
 import 'package:salon_appointment/apis/user_api.dart';
+import 'package:salon_appointment/controllers/user_controller.dart';
 import 'package:salon_appointment/models/user.dart';
 import 'package:salon_appointment/screens/scaffold.dart';
 import 'package:salon_appointment/theme/theme.dart';
 import 'package:salon_appointment/validations/validations.dart';
-import 'package:salon_appointment/widgets/background_image.dart';
 import 'package:salon_appointment/widgets/common/text.dart';
 import 'package:salon_appointment/widgets/forget_password.dart';
 import 'package:salon_appointment/widgets/input.dart';
@@ -22,6 +21,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final controller = UserController();
+
+  // double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
   String? phoneNumberErrorText;
   String? passwordErrorText;
@@ -41,15 +42,24 @@ class _LoginScreenState extends State<LoginScreen> {
     return CommonLayout(
       child: Container(
         margin: const EdgeInsets.all(32),
-        child: SingleChildScrollView(
+        child: Scrollbar(
           child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.only(
                   top: 60,
-                  bottom: 147,
                 ),
-                child: SACustomText.logoText,
+                child: (MediaQuery.of(context).viewInsets.bottom > 0)
+                    ? const Padding(
+                        padding: EdgeInsets.only(
+                          top: 60,
+                        ),
+                      )
+                    : Container(
+                        padding: const EdgeInsets.only(
+                          bottom: 147,
+                        ),
+                        child: SACustomText.logoText),
               ),
               SizedBox(
                 height: 72,
