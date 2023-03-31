@@ -22,8 +22,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final controller = UserController();
 
-  // double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-
   String? phoneNumberErrorText;
   String? passwordErrorText;
   String phoneNumber = '';
@@ -39,84 +37,86 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     return CommonLayout(
       child: Container(
         margin: const EdgeInsets.all(32),
-        child: Scrollbar(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 60,
-                ),
-                child: (MediaQuery.of(context).viewInsets.bottom > 0)
-                    ? const SizedBox(
-                        height: 60,
-                      )
-                    : Container(
-                        padding: const EdgeInsets.only(
-                          bottom: 147,
-                        ),
-                        child: SACustomText.logoText),
+        height: screenHeight - keyboardHeight,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 60,
               ),
-              SizedBox(
-                height: 72,
-                child: Input(
-                  text: 'Phone number',
-                  keyboardType: TextInputType.number,
-                  color: SATheme.lightTheme.colorScheme.secondary,
-                  errorText: phoneNumberErrorText,
-                  validator: (value) {
-                    return FormValidation.isValidPhoneNumber(value!);
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      phoneNumberErrorText =
-                          FormValidation.isValidPhoneNumber(value);
-                      phoneNumber = value;
-                    });
-                  },
-                ),
+              child: (keyboardHeight > 0)
+                  ? const SizedBox(
+                      height: 60,
+                    )
+                  : Container(
+                      padding: const EdgeInsets.only(
+                        bottom: 147,
+                      ),
+                      child: SACustomText.logoText),
+            ),
+            SizedBox(
+              height: 72,
+              child: Input(
+                text: 'Phone number',
+                keyboardType: TextInputType.number,
+                color: SATheme.lightTheme.colorScheme.secondary,
+                errorText: phoneNumberErrorText,
+                validator: (value) {
+                  return FormValidation.isValidPhoneNumber(value!);
+                },
+                onChanged: (value) {
+                  setState(() {
+                    phoneNumberErrorText =
+                        FormValidation.isValidPhoneNumber(value);
+                    phoneNumber = value;
+                  });
+                },
               ),
-              const SizedBox(height: 16),
-              SizedBox(
-                height: 72,
-                child: Input(
-                  text: 'Password',
-                  color: SATheme.lightTheme.colorScheme.secondary,
-                  errorText: passwordErrorText,
-                  obscureText: true,
-                  validator: (value) {
-                    return FormValidation.isValidPassword(value!);
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      passwordErrorText = FormValidation.isValidPassword(value);
-                      password = value;
-                    });
-                  },
-                ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 72,
+              child: Input(
+                text: 'Password',
+                color: SATheme.lightTheme.colorScheme.secondary,
+                errorText: passwordErrorText,
+                obscureText: true,
+                validator: (value) {
+                  return FormValidation.isValidPassword(value!);
+                },
+                onChanged: (value) {
+                  setState(() {
+                    passwordErrorText = FormValidation.isValidPassword(value);
+                    password = value;
+                  });
+                },
               ),
-              const SizedBox(height: 16),
-              ForgetPassword(
-                onPress: () {},
-              ),
-              const SizedBox(height: 24),
-              LoginButton(onPress: () {
-                FormValidation.isLoginSuccess(users, phoneNumber, password) !=
-                        null
-                    ? showSnackBar(
-                        Text(FormValidation.isLoginSuccess(
-                            users, phoneNumber, password)!),
-                      )
-                    : Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MainScaffold()),
-                      );
-              }),
-            ],
-          ),
+            ),
+            const SizedBox(height: 16),
+            ForgetPassword(
+              onPress: () {},
+            ),
+            const SizedBox(height: 24),
+            LoginButton(onPress: () {
+              FormValidation.isLoginSuccess(users, phoneNumber, password) !=
+                      null
+                  ? showSnackBar(
+                      Text(FormValidation.isLoginSuccess(
+                          users, phoneNumber, password)!),
+                    )
+                  : Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MainScaffold()),
+                    );
+            }),
+          ],
         ),
       ),
     );
