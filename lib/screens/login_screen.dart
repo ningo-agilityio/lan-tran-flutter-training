@@ -50,10 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   top: 60,
                 ),
                 child: (MediaQuery.of(context).viewInsets.bottom > 0)
-                    ? const Padding(
-                        padding: EdgeInsets.only(
-                          top: 60,
-                        ),
+                    ? const SizedBox(
+                        height: 60,
                       )
                     : Container(
                         padding: const EdgeInsets.only(
