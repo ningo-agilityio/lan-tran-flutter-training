@@ -1,12 +1,14 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:salon_appointment/models/appointment.dart';
 import 'package:salon_appointment/theme/theme.dart';
 import 'package:salon_appointment/utils.dart';
+import 'package:salon_appointment/widgets/appointment_card.dart';
 import 'package:table_calendar/table_calendar.dart';
+
 import '../controllers/appointment_controller.dart';
-import '../widgets/appointment.dart';
 
 class AppointmentsScreen extends StatefulWidget {
   const AppointmentsScreen({super.key});
@@ -22,7 +24,6 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   // Can be toggled on/off by long pressing a date
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
-  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -73,7 +74,6 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             rangeEndDay: _rangeEnd,
             calendarFormat: CalendarFormat.week,
             rangeSelectionMode: _rangeSelectionMode,
-            // eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: const CalendarStyle(
               outsideDaysVisible: false,
@@ -91,16 +91,14 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                 _loadEvents();
               }
             },
-            // onRangeSelected: _onRangeSelected,
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
           ),
           Text(
-            dateFormat.format(_selectedDay!),
-            style: SATheme.lightTheme.textTheme.labelLarge!.copyWith(
+            DateFormat('dd MMMM, EEEE').format(_selectedDay!),
+            style: SATheme.lightTheme.textTheme.labelSmall!.copyWith(
               color: SATheme.lightTheme.colorScheme.onSecondary,
-              fontSize: 13,
             ),
           ),
           const SizedBox(height: 8),
@@ -109,9 +107,17 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             builder: (_, snapshot) {
               if (snapshot.hasData) {
                 final events = snapshot.data ?? [];
-                if (events == []) {
-                  return const Center(
-                    child: Text('There is no appointment.'),
+                if (events.isEmpty) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: Center(
+                      child: Text(
+                        'There are no appointments.',
+                        style: SATheme.lightTheme.textTheme.bodyLarge!.copyWith(
+                          color: SATheme.lightTheme.colorScheme.onSecondary,
+                        ),
+                      ),
+                    ),
                   );
                 } else {
                   return Expanded(
@@ -119,13 +125,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       child: ListView.builder(
                         itemCount: events.length,
                         itemBuilder: (_, index) => Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8),
                           child: AppointmentCard(
-                            startTime: events[index].startTime,
-                            endTime: events[index].endTime,
-                            customer: events[index].userId,
-                            services: events[index].services,
-                            description: events[index].description,
+                            appointment: events[index],
                           ),
                         ),
                       ),
@@ -133,8 +135,11 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                   );
                 }
               }
-              return const Center(
-                child: CircularProgressIndicator(),
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 2,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             },
           ),
