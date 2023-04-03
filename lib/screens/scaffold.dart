@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/widgets/bottom_app_bar.dart';
-import 'package:salon_appointment/widgets/date_picker.dart';
-import 'package:salon_appointment/widgets/dropdown.dart';
+import 'package:salon_appointment/widgets/common/buttons.dart';
+import 'package:salon_appointment/widgets/common/icons.dart';
 import 'package:salon_appointment/widgets/modal_bottom_sheet.dart';
-import 'package:salon_appointment/widgets/time_picker.dart';
-
-import '../theme/theme.dart';
-import '../widgets/add_button.dart';
-import '../widgets/common/buttons.dart';
-import '../widgets/input.dart';
 import 'appointments_screen.dart';
 import 'calendar_screen.dart';
 
@@ -25,8 +19,8 @@ class _MainScaffoldState extends State<MainScaffold> {
 
   int _currentIndex = 1;
 
-  final _CalendarScreen = GlobalKey<NavigatorState>();
-  final _AppointmentsScreen = GlobalKey<NavigatorState>();
+  final _calendarScreen = GlobalKey<NavigatorState>();
+  final _appointmentScreen = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +29,23 @@ class _MainScaffoldState extends State<MainScaffold> {
         index: _currentIndex,
         children: <Widget>[
           Navigator(
-            key: _AppointmentsScreen,
+            key: _appointmentScreen,
             onGenerateRoute: (route) => MaterialPageRoute(
               settings: route,
-              builder: (context) => AppointmentsScreen(),
+              builder: (context) => const AppointmentScreen(),
             ),
           ),
           Navigator(
-            key: _CalendarScreen,
+            key: _calendarScreen,
             onGenerateRoute: (route) => MaterialPageRoute(
               settings: route,
-              builder: (context) => CalendarScreen(),
+              builder: (context) => const CalendarScreen(),
             ),
           ),
         ],
       ),
-      floatingActionButton: AddButton(
+      floatingActionButton: SAButton.floating(
+        child: CustomIcons.addButtonIcon,
         onPress: () => ModalBottomSheet.show(context),
       ),
       floatingActionButtonLocation: _fabLocation,
