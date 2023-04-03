@@ -5,10 +5,10 @@ import 'package:salon_appointment/models/user.dart';
 import 'package:salon_appointment/screens/scaffold.dart';
 import 'package:salon_appointment/theme/theme.dart';
 import 'package:salon_appointment/validations/validations.dart';
+import 'package:salon_appointment/widgets/common/buttons.dart';
 import 'package:salon_appointment/widgets/common/text.dart';
 import 'package:salon_appointment/widgets/forget_password.dart';
 import 'package:salon_appointment/widgets/input.dart';
-import 'package:salon_appointment/widgets/login_button.dart';
 
 import '../layouts/common_layout.dart';
 
@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Input(
                 text: 'Phone number',
                 keyboardType: TextInputType.number,
-                color: SATheme.lightTheme.colorScheme.secondary,
+                color: lightTheme.colorScheme.secondary,
                 errorText: phoneNumberErrorText,
                 validator: (value) {
                   return FormValidation.isValidPhoneNumber(value!);
@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 72,
               child: Input(
                 text: 'Password',
-                color: SATheme.lightTheme.colorScheme.secondary,
+                color: lightTheme.colorScheme.secondary,
                 errorText: passwordErrorText,
                 obscureText: true,
                 validator: (value) {
@@ -103,19 +103,21 @@ class _LoginScreenState extends State<LoginScreen> {
               onPress: () {},
             ),
             const SizedBox(height: 24),
-            LoginButton(onPress: () {
-              FormValidation.isLoginSuccess(users, phoneNumber, password) !=
-                      null
-                  ? showSnackBar(
-                      Text(FormValidation.isLoginSuccess(
-                          users, phoneNumber, password)!),
-                    )
-                  : Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainScaffold()),
-                    );
-            }),
+            SAButton.outlined(
+                child: SACustomText.loginText,
+                onPress: () {
+                  FormValidation.isLoginSuccess(users, phoneNumber, password) !=
+                          null
+                      ? showSnackBar(
+                          Text(FormValidation.isLoginSuccess(
+                              users, phoneNumber, password)!),
+                        )
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MainScaffold()),
+                        );
+                }),
           ],
         ),
       ),
