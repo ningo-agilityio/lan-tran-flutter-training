@@ -3,33 +3,36 @@ import 'package:salon_appointment/theme/theme.dart';
 
 class SAButton extends StatelessWidget {
   const SAButton({
+    required this.child,
+    this.onPress,
     super.key,
-    required this.onPress,
-    this.child,
   });
 
-  final Widget? child;
-  final VoidCallback onPress;
-
-  const factory SAButton.outlined({
-    required VoidCallback onPress,
-    required Widget? child,
-  }) = _SAOutlinedButton;
-
-  const factory SAButton.icon({
-    required VoidCallback onPress,
-    required Icon icon,
-  }) = _SAIconButton;
+  const factory SAButton.floating({
+    required Widget child,
+    VoidCallback? onPress,
+    double height,
+    double width,
+  }) = _SAFloatingButton;
 
   const factory SAButton.text({
-    required VoidCallback onPress,
-    required Widget? child,
+    required Widget child,
+    VoidCallback? onPress,
   }) = _SATextButton;
 
-  const factory SAButton.floating({
-    required VoidCallback onPress,
-    required Widget? child,
-  }) = _SAFloatingButton;
+  const factory SAButton.icon({
+    required Widget child,
+    VoidCallback? onPress,
+  }) = _SAIconButton;
+
+  const factory SAButton.outlined({
+    required Widget child,
+    VoidCallback? onPress,
+    Size size,
+  }) = _SAOutlinedButton;
+
+  final Widget child;
+  final VoidCallback? onPress;
 
   @override
   Widget build(BuildContext context) {
@@ -41,19 +44,22 @@ class SAButton extends StatelessWidget {
 
 class _SAOutlinedButton extends SAButton {
   const _SAOutlinedButton({
-    required super.onPress,
     required super.child,
+    super.onPress,
+    this.size = const Size(311, 44),
   });
+
+  final Size size;
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
       onPressed: onPress,
       style: OutlinedButton.styleFrom(
-        fixedSize: const Size(311, 44),
+        fixedSize: size,
         side: BorderSide(
           width: 2,
-          color: SATheme.lightTheme.colorScheme.secondary,
+          color: lightTheme.colorScheme.secondary,
         ),
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -65,60 +71,61 @@ class _SAOutlinedButton extends SAButton {
   }
 }
 
-class _SAIconButton extends SAButton {
-  const _SAIconButton({
-    required super.onPress,
-    required this.icon,
-  });
-
-  final Icon icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: icon,
-      color: SATheme.lightTheme.colorScheme.onTertiary,
-      iconSize: 24,
-      onPressed: onPress,
-    );
-  }
-}
-
 class _SATextButton extends SAButton {
   const _SATextButton({
-    required super.onPress,
     required super.child,
+    super.onPress,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPress,
-      child: child!,
+      child: child,
+    );
+  }
+}
+
+class _SAIconButton extends SAButton {
+  const _SAIconButton({
+    required super.child,
+    super.onPress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: onPress,
+      icon: child,
     );
   }
 }
 
 class _SAFloatingButton extends SAButton {
   const _SAFloatingButton({
-    required super.onPress,
     required super.child,
+    super.onPress,
+    this.height = 56,
+    this.width = 56,
   });
+
+  final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: onPress,
       child: Container(
-        height: 56.0,
-        width: 56.0,
+        height: height,
+        width: width,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              SATheme.lightTheme.colorScheme.primary,
-              SATheme.lightTheme.colorScheme.onPrimary,
+              lightTheme.colorScheme.primary,
+              lightTheme.colorScheme.onPrimary,
             ],
           ),
           shape: BoxShape.circle,
