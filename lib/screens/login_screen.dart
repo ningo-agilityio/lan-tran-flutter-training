@@ -3,7 +3,6 @@ import 'package:salon_appointment/apis/user_api.dart';
 import 'package:salon_appointment/controllers/user_controller.dart';
 import 'package:salon_appointment/models/user.dart';
 import 'package:salon_appointment/screens/scaffold.dart';
-import 'package:salon_appointment/theme/theme.dart';
 import 'package:salon_appointment/validations/validations.dart';
 import 'package:salon_appointment/widgets/common/buttons.dart';
 import 'package:salon_appointment/widgets/common/text.dart';
@@ -22,8 +21,15 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final controller = UserController();
 
+  final phoneNumberController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  final phoneNumberFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
+
   String? phoneNumberErrorText;
   String? passwordErrorText;
+
   String phoneNumber = '';
   String password = '';
 
@@ -42,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return CommonLayout(
       child: Container(
-        margin: const EdgeInsets.all(32),
+        margin: const EdgeInsets.symmetric(horizontal: 32),
         height: screenHeight - keyboardHeight,
         child: Column(
           children: [
@@ -60,43 +66,37 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       child: SACustomText.logoText),
             ),
-            SizedBox(
+            Input.phoneNumber(
+              text: 'Phone number',
+              controller: phoneNumberController,
               height: 72,
-              child: Input(
-                text: 'Phone number',
-                keyboardType: TextInputType.number,
-                color: lightTheme.colorScheme.secondary,
-                errorText: phoneNumberErrorText,
-                validator: (value) {
-                  return FormValidation.isValidPhoneNumber(value!);
-                },
-                onChanged: (value) {
-                  setState(() {
-                    phoneNumberErrorText =
-                        FormValidation.isValidPhoneNumber(value);
-                    phoneNumber = value;
-                  });
-                },
-              ),
+              focusNode: phoneNumberFocusNode,
+              onEditCompleted: () {
+                FocusScope.of(context).nextFocus();
+              },
+              errorText: phoneNumberErrorText,
+              onChanged: (value) {
+                setState(() {
+                  phoneNumberErrorText =
+                      FormValidation.isValidPhoneNumber(value);
+                });
+              },
             ),
             const SizedBox(height: 16),
-            SizedBox(
+            Input.password(
+              text: 'Password',
+              controller: passwordController,
               height: 72,
-              child: Input(
-                text: 'Password',
-                color: lightTheme.colorScheme.secondary,
-                errorText: passwordErrorText,
-                obscureText: true,
-                validator: (value) {
-                  return FormValidation.isValidPassword(value!);
-                },
-                onChanged: (value) {
-                  setState(() {
-                    passwordErrorText = FormValidation.isValidPassword(value);
-                    password = value;
-                  });
-                },
-              ),
+              focusNode: passwordFocusNode,
+              onEditCompleted: () {
+                FocusScope.of(context).unfocus();
+              },
+              errorText: passwordErrorText,
+              onChanged: (value) {
+                setState(() {
+                  passwordErrorText = FormValidation.isValidPassword(value);
+                });
+              },
             ),
             const SizedBox(height: 16),
             ForgetPassword(
@@ -106,6 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
             SAButton.outlined(
                 child: SACustomText.loginText,
                 onPress: () {
+                  phoneNumber = phoneNumberController.text;
+                  password = passwordController.text;
                   FormValidation.isLoginSuccess(users, phoneNumber, password) !=
                           null
                       ? showSnackBar(

@@ -32,7 +32,7 @@ class _AppBarTitle extends CustomText {
     return Text(
       text,
       style: style.copyWith(
-        color: lightTheme.colorScheme.onSecondary,
+        color: themeData.colorScheme.onSecondary,
       ),
     );
   }
@@ -41,15 +41,15 @@ class _AppBarTitle extends CustomText {
 class SACustomText {
   static Text loginText = Text(
     'Login',
-    style: lightTheme.textTheme.labelMedium!.copyWith(
-      color: lightTheme.colorScheme.secondary,
+    style: themeData.textTheme.labelMedium!.copyWith(
+      color: themeData.colorScheme.secondary,
     ),
   );
 
   static Text forgetPasswordText = Text(
     'Forget password?',
-    style: lightTheme.textTheme.bodySmall!.copyWith(
-      color: lightTheme.colorScheme.secondary.withOpacity(0.6429),
+    style: themeData.textTheme.bodySmall!.copyWith(
+      color: themeData.colorScheme.secondary.withOpacity(0.6429),
     ),
   );
 
@@ -57,7 +57,7 @@ class SACustomText {
     'avisit',
     style: TextStyle(
       fontSize: 40,
-      color: lightTheme.colorScheme.secondary,
+      color: themeData.colorScheme.secondary,
     ),
   );
 }
