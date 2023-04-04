@@ -6,6 +6,8 @@ class Input extends StatelessWidget {
   Input({
     required this.text,
     required this.controller,
+    required this.focusNode,
+    required this.onEditCompleted,
     this.color,
     this.height,
     super.key,
@@ -14,6 +16,8 @@ class Input extends StatelessWidget {
   factory Input.phoneNumber({
     required String text,
     required TextEditingController controller,
+    required FocusNode focusNode,
+    required VoidCallback onEditCompleted,
     double? height,
     String? errorText,
     Function(String)? onChanged,
@@ -22,6 +26,8 @@ class Input extends StatelessWidget {
   factory Input.password({
     required String text,
     required TextEditingController controller,
+    required FocusNode focusNode,
+    required VoidCallback onEditCompleted,
     double? height,
     String? errorText,
     Function(String)? onChanged,
@@ -29,9 +35,10 @@ class Input extends StatelessWidget {
 
   final String text;
   final Color? color;
+  final FocusNode focusNode;
+  final VoidCallback onEditCompleted;
   final TextEditingController controller;
   final double? height;
-  final _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -40,18 +47,17 @@ class Input extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         enableInteractiveSelection: true,
-        focusNode: _focusNode, // pass from screen
-        style: lightTheme.textTheme.labelSmall!.copyWith(
+        focusNode: focusNode,
+        style: themeData.textTheme.labelSmall!.copyWith(
           color: color,
         ),
         decoration: InputDecoration(
-            hintText: text,
-            hintStyle: lightTheme.textTheme.labelSmall!.copyWith(
-              color: color,
-            )),
-        onEditingComplete: () {
-          FocusScope.of(context).nextFocus();
-        },
+          hintText: text,
+          hintStyle: themeData.textTheme.labelSmall!.copyWith(
+            color: color,
+          ),
+        ),
+        onEditingComplete: onEditCompleted,
       ),
     );
   }
@@ -61,6 +67,8 @@ class _InputPhoneNumber extends Input {
   _InputPhoneNumber({
     required super.text,
     required super.controller,
+    required super.focusNode,
+    required super.onEditCompleted,
     super.height,
     this.errorText,
     this.onChanged,
@@ -76,18 +84,16 @@ class _InputPhoneNumber extends Input {
       child: TextFormField(
         controller: controller,
         enableInteractiveSelection: true,
-        focusNode: _focusNode,
+        focusNode: focusNode,
         keyboardType: TextInputType.phone,
-        style: lightTheme.textTheme.labelSmall!.copyWith(
-          color: lightTheme.colorScheme.secondary,
+        style: themeData.textTheme.labelSmall!.copyWith(
+          color: themeData.colorScheme.secondary,
         ),
         decoration: InputDecoration(
           hintText: text,
           errorText: errorText,
         ),
-        onEditingComplete: () {
-          FocusScope.of(context).nextFocus();
-        },
+        onEditingComplete: onEditCompleted,
         validator: FormValidation.isValidPhoneNumber,
         onChanged: onChanged,
       ),
@@ -100,6 +106,8 @@ class _InputPassword extends Input {
   _InputPassword({
     required super.text,
     required super.controller,
+    required super.focusNode,
+    required super.onEditCompleted,
     super.height,
     this.errorText,
     this.onChanged,
@@ -115,18 +123,16 @@ class _InputPassword extends Input {
       child: TextFormField(
         controller: controller,
         enableInteractiveSelection: true,
-        focusNode: _focusNode,
+        focusNode: focusNode,
         obscureText: true,
-        style: lightTheme.textTheme.labelSmall!.copyWith(
-          color: lightTheme.colorScheme.secondary,
+        style: themeData.textTheme.labelSmall!.copyWith(
+          color: themeData.colorScheme.secondary,
         ),
         decoration: InputDecoration(
           hintText: text,
           errorText: errorText,
         ),
-        onEditingComplete: () {
-          FocusScope.of(context).unfocus();
-        },
+        onEditingComplete: onEditCompleted,
         validator: FormValidation.isValidPassword,
         onChanged: onChanged,
       ),

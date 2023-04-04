@@ -24,6 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final phoneNumberFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
+
   String? phoneNumberErrorText;
   String? passwordErrorText;
 
@@ -67,6 +70,10 @@ class _LoginScreenState extends State<LoginScreen> {
               text: 'Phone number',
               controller: phoneNumberController,
               height: 72,
+              focusNode: phoneNumberFocusNode,
+              onEditCompleted: () {
+                FocusScope.of(context).requestFocus(passwordFocusNode);
+              },
               errorText: phoneNumberErrorText,
               onChanged: (value) {
                 setState(() {
@@ -80,6 +87,10 @@ class _LoginScreenState extends State<LoginScreen> {
               text: 'Password',
               controller: passwordController,
               height: 72,
+              focusNode: passwordFocusNode,
+              onEditCompleted: () {
+                FocusScope.of(context).requestFocus(phoneNumberFocusNode);
+              },
               errorText: passwordErrorText,
               onChanged: (value) {
                 setState(() {
