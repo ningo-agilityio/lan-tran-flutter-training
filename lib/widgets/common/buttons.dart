@@ -59,7 +59,7 @@ class _SAOutlinedButton extends SAButton {
         fixedSize: size,
         side: BorderSide(
           width: 2,
-          color: lightTheme.colorScheme.secondary,
+          color: themeData.colorScheme.secondary,
         ),
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -124,8 +124,8 @@ class _SAFloatingButton extends SAButton {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              lightTheme.colorScheme.primary,
-              lightTheme.colorScheme.onPrimary,
+              themeData.colorScheme.primary,
+              themeData.colorScheme.onPrimary,
             ],
           ),
           shape: BoxShape.circle,

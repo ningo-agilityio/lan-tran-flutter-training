@@ -5,24 +5,24 @@ class CustomIcons {
   static Icon appointmentScheduleIcon = Icon(
     Icons.schedule_outlined,
     size: 24,
-    color: lightTheme.colorScheme.tertiary,
+    color: themeData.colorScheme.tertiary,
   );
 
   static Icon breakTimeIcon = Icon(
     Icons.schedule_outlined,
     size: 24,
-    color: lightTheme.colorScheme.onSecondaryContainer,
+    color: themeData.colorScheme.onSecondaryContainer,
   );
 
   static Icon calendarScheduleIcon = Icon(
     Icons.schedule_outlined,
     size: 24,
-    color: lightTheme.colorScheme.secondary,
+    color: themeData.colorScheme.secondary,
   );
 
   static Icon addButtonIcon = Icon(
     Icons.add,
     size: 30,
-    color: lightTheme.colorScheme.secondary,
+    color: themeData.colorScheme.secondary,
   );
 }
