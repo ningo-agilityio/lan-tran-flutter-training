@@ -44,7 +44,7 @@ class SATextTheme {
         color: colorScheme.onSecondary,
       );
 
-  static final TextTheme _lightTextTheme = TextTheme(
+  static final TextTheme textTheme = TextTheme(
     titleLarge: _defaultTextStyle(
       fontSize: 20,
       fontWeight: FontWeight.w500,
@@ -76,7 +76,7 @@ class SATextTheme {
   );
 }
 
-ThemeData lightTheme = ThemeData(
+ThemeData themeData = ThemeData(
   brightness: Brightness.light,
   colorScheme: colorScheme,
   fontFamily: 'Poppins',
@@ -92,7 +92,7 @@ ThemeData lightTheme = ThemeData(
     size: 16,
   ),
   inputDecorationTheme: InputDecorationTheme(
-    hintStyle: SATextTheme._lightTextTheme.labelSmall!.copyWith(
+    hintStyle: SATextTheme.textTheme.labelSmall!.copyWith(
       color: colorScheme.secondary,
     ),
     contentPadding: const EdgeInsets.all(8),
@@ -112,5 +112,5 @@ ThemeData lightTheme = ThemeData(
       iconSize: const MaterialStatePropertyAll<double>(24),
     ),
   ),
-  textTheme: SATextTheme._lightTextTheme,
+  textTheme: SATextTheme.textTheme,
 );
