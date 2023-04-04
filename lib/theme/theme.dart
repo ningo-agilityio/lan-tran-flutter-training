@@ -91,6 +91,21 @@ ThemeData lightTheme = ThemeData(
     color: colorScheme.tertiary,
     size: 16,
   ),
+  inputDecorationTheme: InputDecorationTheme(
+    hintStyle: SATextTheme._lightTextTheme.labelSmall!.copyWith(
+      color: colorScheme.secondary,
+    ),
+    contentPadding: const EdgeInsets.all(8),
+    border: OutlineInputBorder(
+      borderSide: const BorderSide(
+        width: 2,
+        color: Colors.transparent,
+      ),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    filled: true,
+    fillColor: colorScheme.secondary.withOpacity(0.235),
+  ),
   iconButtonTheme: IconButtonThemeData(
     style: ButtonStyle(
       iconColor: MaterialStatePropertyAll<Color>(colorScheme.onTertiary),
