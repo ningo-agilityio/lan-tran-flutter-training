@@ -1,76 +1,134 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/theme/theme.dart';
 import 'package:salon_appointment/validations/validations.dart';
 
-class Input extends StatefulWidget {
-  const Input({
+class Input extends StatelessWidget {
+  Input({
     required this.text,
     required this.controller,
-    this.keyboardType,
     this.color,
-    this.obscureText = false,
+    this.height,
     super.key,
   });
 
+  factory Input.phoneNumber({
+    required String text,
+    required TextEditingController controller,
+    double? height,
+    String? errorText,
+    Function(String)? onChanged,
+  }) = _InputPhoneNumber;
+
+  factory Input.password({
+    required String text,
+    required TextEditingController controller,
+    double? height,
+    String? errorText,
+    Function(String)? onChanged,
+  }) = _InputPassword;
+
   final String text;
-  final TextInputType? keyboardType;
   final Color? color;
-  final bool obscureText;
   final TextEditingController controller;
-
-  @override
-  State<Input> createState() => _InputState();
-}
-
-class _InputState extends State<Input> {
+  final double? height;
   final _focusNode = FocusNode();
-
-  String? errorText;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      height: height,
       child: TextFormField(
-        controller: widget.controller,
+        controller: controller,
+        enableInteractiveSelection: true,
+        focusNode: _focusNode, // pass from screen
+        style: lightTheme.textTheme.labelSmall!.copyWith(
+          color: color,
+        ),
+        decoration: InputDecoration(
+            hintText: text,
+            hintStyle: lightTheme.textTheme.labelSmall!.copyWith(
+              color: color,
+            )),
+        onEditingComplete: () {
+          FocusScope.of(context).nextFocus();
+        },
+      ),
+    );
+  }
+}
+
+class _InputPhoneNumber extends Input {
+  _InputPhoneNumber({
+    required super.text,
+    required super.controller,
+    super.height,
+    this.errorText,
+    this.onChanged,
+  });
+
+  String? errorText;
+  Function(String)? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: TextFormField(
+        controller: controller,
         enableInteractiveSelection: true,
         focusNode: _focusNode,
-        keyboardType: widget.keyboardType,
-        style: TextStyle(color: widget.color),
-        obscureText: widget.obscureText,
+        keyboardType: TextInputType.phone,
+        style: lightTheme.textTheme.labelSmall!.copyWith(
+          color: lightTheme.colorScheme.secondary,
+        ),
         decoration: InputDecoration(
-          hintText: widget.text,
-          hintStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
-                color: widget.color,
-              ),
-          contentPadding: const EdgeInsets.all(8.0),
+          hintText: text,
           errorText: errorText,
-          border: OutlineInputBorder(
-            borderSide: const BorderSide(width: 5.0),
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          fillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.235),
         ),
         onEditingComplete: () {
           FocusScope.of(context).nextFocus();
         },
-        validator: (value) {
-          if (widget.text == 'Phone number') {
-            return FormValidation.isValidPhoneNumber(value);
-          }
-          if (widget.text == 'Password') {
-            return FormValidation.isValidPassword(value);
-          }
-          return null;
+        validator: FormValidation.isValidPhoneNumber,
+        onChanged: onChanged,
+      ),
+    );
+  }
+}
+
+@immutable
+class _InputPassword extends Input {
+  _InputPassword({
+    required super.text,
+    required super.controller,
+    super.height,
+    this.errorText,
+    this.onChanged,
+  });
+
+  String? errorText;
+  Function(String)? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: TextFormField(
+        controller: controller,
+        enableInteractiveSelection: true,
+        focusNode: _focusNode,
+        obscureText: true,
+        style: lightTheme.textTheme.labelSmall!.copyWith(
+          color: lightTheme.colorScheme.secondary,
+        ),
+        decoration: InputDecoration(
+          hintText: text,
+          errorText: errorText,
+        ),
+        onEditingComplete: () {
+          FocusScope.of(context).unfocus();
         },
-        onChanged: (value) {
-          setState(() {
-            if (widget.text == 'Phone number') {
-              errorText = FormValidation.isValidPhoneNumber(value);
-            }
-            if (widget.text == 'Password') {
-              errorText = FormValidation.isValidPassword(value);
-            }
-          });
-        },
+        validator: FormValidation.isValidPassword,
+        onChanged: onChanged,
       ),
     );
   }

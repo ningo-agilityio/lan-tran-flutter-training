@@ -3,7 +3,6 @@ import 'package:salon_appointment/apis/user_api.dart';
 import 'package:salon_appointment/controllers/user_controller.dart';
 import 'package:salon_appointment/models/user.dart';
 import 'package:salon_appointment/screens/scaffold.dart';
-import 'package:salon_appointment/theme/theme.dart';
 import 'package:salon_appointment/validations/validations.dart';
 import 'package:salon_appointment/widgets/common/buttons.dart';
 import 'package:salon_appointment/widgets/common/text.dart';
@@ -25,6 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
 
+  String? phoneNumberErrorText;
+  String? passwordErrorText;
+
   String phoneNumber = '';
   String password = '';
 
@@ -43,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return CommonLayout(
       child: Container(
-        margin: const EdgeInsets.all(32),
+        margin: const EdgeInsets.symmetric(horizontal: 32),
         height: screenHeight - keyboardHeight,
         child: Column(
           children: [
@@ -61,23 +63,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       child: SACustomText.logoText),
             ),
-            SizedBox(
+            Input.phoneNumber(
+              text: 'Phone number',
+              controller: phoneNumberController,
               height: 72,
-              child: Input(
-                controller: phoneNumberController,
-                text: 'Phone number',
-                keyboardType: TextInputType.number,
-                color: lightTheme.colorScheme.secondary,
-              ),
+              errorText: phoneNumberErrorText,
+              onChanged: (value) {
+                setState(() {
+                  phoneNumberErrorText =
+                      FormValidation.isValidPhoneNumber(value);
+                });
+              },
             ),
             const SizedBox(height: 16),
-            SizedBox(
+            Input.password(
+              text: 'Password',
+              controller: passwordController,
               height: 72,
-              child: Input(
-                controller: passwordController,
-                text: 'Password',
-                color: lightTheme.colorScheme.secondary,
-              ),
+              errorText: passwordErrorText,
+              onChanged: (value) {
+                setState(() {
+                  passwordErrorText = FormValidation.isValidPassword(value);
+                });
+              },
             ),
             const SizedBox(height: 16),
             ForgetPassword(
