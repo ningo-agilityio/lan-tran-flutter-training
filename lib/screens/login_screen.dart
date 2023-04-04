@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 72,
               focusNode: phoneNumberFocusNode,
               onEditCompleted: () {
-                FocusScope.of(context).requestFocus(passwordFocusNode);
+                FocusScope.of(context).nextFocus();
               },
               errorText: phoneNumberErrorText,
               onChanged: (value) {
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 72,
               focusNode: passwordFocusNode,
               onEditCompleted: () {
-                FocusScope.of(context).requestFocus(phoneNumberFocusNode);
+                FocusScope.of(context).unfocus();
               },
               errorText: passwordErrorText,
               onChanged: (value) {
