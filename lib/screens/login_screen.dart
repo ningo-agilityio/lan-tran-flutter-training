@@ -22,8 +22,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final controller = UserController();
 
-  String? phoneNumberErrorText;
-  String? passwordErrorText;
+  final phoneNumberController = TextEditingController();
+  final passwordController = TextEditingController();
+
   String phoneNumber = '';
   String password = '';
 
@@ -63,39 +64,19 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 72,
               child: Input(
+                controller: phoneNumberController,
                 text: 'Phone number',
                 keyboardType: TextInputType.number,
                 color: lightTheme.colorScheme.secondary,
-                errorText: phoneNumberErrorText,
-                validator: (value) {
-                  return FormValidation.isValidPhoneNumber(value!);
-                },
-                onChanged: (value) {
-                  setState(() {
-                    phoneNumberErrorText =
-                        FormValidation.isValidPhoneNumber(value);
-                    phoneNumber = value;
-                  });
-                },
               ),
             ),
             const SizedBox(height: 16),
             SizedBox(
               height: 72,
               child: Input(
+                controller: passwordController,
                 text: 'Password',
                 color: lightTheme.colorScheme.secondary,
-                errorText: passwordErrorText,
-                obscureText: true,
-                validator: (value) {
-                  return FormValidation.isValidPassword(value!);
-                },
-                onChanged: (value) {
-                  setState(() {
-                    passwordErrorText = FormValidation.isValidPassword(value);
-                    password = value;
-                  });
-                },
               ),
             ),
             const SizedBox(height: 16),
@@ -106,6 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
             SAButton.outlined(
                 child: SACustomText.loginText,
                 onPress: () {
+                  phoneNumber = phoneNumberController.text;
+                  password = passwordController.text;
                   FormValidation.isLoginSuccess(users, phoneNumber, password) !=
                           null
                       ? showSnackBar(
