@@ -23,8 +23,7 @@ class CommonLayout extends StatelessWidget {
           image: DecorationImage(
             image: bgImage ?? const AssetImage('assets/background.png'),
             colorFilter: ColorFilter.mode(
-              bgColor ??
-                  SATheme.lightTheme.colorScheme.primary.withOpacity(0.5),
+              bgColor ?? themeData.colorScheme.primary.withOpacity(0.5),
               BlendMode.multiply,
             ),
             fit: BoxFit.cover,
