@@ -9,6 +9,11 @@ class CustomText extends StatelessWidget {
     required TextStyle style,
   }) = _AppBarTitle;
 
+  const factory CustomText.calendarSchedule({
+    required String text,
+    required TextStyle style,
+  }) = _CalendarSchedule;
+
   final String text;
   final TextStyle style;
 
@@ -33,6 +38,24 @@ class _AppBarTitle extends CustomText {
       text,
       style: style.copyWith(
         color: themeData.colorScheme.onSecondary,
+      ),
+    );
+  }
+}
+
+class _CalendarSchedule extends CustomText {
+  const _CalendarSchedule({
+    required super.text,
+    required super.style,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      textAlign: TextAlign.justify,
+      style: style.copyWith(
+        color: themeData.colorScheme.secondary,
       ),
     );
   }
