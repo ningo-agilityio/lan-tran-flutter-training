@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/screens/appointments_screen.dart';
 import 'package:salon_appointment/screens/calendar_screen.dart';
-import 'package:salon_appointment/screens/scaffold.dart';
 import 'package:salon_appointment/screens/splash_screen.dart';
-import 'theme/theme.dart';
+import 'package:salon_appointment/theme/theme.dart';
 
 void main() {
   runApp(
@@ -19,13 +18,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: SATheme.lightTheme,
+      theme: themeData,
       routes: {
-        '/mainscaffold': (context) => MainScaffold(),
-        '/calendar': (context) => CalendarScreen(),
-        '/appointments': (context) => AppointmentsScreen(),
+        '/calendar': (context) => const CalendarScreen(),
+        '/appointment': (context) => const AppointmentScreen(),
       },
-      initialRoute: '/mainscaffold',
       home: const SplashScreen(),
     );
   }
