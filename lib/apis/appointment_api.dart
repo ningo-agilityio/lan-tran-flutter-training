@@ -6,8 +6,8 @@ import 'package:salon_appointment/models/appointment.dart';
 const String apiUrl = 'https://63ab8e97fdc006ba60609b9b.mockapi.io/endpoint';
 
 class AppointmentApi {
-  static Future<List<Appointment>> getAppointments() async {
-    final url = Uri.parse('$apiUrl/appointments');
+  static Future<List<Appointment>> getAppointments(String userId) async {
+    final url = Uri.parse('$apiUrl/appointments?userId=$userId');
     late List<Appointment> responseData;
 
     final response = await http.get(url);
@@ -31,18 +31,4 @@ class AppointmentApi {
 
     return responseData;
   }
-
-  // static Future<Appointment> addAppointment() async {
-  //   final response = await http.post(
-  //     Uri.parse('https://jsonplaceholder.typicode.com/albums'),
-
-  //   );
-
-  //   if (response.statusCode == 201) {
-  //     return Appointment.fromJson(
-  //         jsonDecode(response.body) as Map<dynamic, dynamic>);
-  //   } else {
-  //     throw Exception('Failed to create appointment.');
-  //   }
-  // }
 }
