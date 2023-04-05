@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:salon_appointment/layouts/private_layout.dart';
 import 'package:salon_appointment/models/appointment.dart';
 import 'package:salon_appointment/theme/theme.dart';
 import 'package:salon_appointment/utils.dart';
 import 'package:salon_appointment/widgets/appointment_card.dart';
+import 'package:salon_appointment/widgets/common/text.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../controllers/appointment_controller.dart';
@@ -20,7 +22,7 @@ class AppointmentScreen extends StatefulWidget {
 class _AppointmentScreenState extends State<AppointmentScreen> {
   final controller = AppointmentController();
   final eventsController = StreamController<List<Appointment>?>();
-  final textColor = SATheme.lightTheme.colorScheme.onSecondary;
+  final textColor = themeData.colorScheme.onSecondary;
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
@@ -56,18 +58,13 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Appointments',
-          style: SATheme.lightTheme.textTheme.titleLarge!.copyWith(
-            color: textColor,
-          ),
-        ),
-      ),
-      body: Column(
+    return MainScaffold(
+      currentIndex: 0,
+      title: 'Appointments',
+      child: Column(
         children: [
           TableCalendar<Appointment>(
+            headerVisible: false,
             firstDay: kFirstDay,
             lastDay: kLastDay,
             focusedDay: _focusedDay,
@@ -79,6 +76,18 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: const CalendarStyle(
               outsideDaysVisible: false,
+            ),
+            daysOfWeekStyle: DaysOfWeekStyle(
+              decoration: BoxDecoration(
+                color: themeData.colorScheme.primary,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    offset: const Offset(0, 8),
+                    color: themeData.colorScheme.primary.withOpacity(0.3219),
+                  ),
+                ],
+              ),
             ),
             onDaySelected: (selectedDay, focusedDay) {
               if (!isSameDay(_selectedDay, selectedDay)) {
@@ -99,7 +108,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
           ),
           Text(
             dateFormat.format(_selectedDay!),
-            style: SATheme.lightTheme.textTheme.labelSmall!.copyWith(
+            style: themeData.textTheme.labelSmall!.copyWith(
               color: textColor,
             ),
           ),
@@ -115,7 +124,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     child: Center(
                       child: Text(
                         'There are no appointments.',
-                        style: SATheme.lightTheme.textTheme.bodyLarge!.copyWith(
+                        style: themeData.textTheme.bodyLarge!.copyWith(
                           color: textColor,
                         ),
                       ),
