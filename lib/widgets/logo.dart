@@ -8,8 +8,8 @@ class Logo extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Positioned(
-          top: 210.0,
+        const Positioned(
+          top: 195,
           child: Text(
             'avisit',
             style: TextStyle(
@@ -20,7 +20,7 @@ class Logo extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 80.0,
+          top: 80,
           child: Text(
             'av',
             style: TextStyle(
