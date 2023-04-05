@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:salon_appointment/models/user.dart';
-
 class FormValidation {
   static String? isValidPhoneNumber(String? phoneNumber) {
     if (phoneNumber == '') {
@@ -18,23 +15,5 @@ class FormValidation {
       return 'Password must be at least 6 characters.';
     }
     return null;
-  }
-
-  static String? isLoginSuccess(
-    List<User> users,
-    String? phoneNumber,
-    String? password,
-  ) {
-    if (isValidPassword(password) != null ||
-        isValidPhoneNumber(phoneNumber) != null) {
-      return 'Phone number or Password is invalid.';
-    }
-
-    for (var user in users) {
-      if (phoneNumber == user.phoneNumber && password == user.password) {
-        return null;
-      }
-    }
-    return 'Phone number or password is incorrect.';
   }
 }
