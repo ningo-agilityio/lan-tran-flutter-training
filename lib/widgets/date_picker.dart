@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/theme/theme.dart';
 import 'package:intl/intl.dart';
+import 'package:salon_appointment/theme/theme.dart';
 
 class DatePicker extends StatelessWidget {
   DatePicker({
-    super.key,
     required this.dateTime,
+    super.key,
   });
 
   DateTime dateTime;
@@ -14,13 +14,13 @@ class DatePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0),
+      padding: const EdgeInsets.only(left: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Icon(
             Icons.schedule,
-            size: 24.0,
+            size: 24,
             color: Theme.of(context).colorScheme.onSecondaryContainer,
           ),
           Text(
@@ -40,9 +40,9 @@ class DatePicker extends StatelessWidget {
                 lastDate: DateTime(dateTime.year + 5),
                 builder: (context, child) {
                   return Theme(
-                    data: SATheme.lightTheme.copyWith(
+                    data: themeData.copyWith(
                       colorScheme: ColorScheme.light(
-                          onPrimary: SATheme.lightTheme.colorScheme.secondary),
+                          onPrimary: themeData.colorScheme.secondary),
                     ),
                     child: child!,
                   );
@@ -50,7 +50,7 @@ class DatePicker extends StatelessWidget {
               ),
               icon: Icon(
                 Icons.calendar_month,
-                size: 24.0,
+                size: 24,
                 color: Theme.of(context).colorScheme.onSecondaryContainer,
               ),
             ),
