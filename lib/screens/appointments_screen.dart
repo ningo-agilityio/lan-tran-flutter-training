@@ -2,12 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:salon_appointment/layouts/private_layout.dart';
+import 'package:salon_appointment/layouts/main_layout.dart';
 import 'package:salon_appointment/models/appointment.dart';
 import 'package:salon_appointment/theme/theme.dart';
 import 'package:salon_appointment/utils.dart';
 import 'package:salon_appointment/widgets/appointment_card.dart';
-import 'package:salon_appointment/widgets/common/text.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../controllers/appointment_controller.dart';
@@ -35,7 +34,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   void _loadEvents() {
     eventsController.sink.add(null);
-    controller.load(_selectedDay!).then((value) {
+    controller.load(_selectedDay!, '1').then((value) {
       eventsController.sink.add(value);
     });
   }
@@ -58,7 +57,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MainScaffold(
+    return MainLayout(
       currentIndex: 0,
       title: 'Appointments',
       child: Column(

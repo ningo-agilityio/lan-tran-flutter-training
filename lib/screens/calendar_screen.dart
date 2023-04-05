@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/layouts/private_layout.dart';
+import 'package:intl/intl.dart';
+import 'package:salon_appointment/layouts/main_layout.dart';
 import 'package:salon_appointment/models/appointment.dart';
 import 'package:salon_appointment/theme/theme.dart';
-import 'package:salon_appointment/widgets/common/text.dart';
+import 'package:salon_appointment/widgets/calendar_schedule.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../controllers/appointment_controller.dart';
 import '../utils.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -15,9 +19,12 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  late final ValueNotifier<List<Appointment>> _selectedEvents;
+  final controller = AppointmentController();
+  final eventsController = StreamController<List<Appointment>?>();
 
   final colorScheme = themeData.colorScheme;
+
+  final DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
@@ -27,47 +34,36 @@ class _CalendarScreenState extends State<CalendarScreen> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  Map<DateTime, List<Appointment>> kEvents = {};
+  void _loadEvents() {
+    eventsController.sink.add(null);
+    controller.load(_selectedDay!, '1').then((value) {
+      eventsController.sink.add(value);
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
-  }
-
-  @override
-  void dispose() {
-    _selectedEvents.dispose();
-    super.dispose();
-  }
-
-  List<Appointment> _getEventsForDay(DateTime day) {
-    return kEvents[day] ?? [];
-  }
-
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-        _rangeStart = null;
-        _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
-      });
-
-      _selectedEvents.value = _getEventsForDay(selectedDay);
+    if (_selectedDay != null) {
+      _loadEvents();
     }
   }
 
   @override
+  void dispose() {
+    eventsController.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MainScaffold(
+    return MainLayout(
       currentIndex: 1,
       title: 'Calendar',
       child: Column(
         children: [
-          TableCalendar(
+          TableCalendar<Appointment>(
             firstDay: kFirstDay,
             lastDay: kLastDay,
             focusedDay: _focusedDay,
@@ -76,9 +72,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
             rangeEndDay: _rangeEnd,
             calendarFormat: _calendarFormat,
             rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
-            onDaySelected: _onDaySelected,
+            onDaySelected: (selectedDay, focusedDay) {
+              if (!isSameDay(_selectedDay, selectedDay)) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                  _rangeStart = null;
+                  _rangeEnd = null;
+                  _rangeSelectionMode = RangeSelectionMode.toggledOff;
+                });
+
+                _loadEvents();
+              }
+            },
             onFormatChanged: (format) {
               if (_calendarFormat != format) {
                 setState(() {
@@ -90,31 +97,50 @@ class _CalendarScreenState extends State<CalendarScreen> {
               _focusedDay = focusedDay;
             },
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Container(
-              width: double.infinity,
-              height: 228,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    colorScheme.primary,
-                    colorScheme.onPrimary,
-                  ],
-                ),
-              ),
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  'Show appointments (${_getEventsForDay(_selectedDay!).length})',
-                  style: themeData.textTheme.bodySmall!
-                      .copyWith(color: colorScheme.secondary),
-                ),
-              ),
-            ),
-          ),
+          StreamBuilder(
+              stream: eventsController.stream,
+              builder: (_, snapshot) {
+                if (snapshot.hasData) {
+                  final events = snapshot.data ?? [];
+                  if (events.isEmpty) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height / 3,
+                      child: Center(
+                        child: Text(
+                          'There are no appointments.',
+                          style: themeData.textTheme.bodyLarge!.copyWith(
+                            color: colorScheme.onSecondary,
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Container(
+                      margin: const EdgeInsets.only(top: 8),
+                      alignment: Alignment.centerLeft,
+                      width: double.infinity,
+                      height: 228,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            colorScheme.primary,
+                            colorScheme.onPrimary,
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                      child: CalendarSchedule(appointment: events.first),
+                    );
+                  }
+                }
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 3,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }),
         ],
       ),
     );
