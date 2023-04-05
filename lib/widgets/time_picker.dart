@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/theme/theme.dart';
-import 'package:intl/intl.dart';
 
 class TimePicker extends StatefulWidget {
   TimePicker({
-    super.key,
     required this.startTime,
+    super.key,
   });
 
   TimeOfDay startTime;
@@ -50,9 +49,9 @@ class _TimePickerState extends State<TimePicker> {
             initialTime: widget.startTime,
             builder: (context, child) {
               return Theme(
-                data: SATheme.lightTheme.copyWith(
+                data: themeData.copyWith(
                   colorScheme: ColorScheme.light(
-                      onPrimary: SATheme.lightTheme.colorScheme.secondary),
+                      onPrimary: themeData.colorScheme.secondary),
                 ),
                 child: child!,
               );
@@ -66,7 +65,7 @@ class _TimePickerState extends State<TimePicker> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Text(
             'To:',
             style: Theme.of(context).textTheme.labelLarge!.copyWith(
@@ -80,9 +79,9 @@ class _TimePickerState extends State<TimePicker> {
             initialTime: endTime,
             builder: (context, child) {
               return Theme(
-                data: SATheme.lightTheme.copyWith(
+                data: themeData.copyWith(
                   colorScheme: ColorScheme.light(
-                      onPrimary: SATheme.lightTheme.colorScheme.secondary),
+                      onPrimary: themeData.colorScheme.secondary),
                 ),
                 child: child!,
               );
