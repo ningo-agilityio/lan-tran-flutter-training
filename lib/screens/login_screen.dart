@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:salon_appointment/apis/user_api.dart';
 import 'package:salon_appointment/controllers/user_controller.dart';
 import 'package:salon_appointment/models/user.dart';
-import 'package:salon_appointment/screens/scaffold.dart';
+import 'package:salon_appointment/screens/calendar_screen.dart';
 import 'package:salon_appointment/validations/validations.dart';
 import 'package:salon_appointment/widgets/common/buttons.dart';
 import 'package:salon_appointment/widgets/common/text.dart';
@@ -38,7 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    UserApi.getUsers().then((value) => users = value);
   }
 
   @override
@@ -79,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 setState(() {
                   phoneNumberErrorText =
                       FormValidation.isValidPhoneNumber(value);
+                  phoneNumber = phoneNumberController.text;
                 });
               },
             ),
@@ -95,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
               onChanged: (value) {
                 setState(() {
                   passwordErrorText = FormValidation.isValidPassword(value);
+                  password = passwordController.text;
                 });
               },
             ),
@@ -105,20 +106,24 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 24),
             SAButton.outlined(
                 child: SACustomText.loginText,
-                onPress: () {
-                  phoneNumber = phoneNumberController.text;
-                  password = passwordController.text;
-                  FormValidation.isLoginSuccess(users, phoneNumber, password) !=
-                          null
-                      ? showSnackBar(
-                          Text(FormValidation.isLoginSuccess(
-                              users, phoneNumber, password)!),
-                        )
-                      : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MainScaffold()),
-                        );
+                onPress: () async {
+                  if (FormValidation.isValidPassword(password) != null ||
+                      FormValidation.isValidPhoneNumber(phoneNumber) != null) {
+                    showSnackBar('Phone number or Password is invalid.');
+                    return;
+                  }
+                  final User? user =
+                      await controller.getUser(phoneNumber, password);
+                  if (user == null) {
+                    showSnackBar('Phone number or Password is incorrect.');
+                    return;
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CalendarScreen()),
+                    );
+                  }
                 }),
           ],
         ),
@@ -126,11 +131,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void showSnackBar(Widget content) {
+  void showSnackBar(String text) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 1),
-        content: content,
+        content: Text(text),
       ),
     );
   }
