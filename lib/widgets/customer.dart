@@ -1,39 +1,42 @@
 import 'package:flutter/material.dart';
 
+import '../models/user.dart';
+
 class Customer extends StatelessWidget {
-  final String customerName;
-  Customer({super.key, required this.customerName});
+  Customer({
+    required this.user,
+    super.key,
+  });
+  User user;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SafeArea(
-        child: Row(
-          children: [
-            Container(
-              width: 18,
-              height: 18,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: AssetImage('assets/user.png'),
-                ),
+    return SafeArea(
+      child: Row(
+        children: [
+          Container(
+            width: 18,
+            height: 18,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(user.avatar),
               ),
             ),
-            SizedBox(
-              width: 10.0,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            user.name,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xFF553BA3),
             ),
-            Text(
-              '${customerName}',
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(0xFF553BA3),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
