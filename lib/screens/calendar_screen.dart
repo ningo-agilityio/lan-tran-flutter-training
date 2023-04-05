@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/screens/appointments_screen.dart';
+import 'package:salon_appointment/layouts/private_layout.dart';
+import 'package:salon_appointment/models/appointment.dart';
 import 'package:salon_appointment/theme/theme.dart';
+import 'package:salon_appointment/widgets/common/text.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:salon_appointment/widgets/common/buttons.dart';
-import 'package:salon_appointment/widgets/add_button.dart';
-import 'package:salon_appointment/widgets/date_picker.dart';
-import 'package:salon_appointment/widgets/time_picker.dart';
 
 import '../utils.dart';
-import 'scaffold.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -19,18 +16,22 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   late final ValueNotifier<List<Appointment>> _selectedEvents;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
-      .toggledOff; // Can be toggled on/off by long pressing a date
+
+  final colorScheme = themeData.colorScheme;
+
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
+  Map<DateTime, List<Appointment>> kEvents = {};
+
   @override
   void initState() {
     super.initState();
-
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
@@ -42,17 +43,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   List<Appointment> _getEventsForDay(DateTime day) {
-    // Implementation example
     return kEvents[day] ?? [];
-  }
-
-  List<Appointment> _getEventsForRange(DateTime start, DateTime end) {
-    // Implementation example
-    final days = daysInRange(start, end);
-
-    return [
-      for (final d in days) ..._getEventsForDay(d),
-    ];
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -60,7 +51,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
+        _rangeStart = null;
         _rangeEnd = null;
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
@@ -69,39 +60,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }
   }
 
-  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
-    setState(() {
-      _selectedDay = null;
-      _focusedDay = focusedDay;
-      _rangeStart = start;
-      _rangeEnd = end;
-      _rangeSelectionMode = RangeSelectionMode.toggledOn;
-    });
-
-    // `start` or `end` could be null
-    if (start != null && end != null) {
-      _selectedEvents.value = _getEventsForRange(start, end);
-    } else if (start != null) {
-      _selectedEvents.value = _getEventsForDay(start);
-    } else if (end != null) {
-      _selectedEvents.value = _getEventsForDay(end);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: SizedBox(
-          child: Text(
-            'Calendar',
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.onSecondary,
-                ),
-          ),
-        ),
-      ),
-      body: Column(
+    return MainScaffold(
+      currentIndex: 1,
+      title: 'Calendar',
+      child: Column(
         children: [
           TableCalendar(
             firstDay: kFirstDay,
@@ -113,9 +77,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             calendarFormat: _calendarFormat,
             rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.sunday,
+            startingDayOfWeek: StartingDayOfWeek.monday,
             onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
             onFormatChanged: (format) {
               if (_calendarFormat != format) {
                 setState(() {
@@ -127,8 +90,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
               _focusedDay = focusedDay;
             },
           ),
-          const SizedBox(height: 8.0),
-          Expanded(
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
             child: Container(
               width: double.infinity,
               height: 228,
@@ -137,8 +100,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    SATheme.lightTheme.colorScheme.primary,
-                    SATheme.lightTheme.colorScheme.onPrimary,
+                    colorScheme.primary,
+                    colorScheme.onPrimary,
                   ],
                 ),
               ),
@@ -146,8 +109,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 onPressed: () {},
                 child: Text(
                   'Show appointments (${_getEventsForDay(_selectedDay!).length})',
-                  style: SATheme.lightTheme.textTheme.bodySmall!.copyWith(
-                      color: SATheme.lightTheme.colorScheme.secondary),
+                  style: themeData.textTheme.bodySmall!
+                      .copyWith(color: colorScheme.secondary),
                 ),
               ),
             ),
