@@ -4,8 +4,8 @@ import 'package:salon_appointment/apis/appointment_api.dart';
 import 'package:salon_appointment/models/appointment.dart';
 
 class AppointmentController {
-  Future<List<Appointment>> load(DateTime date) async {
-    final appointments = await AppointmentApi.getAppointments();
+  Future<List<Appointment>> load(DateTime date, String id) async {
+    final appointments = await AppointmentApi.getAppointments(id);
     final dateMap = groupBy(appointments, (p0) => p0.date);
     final dateStr = DateFormat.yMd().format(date);
 
