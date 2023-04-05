@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/widgets/common/buttons.dart';
+import 'package:salon_appointment/theme/theme.dart';
 
 class CusTomBottomAppBar extends StatelessWidget {
   const CusTomBottomAppBar({
-    super.key,
     required this.currentIndex,
     required this.onTap,
+    super.key,
   });
 
   final int currentIndex;
@@ -17,12 +17,12 @@ class CusTomBottomAppBar extends StatelessWidget {
       shape: const CircularNotchedRectangle(),
       clipBehavior: Clip.antiAlias,
       child: BottomNavigationBar(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        backgroundColor: themeData.colorScheme.secondary,
         currentIndex: currentIndex,
         onTap: onTap,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: Theme.of(context).colorScheme.onTertiary,
+        selectedItemColor: themeData.colorScheme.primary,
+        unselectedItemColor: themeData.colorScheme.onTertiary,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: const <BottomNavigationBarItem>[
@@ -44,35 +44,6 @@ class CusTomBottomAppBar extends StatelessWidget {
           ),
         ],
       ),
-      // IconButtonTheme(
-      //   data: IconButtonThemeData(),
-      //   child: Padding(
-      //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      //     child: Row(
-      //       children: <Widget>[
-      //         SAButton.icon(
-      //           icon: const Icon(Icons.check),
-      //           onPress: () {},
-      //         ),
-      //         SizedBox(width: 16.0),
-      //         SAButton.icon(
-      //           icon: const Icon(Icons.schedule),
-      //           onPress: () {},
-      //         ),
-      //         const Spacer(),
-      //         SAButton.icon(
-      //           icon: const Icon(Icons.person),
-      //           onPress: () {},
-      //         ),
-      //         SizedBox(width: 16.0),
-      //         SAButton.icon(
-      //           icon: const Icon(Icons.notifications),
-      //           onPress: () {},
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
