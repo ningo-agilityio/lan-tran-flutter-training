@@ -45,7 +45,7 @@ class _MainLayoutState extends State<MainLayout> {
       ),
       body: widget.child,
       floatingActionButton: SAButton.floating(
-        child: CustomIcons.addButton,
+        child: CustomIcons.add,
         onPress: () => ModalBottomSheet.show(context),
       ),
       floatingActionButtonLocation: _fabLocation,
