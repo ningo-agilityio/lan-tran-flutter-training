@@ -24,7 +24,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   final colorScheme = themeData.colorScheme;
 
-  final DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
+  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
