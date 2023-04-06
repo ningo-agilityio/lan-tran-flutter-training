@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:salon_appointment/models/user.dart';
 
-const String apiUrl = 'https://63ab8e97fdc006ba60609b9b.mockapi.io/endpoint';
+import 'constants.dart';
 
 class UserApi {
   static Future<List<User>> getUsers() async {
