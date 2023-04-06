@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/apis/user_api.dart';
 import 'package:salon_appointment/controllers/user_controller.dart';
 import 'package:salon_appointment/models/user.dart';
 import 'package:salon_appointment/screens/calendar_screen.dart';
@@ -10,6 +9,7 @@ import 'package:salon_appointment/widgets/forget_password.dart';
 import 'package:salon_appointment/widgets/input.dart';
 
 import '../layouts/common_layout.dart';
+import '../validations/errors.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -109,13 +109,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPress: () async {
                   if (FormValidation.isValidPassword(password) != null ||
                       FormValidation.isValidPhoneNumber(phoneNumber) != null) {
-                    showSnackBar('Phone number or Password is invalid.');
+                    showSnackBar(Errors.INVALID_ACCOUNT);
                     return;
                   }
                   final User? user =
                       await controller.getUser(phoneNumber, password);
                   if (user == null) {
-                    showSnackBar('Phone number or Password is incorrect.');
+                    showSnackBar(Errors.INCORRECT_ACCOUNT);
                     return;
                   } else {
                     Navigator.push(
