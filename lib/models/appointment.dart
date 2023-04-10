@@ -27,9 +27,9 @@ class Appointment {
 
   Map<String, dynamic> toJson() => {
         'userId': userId,
-        'date': date,
-        'startTime': startTime,
-        'endTime': endTime,
+        'date': date.toString(),
+        'startTime': startTime.toString(),
+        'endTime': endTime.toString(),
         'services': services,
         'description': description,
         'isCompleted': isCompleted,
