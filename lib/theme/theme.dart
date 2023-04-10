@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ColorName {
   static const primaryColor = Color(0xFF553BA3);
-  static const onPrimaryColor = Color(0xFF7D32BA);
+  static const onSurfaceColor = Color(0xFF7D32BA);
   static const textColor = Color(0xFFFFFFFF);
   static const servicesColor = Color(0xFF0C122A);
   static const descriptionColor = Color(0xFFA4A8B2);
@@ -17,7 +17,7 @@ class ColorName {
 const ColorScheme colorScheme = ColorScheme(
   brightness: Brightness.light,
   primary: ColorName.primaryColor,
-  onPrimary: ColorName.onPrimaryColor,
+  onPrimary: ColorName.textColor,
   secondary: ColorName.textColor,
   onSecondary: ColorName.servicesColor,
   secondaryContainer: ColorName.descriptionColor,
@@ -29,18 +29,20 @@ const ColorScheme colorScheme = ColorScheme(
   background: ColorName.backgroundColor,
   onBackground: ColorName.backgroundColor,
   surface: ColorName.surfaceColor,
-  onSurface: ColorName.surfaceColor,
+  onSurface: ColorName.onSurfaceColor,
 );
 
 class SATextTheme {
   static TextStyle _defaultTextStyle({
     required double fontSize,
     required FontWeight? fontWeight,
+    double? lineHeight,
   }) =>
       TextStyle(
         fontStyle: FontStyle.normal,
         fontSize: fontSize,
         fontWeight: fontWeight,
+        height: (lineHeight ?? fontSize) / fontSize,
         color: colorScheme.onSecondary,
       );
 
@@ -48,18 +50,22 @@ class SATextTheme {
     titleLarge: _defaultTextStyle(
       fontSize: 20,
       fontWeight: FontWeight.w500,
+      lineHeight: 30,
     ),
     labelLarge: _defaultTextStyle(
       fontSize: 17,
       fontWeight: FontWeight.w500,
+      lineHeight: 25.5,
     ),
     labelMedium: _defaultTextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w500,
+      lineHeight: 20,
     ),
     labelSmall: _defaultTextStyle(
       fontSize: 15,
       fontWeight: FontWeight.w400,
+      lineHeight: 20,
     ),
     bodyLarge: _defaultTextStyle(
       fontSize: 14,
@@ -68,10 +74,12 @@ class SATextTheme {
     bodyMedium: _defaultTextStyle(
       fontSize: 13,
       fontWeight: FontWeight.w500,
+      lineHeight: 20,
     ),
     bodySmall: _defaultTextStyle(
       fontSize: 12,
       fontWeight: FontWeight.w400,
+      lineHeight: 16,
     ),
   );
 }
@@ -113,4 +121,7 @@ ThemeData themeData = ThemeData(
     ),
   ),
   textTheme: SATextTheme.textTheme,
+  timePickerTheme: TimePickerThemeData(
+    backgroundColor: colorScheme.background,
+  ),
 );
