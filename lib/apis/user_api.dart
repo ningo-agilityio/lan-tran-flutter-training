@@ -10,8 +10,8 @@ class UserApi {
     final url = Uri.parse('$apiUrl/users');
     late List<User> responseData;
 
-    final response = await http.get(url);
     try {
+      final response = await http.get(url);
       if (response.statusCode == 200) {
         responseData = (json.decode(response.body) as List)
             .map((user) => User.fromJson(user as Map<String, dynamic>))
@@ -20,9 +20,7 @@ class UserApi {
         throw Exception('Failed to load users.');
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      throw Exception(e);
     }
     return responseData;
   }
