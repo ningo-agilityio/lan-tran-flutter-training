@@ -1,98 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/theme/theme.dart';
+import 'package:salon_appointment/widgets/common/text.dart';
 
-class TimePicker extends StatefulWidget {
+class TimePicker extends StatelessWidget {
   TimePicker({
     required this.startTime,
+    required this.endTime,
+    required this.onStartTimePressed,
+    required this.onEndTimePressed,
     super.key,
   });
 
   TimeOfDay startTime;
-
-  @override
-  State<TimePicker> createState() => _TimePickerState();
-}
-
-class _TimePickerState extends State<TimePicker> {
-  late TimeOfDay endTime;
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      endTime = (widget.startTime.minute + 30) >= 60
-          ? TimeOfDay(
-              hour: widget.startTime.hour + 1,
-              minute: (widget.startTime.minute + 30) % 60,
-            )
-          : TimeOfDay(
-              hour: widget.startTime.hour,
-              minute: widget.startTime.minute + 30,
-            );
-    });
-  }
+  TimeOfDay endTime;
+  VoidCallback onStartTimePressed;
+  VoidCallback onEndTimePressed;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text(
-          'From:',
-          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onSecondaryContainer,
-              ),
+        const CustomText.timePicker(text: 'From:'),
+        OutlinedButton(
+          onPressed: onStartTimePressed,
+          child: CustomText.timePicker(text: startTime.format(context)),
+        ),
+        const Padding(
+          padding: EdgeInsets.all(8),
+          child: CustomText.timePicker(text: 'To:'),
         ),
         OutlinedButton(
-          onPressed: () => showTimePicker(
-            context: context,
-            initialTime: widget.startTime,
-            builder: (context, child) {
-              return Theme(
-                data: themeData.copyWith(
-                  colorScheme: ColorScheme.light(
-                      onPrimary: themeData.colorScheme.secondary),
-                ),
-                child: child!,
-              );
-            },
-          ),
-          child: Text(
-            widget.startTime.format(context),
-            style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            'To:',
-            style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
-          ),
-        ),
-        OutlinedButton(
-          onPressed: () => showTimePicker(
-            context: context,
-            initialTime: endTime,
-            builder: (context, child) {
-              return Theme(
-                data: themeData.copyWith(
-                  colorScheme: ColorScheme.light(
-                      onPrimary: themeData.colorScheme.secondary),
-                ),
-                child: child!,
-              );
-            },
-          ),
-          child: Text(
-            endTime.format(context),
-            style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
-          ),
+          onPressed: onEndTimePressed,
+          child: CustomText.timePicker(text: endTime.format(context)),
         ),
       ],
     );

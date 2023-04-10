@@ -10,6 +10,7 @@ class Input extends StatelessWidget {
     required this.onEditCompleted,
     this.color,
     this.height,
+    this.maxLines,
     super.key,
   });
 
@@ -39,6 +40,7 @@ class Input extends StatelessWidget {
   final VoidCallback onEditCompleted;
   final TextEditingController controller;
   final double? height;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +59,7 @@ class Input extends StatelessWidget {
             color: color,
           ),
         ),
+        maxLines: maxLines,
         onEditingComplete: onEditCompleted,
       ),
     );

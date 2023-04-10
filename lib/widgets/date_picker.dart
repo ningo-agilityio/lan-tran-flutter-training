@@ -5,9 +5,11 @@ import 'package:salon_appointment/theme/theme.dart';
 class DatePicker extends StatelessWidget {
   DatePicker({
     required this.dateTime,
+    required this.onPressed,
     super.key,
   });
 
+  VoidCallback onPressed;
   DateTime dateTime;
   DateFormat dateFormat = DateFormat('MM/dd/yyyy');
 
@@ -33,21 +35,7 @@ class DatePicker extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: IconButton(
-              onPressed: () => showDatePicker(
-                context: context,
-                initialDate: dateTime,
-                firstDate: dateTime,
-                lastDate: DateTime(dateTime.year + 5),
-                builder: (context, child) {
-                  return Theme(
-                    data: themeData.copyWith(
-                      colorScheme: ColorScheme.light(
-                          onPrimary: themeData.colorScheme.secondary),
-                    ),
-                    child: child!,
-                  );
-                },
-              ),
+              onPressed: onPressed,
               icon: Icon(
                 Icons.calendar_month,
                 size: 24,

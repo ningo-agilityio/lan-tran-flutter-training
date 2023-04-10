@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:salon_appointment/theme/theme.dart';
 
 class CustomText extends StatelessWidget {
-  const CustomText({required this.text, required this.style, super.key});
+  const CustomText({
+    required this.text,
+    this.style,
+    super.key,
+  });
 
   const factory CustomText.appBarTitle({
     required String text,
@@ -14,8 +18,12 @@ class CustomText extends StatelessWidget {
     required TextStyle style,
   }) = _CalendarSchedule;
 
+  const factory CustomText.timePicker({
+    required String text,
+  }) = _TimePicker;
+
   final String text;
-  final TextStyle style;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +44,7 @@ class _AppBarTitle extends CustomText {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: style.copyWith(
+      style: style!.copyWith(
         color: themeData.colorScheme.onSecondary,
       ),
     );
@@ -54,8 +62,25 @@ class _CalendarSchedule extends CustomText {
     return Text(
       text,
       textAlign: TextAlign.justify,
-      style: style.copyWith(
+      style: style!.copyWith(
         color: themeData.colorScheme.secondary,
+      ),
+    );
+  }
+}
+
+class _TimePicker extends CustomText {
+  const _TimePicker({
+    required super.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      textAlign: TextAlign.justify,
+      style: themeData.textTheme.labelLarge!.copyWith(
+        color: themeData.colorScheme.onSecondaryContainer,
       ),
     );
   }

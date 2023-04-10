@@ -11,7 +11,7 @@ class CalendarSchedule extends StatelessWidget {
 
   final Appointment appointment;
 
-  final DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
+  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class CalendarSchedule extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 22, left: 15),
+          padding: const EdgeInsets.only(top: 26, left: 15),
           child: CustomIcons.calendarSchedule,
         ),
         Expanded(
@@ -31,15 +31,15 @@ class CalendarSchedule extends StatelessWidget {
                 const SizedBox(height: 22),
                 CustomText.calendarSchedule(
                   text: dateFormat.format(appointment.date),
-                  style: themeData.textTheme.labelLarge!.copyWith(
-                    height: 24 / 14,
-                  ),
+                  style: themeData.textTheme.labelLarge!,
                 ),
                 const SizedBox(height: 7),
                 CustomText.calendarSchedule(
                   text:
                       '${appointment.startTime.format(context)}-${appointment.endTime.format(context)}',
-                  style: themeData.textTheme.bodyLarge!,
+                  style: themeData.textTheme.bodyLarge!.copyWith(
+                    height: 24 / 14,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 CustomText.calendarSchedule(

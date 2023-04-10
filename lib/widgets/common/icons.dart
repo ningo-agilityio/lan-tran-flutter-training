@@ -20,7 +20,7 @@ class CustomIcons {
     color: themeData.colorScheme.secondary,
   );
 
-  static Icon addButton = Icon(
+  static Icon add = Icon(
     Icons.add,
     size: 30,
     color: themeData.colorScheme.secondary,

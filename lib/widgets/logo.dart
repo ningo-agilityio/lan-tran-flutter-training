@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/theme.dart';
+
 class Logo extends StatelessWidget {
   const Logo({super.key});
 
@@ -8,14 +10,14 @@ class Logo extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        const Positioned(
-          top: 195,
+        Positioned(
+          top: 234,
           child: Text(
             'avisit',
             style: TextStyle(
               fontSize: 70,
               fontFamily: 'Poppins',
-              color: Colors.white,
+              color: themeData.colorScheme.secondary,
             ),
           ),
         ),
@@ -26,7 +28,7 @@ class Logo extends StatelessWidget {
             style: TextStyle(
               fontSize: 220,
               fontFamily: 'Poppins',
-              color: Colors.white.withOpacity(0.24),
+              color: themeData.colorScheme.secondary.withOpacity(0.24),
             ),
           ),
         ),
