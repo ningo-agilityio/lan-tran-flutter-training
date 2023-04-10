@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/screens/add_screen.dart';
 import 'package:salon_appointment/widgets/bottom_app_bar.dart';
 import 'package:salon_appointment/widgets/common/buttons.dart';
 import 'package:salon_appointment/widgets/common/icons.dart';
@@ -46,7 +47,7 @@ class _MainLayoutState extends State<MainLayout> {
       body: widget.child,
       floatingActionButton: SAButton.floating(
         child: CustomIcons.add,
-        onPress: () => ModalBottomSheet.show(context),
+        onPressed: () => Navigator.of(context).pushNamed('/add'),
       ),
       floatingActionButtonLocation: _fabLocation,
       bottomNavigationBar: CusTomBottomAppBar(
