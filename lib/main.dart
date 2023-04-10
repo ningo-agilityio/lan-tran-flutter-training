@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/screens/add_screen.dart';
-import 'package:salon_appointment/screens/appointments_screen.dart';
-import 'package:salon_appointment/screens/calendar_screen.dart';
-import 'package:salon_appointment/screens/splash_screen.dart';
-import 'package:salon_appointment/theme/theme.dart';
+
+import 'core/theme/theme.dart';
+import 'features/appointments/add_screen.dart';
+import 'features/appointments/appointments_screen.dart';
+import 'features/appointments/calendar_screen.dart';
+import 'features/auth/splash_screen.dart';
 
 void main() {
   runApp(
