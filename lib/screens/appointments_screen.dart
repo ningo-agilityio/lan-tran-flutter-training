@@ -25,7 +25,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
-  final DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
+  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
 
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;

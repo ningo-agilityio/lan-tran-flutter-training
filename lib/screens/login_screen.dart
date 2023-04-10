@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/apis/appointment_api.dart';
 import 'package:salon_appointment/controllers/user_controller.dart';
+import 'package:salon_appointment/models/appointment.dart';
 import 'package:salon_appointment/models/user.dart';
 import 'package:salon_appointment/screens/calendar_screen.dart';
 import 'package:salon_appointment/validations/validations.dart';
@@ -7,6 +9,7 @@ import 'package:salon_appointment/widgets/common/buttons.dart';
 import 'package:salon_appointment/widgets/common/text.dart';
 import 'package:salon_appointment/widgets/forget_password.dart';
 import 'package:salon_appointment/widgets/input.dart';
+import 'package:salon_appointment/widgets/time.dart';
 
 import '../layouts/common_layout.dart';
 import '../validations/errors.dart';
@@ -63,7 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(
                         bottom: 147,
                       ),
-                      child: SACustomText.logoText),
+                      child: SACustomText.logoText,
+                    ),
             ),
             Input.phoneNumber(
               text: 'Phone number',
@@ -101,12 +105,12 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 16),
             ForgetPassword(
-              onPress: () {},
+              onPressed: () {},
             ),
             const SizedBox(height: 24),
             SAButton.outlined(
                 child: SACustomText.loginText,
-                onPress: () async {
+                onPressed: () async {
                   if (FormValidation.isValidPassword(password) != null ||
                       FormValidation.isValidPhoneNumber(phoneNumber) != null) {
                     showSnackBar(Errors.INVALID_ACCOUNT);
