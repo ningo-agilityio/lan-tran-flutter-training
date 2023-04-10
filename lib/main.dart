@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/screens/add_screen.dart';
 import 'package:salon_appointment/screens/appointments_screen.dart';
 import 'package:salon_appointment/screens/calendar_screen.dart';
 import 'package:salon_appointment/screens/splash_screen.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/calendar': (context) => const CalendarScreen(),
         '/appointment': (context) => const AppointmentScreen(),
+        '/add': (context) => const AddScreen(),
       },
       home: const SplashScreen(),
     );
