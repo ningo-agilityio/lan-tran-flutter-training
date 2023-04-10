@@ -43,6 +43,7 @@ dependencies:
   collection: 1.17.0
   flutter_localizations:
     sdk: flutter
+  i18n_extension: ^8.0.0
 
 dev_dependencies:
   flutter_test:
