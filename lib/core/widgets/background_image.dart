@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/core/theme/theme.dart';
 
 class BackgroundImage extends StatelessWidget {
   const BackgroundImage({super.key});
@@ -10,9 +11,9 @@ class BackgroundImage extends StatelessWidget {
       height: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/background.png'),
+          image: const AssetImage('assets/background.png'),
           colorFilter: ColorFilter.mode(
-            Color(0xFF553BA3).withOpacity(0.5),
+            themeData.colorScheme.primary.withOpacity(0.5),
             BlendMode.multiply,
           ),
           fit: BoxFit.cover,
