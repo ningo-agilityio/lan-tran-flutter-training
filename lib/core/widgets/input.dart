@@ -11,6 +11,7 @@ class Input extends StatelessWidget {
     this.color,
     this.height,
     this.maxLines,
+    this.border,
     super.key,
   });
 
@@ -41,6 +42,7 @@ class Input extends StatelessWidget {
   final TextEditingController controller;
   final double? height;
   final int? maxLines;
+  final OutlineInputBorder? border;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +60,7 @@ class Input extends StatelessWidget {
           hintStyle: themeData.textTheme.labelSmall!.copyWith(
             color: color,
           ),
+          border: border,
         ),
         maxLines: maxLines,
         onEditingComplete: onEditCompleted,
@@ -90,7 +93,7 @@ class _InputPhoneNumber extends Input {
         focusNode: focusNode,
         keyboardType: TextInputType.phone,
         style: themeData.textTheme.labelSmall!.copyWith(
-          color: themeData.colorScheme.secondary,
+          color: themeData.colorScheme.onPrimary,
         ),
         decoration: InputDecoration(
           hintText: text,
@@ -129,7 +132,7 @@ class _InputPassword extends Input {
         focusNode: focusNode,
         obscureText: true,
         style: themeData.textTheme.labelSmall!.copyWith(
-          color: themeData.colorScheme.secondary,
+          color: themeData.colorScheme.onPrimary,
         ),
         decoration: InputDecoration(
           hintText: text,
