@@ -18,10 +18,9 @@ const ColorScheme colorScheme = ColorScheme(
   brightness: Brightness.light,
   primary: ColorName.primaryColor,
   onPrimary: ColorName.textColor,
-  secondary: ColorName.textColor,
-  onSecondary: ColorName.servicesColor,
-  secondaryContainer: ColorName.descriptionColor,
-  onSecondaryContainer: ColorName.breakTimeColor,
+  secondary: ColorName.servicesColor,
+  onSecondary: ColorName.descriptionColor,
+  secondaryContainer: ColorName.breakTimeColor,
   tertiary: ColorName.timeIconColor,
   onTertiary: ColorName.iconButtonColor,
   error: ColorName.errorColor,
@@ -43,7 +42,7 @@ class SATextTheme {
         fontSize: fontSize,
         fontWeight: fontWeight,
         height: (lineHeight ?? fontSize) / fontSize,
-        color: colorScheme.onSecondary,
+        color: colorScheme.secondary,
       );
 
   static final TextTheme textTheme = TextTheme(
@@ -96,23 +95,34 @@ ThemeData themeData = ThemeData(
   scaffoldBackgroundColor: colorScheme.background,
   primaryColor: colorScheme.primary,
   iconTheme: IconThemeData(
-    color: colorScheme.tertiary,
-    size: 16,
+    color: colorScheme.onSecondary,
+    size: 20,
   ),
   inputDecorationTheme: InputDecorationTheme(
     hintStyle: SATextTheme.textTheme.labelSmall!.copyWith(
-      color: colorScheme.secondary,
+      color: colorScheme.onPrimary,
     ),
     contentPadding: const EdgeInsets.all(8),
     border: OutlineInputBorder(
-      borderSide: const BorderSide(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(8),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
         width: 2,
-        color: Colors.transparent,
+        color: colorScheme.primary,
+      ),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        width: 2,
+        color: colorScheme.error,
       ),
       borderRadius: BorderRadius.circular(8),
     ),
     filled: true,
-    fillColor: colorScheme.secondary.withOpacity(0.235),
+    fillColor: colorScheme.onPrimary.withOpacity(0.235),
   ),
   iconButtonTheme: IconButtonThemeData(
     style: ButtonStyle(
