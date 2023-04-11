@@ -59,7 +59,7 @@ class _SAOutlinedButton extends SAButton {
         fixedSize: size,
         side: BorderSide(
           width: 2,
-          color: themeData.colorScheme.secondary,
+          color: themeData.colorScheme.onPrimary,
         ),
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
