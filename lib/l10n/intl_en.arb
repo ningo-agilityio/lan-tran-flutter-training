@@ -1,0 +1,21 @@
+{
+    "logo": "avisit",
+    "logoText": "av",
+
+    "phoneNumber": "Phone Number",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "loginButton": "Login",
+
+    "calendarAppBarTitle": "Calendar",
+    "appointmentAppBarTitle": "Appointments",
+    "newAppointmentAppBarTitle": "New Appointment",
+
+    "emptyAppointments": "There are no appointments.",
+
+    "description": "Description",
+    "createAppointmentButton": "Create New Appointment",
+
+    "addSuccess": "Appointment added",
+    "addFail": "Failed to create appointment"
+}
