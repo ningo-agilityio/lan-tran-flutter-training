@@ -17,5 +17,10 @@
     "createAppointmentButton": "Create New Appointment",
 
     "addSuccess": "Appointment added",
-    "addFail": "Failed to create appointment"
+    "addFail": "Failed to create appointment",
+
+    "appointmentsLabel": "Appointments",
+    "calendarLabel": "Calendar",
+    "profileLabel": "Profile",
+    "notificationsLabel": "Notifications"
 }

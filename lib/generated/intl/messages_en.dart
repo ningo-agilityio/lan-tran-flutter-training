@@ -27,7 +27,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "addSuccess": MessageLookupByLibrary.simpleMessage("Appointment added"),
         "appointmentAppBarTitle":
             MessageLookupByLibrary.simpleMessage("Appointments"),
+        "appointmentsLabel":
+            MessageLookupByLibrary.simpleMessage("Appointments"),
         "calendarAppBarTitle": MessageLookupByLibrary.simpleMessage("Calendar"),
+        "calendarLabel": MessageLookupByLibrary.simpleMessage("Calendar"),
         "createAppointmentButton":
             MessageLookupByLibrary.simpleMessage("Create New Appointment"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
@@ -40,7 +43,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "logoText": MessageLookupByLibrary.simpleMessage("av"),
         "newAppointmentAppBarTitle":
             MessageLookupByLibrary.simpleMessage("New Appointment"),
+        "notificationsLabel":
+            MessageLookupByLibrary.simpleMessage("Notifications"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
-        "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number")
+        "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
+        "profileLabel": MessageLookupByLibrary.simpleMessage("Profile")
       };
 }

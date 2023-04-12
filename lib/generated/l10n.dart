@@ -189,6 +189,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Appointments`
+  String get appointmentsLabel {
+    return Intl.message(
+      'Appointments',
+      name: 'appointmentsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calendar`
+  String get calendarLabel {
+    return Intl.message(
+      'Calendar',
+      name: 'calendarLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profileLabel {
+    return Intl.message(
+      'Profile',
+      name: 'profileLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get notificationsLabel {
+    return Intl.message(
+      'Notifications',
+      name: 'notificationsLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../generated/l10n.dart';
 import '../theme/theme.dart';
 import '../widgets/buttons.dart';
 import '../widgets/icons.dart';
@@ -95,22 +96,22 @@ class CustomBottomAppBar extends StatelessWidget {
         unselectedItemColor: themeData.colorScheme.onTertiary,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.check),
-            label: 'Appointments',
+            label: S.of(context).appointmentsLabel,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.schedule),
-            label: 'Calendar',
+            label: S.of(context).calendarLabel,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: S.of(context).profileLabel,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
-            label: 'Notifications',
+            label: S.of(context).notificationsLabel,
           ),
         ],
       ),
