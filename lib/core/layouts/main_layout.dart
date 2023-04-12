@@ -49,7 +49,7 @@ class _MainLayoutState extends State<MainLayout> {
         onPressed: () => Navigator.of(context).pushNamed('/add'),
       ),
       floatingActionButtonLocation: _fabLocation,
-      bottomNavigationBar: CusTomBottomAppBar(
+      bottomNavigationBar: CustomBottomAppBar(
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
@@ -71,8 +71,8 @@ class _MainLayoutState extends State<MainLayout> {
   }
 }
 
-class CusTomBottomAppBar extends StatelessWidget {
-  const CusTomBottomAppBar({
+class CustomBottomAppBar extends StatelessWidget {
+  const CustomBottomAppBar({
     required this.currentIndex,
     required this.onTap,
     super.key,
