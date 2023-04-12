@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/core/widgets/indicator.dart';
+import 'package:salon_appointment/core/widgets/snack_bar.dart';
 
 import '../../../core/layouts/common_layout.dart';
 import '../../../core/widgets/buttons.dart';
@@ -19,7 +23,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final controller = UserController();
+  final controller = UserRepository();
 
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
@@ -37,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
+    controller.getUser().then((value) => users = value);
     super.initState();
   }
 
@@ -44,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final double screenHeight = MediaQuery.of(context).size.height;
+    final double indicatorHeight = MediaQuery.of(context).size.height / 2;
 
     return CommonLayout(
       child: Container(
@@ -111,36 +117,41 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 24),
             SAButton.outlined(
                 child: CustomText.loginText,
-                onPressed: () async {
+                onPressed: () {
                   if (FormValidation.isValidPassword(password) != null ||
                       FormValidation.isValidPhoneNumber(phoneNumber) != null) {
-                    showSnackBar(Errors.INVALID_ACCOUNT);
+                    CustomSnackBar.show(
+                      context: context,
+                      message: Errors.INVALID_ACCOUNT,
+                    );
                     return;
                   }
-                  final User? user =
-                      await controller.getUser(phoneNumber, password);
-                  if (user == null) {
-                    showSnackBar(Errors.INCORRECT_ACCOUNT);
-                    return;
+                  final isSuccess = FormValidation.isLoginSuccess(
+                      users, phoneNumber, password);
+                  if (isSuccess) {
+                    showDialog(
+                      context: context,
+                      barrierColor: Colors.black12,
+                      builder: (context) => LoadingIndicator(
+                        height: indicatorHeight,
+                      ),
+                    );
+                    Timer(const Duration(seconds: 3), () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CalendarScreen()),
+                      );
+                    });
                   } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CalendarScreen()),
+                    CustomSnackBar.show(
+                      context: context,
+                      message: Errors.INCORRECT_ACCOUNT,
                     );
                   }
                 }),
           ],
         ),
-      ),
-    );
-  }
-
-  void showSnackBar(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 1),
-        content: Text(text),
       ),
     );
   }

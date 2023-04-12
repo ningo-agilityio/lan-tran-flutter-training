@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:salon_appointment/features/auth/model/user.dart';
 
-import '../../../constants.dart';
+import '../../../core/constants/constants.dart';
 
 class UserApi {
   static Future<List<User>> getUsers() async {

@@ -1,20 +1,14 @@
 import '../api/user_api.dart';
 import '../model/user.dart';
 
-class UserController {
-  Future<User?> getUser(
-    String? phoneNumber,
-    String? password,
-  ) async {
-    final users = await UserApi.getUsers();
-    if (users
-        .any((e) => e.phoneNumber == phoneNumber && e.password == password)) {
-      final user = users
-          .where((e) => e.phoneNumber == phoneNumber && e.password == password)
-          .first;
-      return user;
-    }
+class UserRepository {
+  Future<List<User>> getUser() async {
+    List<User> users = [];
 
-    return null;
+    try {
+      users = await UserApi.getUsers();
+    } catch (e) {}
+
+    return users;
   }
 }
