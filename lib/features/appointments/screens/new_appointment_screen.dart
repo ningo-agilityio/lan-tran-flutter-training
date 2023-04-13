@@ -5,13 +5,20 @@ import '../../../core/theme/theme.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/icons.dart';
 import '../../../core/widgets/input.dart';
+import '../../../core/widgets/snack_bar.dart';
 import '../../../core/widgets/text.dart';
 import '../../../generated/l10n.dart';
+import '../../auth/model/user.dart';
 import '../api/appointment_api.dart';
 import '../model/appointment.dart';
 
 class NewAppointmentScreen extends StatefulWidget {
-  const NewAppointmentScreen({super.key});
+  const NewAppointmentScreen({
+    required this.user,
+    super.key,
+  });
+
+  final User user;
 
   @override
   State<NewAppointmentScreen> createState() => _NewAppointmentScreenState();
@@ -26,17 +33,28 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
 
   final inputColor = themeData.colorScheme.secondaryContainer;
   late DateTime dateTime = DateTime.now();
-  late TimeOfDay startTime = TimeOfDay.now();
-  late TimeOfDay endTime = (startTime.minute + 30) >= 60
-      ? TimeOfDay(
-          hour: startTime.hour + 1,
-          minute: (startTime.minute + 30) % 60,
-        )
-      : TimeOfDay(
-          hour: startTime.hour,
-          minute: startTime.minute + 30,
-        );
+  late DateTime startTime = DateTime.now();
+  late DateTime endTime = autoAddHalfHour(startTime);
+
   String? selectedValue;
+
+  DateTime autoAddHalfHour(DateTime time) {
+    return (time.minute + 30) >= 60
+        ? DateTime(
+            time.year,
+            time.month,
+            time.day,
+            time.hour + 1,
+            (time.minute + 30) % 60,
+          )
+        : DateTime(
+            time.year,
+            time.month,
+            time.day,
+            time.hour,
+            time.minute + 30,
+          );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,16 +77,11 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
         child: Center(
           child: Column(
             children: [
-              // const SizedBox(height: 12),
-              // Input(
-              //   controller: nameController,
-              //   text: 'Customer Name',
-              //   focusNode: nameFocusNode,
-              //   onEditCompleted: () {
-              //     FocusScope.of(context).nextFocus();
-              //   },
-              //   color: inputColor,
-              // ),
+              const SizedBox(height: 12),
+              Text(
+                widget.user.name,
+                style: themeData.textTheme.titleLarge,
+              ),
               const SizedBox(height: 12),
               DatePicker(
                   dateTime: dateTime,
@@ -93,22 +106,36 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                 onStartTimePressed: () async {
                   final TimeOfDay? time = await showTimePicker(
                     context: context,
-                    initialTime: startTime,
+                    initialTime: TimeOfDay.fromDateTime(startTime),
                   );
-                  if (time != null && time != startTime) {
+                  if (time != null &&
+                      time != TimeOfDay.fromDateTime(startTime)) {
                     setState(() {
-                      startTime = time;
+                      startTime = DateTime(
+                        dateTime.year,
+                        dateTime.month,
+                        dateTime.day,
+                        time.hour,
+                        time.minute,
+                      );
+                      endTime = autoAddHalfHour(startTime);
                     });
                   }
                 },
                 onEndTimePressed: () async {
                   final TimeOfDay? time = await showTimePicker(
                     context: context,
-                    initialTime: endTime,
+                    initialTime: TimeOfDay.fromDateTime(endTime),
                   );
-                  if (time != null && time != endTime) {
+                  if (time != null && time != TimeOfDay.fromDateTime(endTime)) {
                     setState(() {
-                      endTime = time;
+                      endTime = DateTime(
+                        dateTime.year,
+                        dateTime.month,
+                        dateTime.day,
+                        time.hour,
+                        time.minute,
+                      );
                     });
                   }
                 },
@@ -146,7 +173,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                   try {
                     await AppointmentApi.addAppointment(
                       Appointment(
-                        userId: '1',
+                        userId: widget.user.id,
                         date: dateTime,
                         startTime: startTime,
                         endTime: endTime,
@@ -156,7 +183,10 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                     );
                     Navigator.of(context).pop();
                   } catch (e) {
-                    throw Exception(e);
+                    CustomSnackBar.show(
+                      context: context,
+                      message: e.toString(),
+                    );
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -233,8 +263,8 @@ class TimePicker extends StatelessWidget {
     super.key,
   });
 
-  TimeOfDay startTime;
-  TimeOfDay endTime;
+  DateTime startTime;
+  DateTime endTime;
   VoidCallback onStartTimePressed;
   VoidCallback onEndTimePressed;
 
@@ -246,7 +276,11 @@ class TimePicker extends StatelessWidget {
         const CustomText.timePicker(text: 'From:'),
         OutlinedButton(
           onPressed: onStartTimePressed,
-          child: CustomText.timePicker(text: startTime.format(context)),
+          child: CustomText.timePicker(
+            text: (startTime.minute < 10)
+                ? '${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')}'
+                : '${startTime.hour}:${startTime.minute}',
+          ),
         ),
         const Padding(
           padding: EdgeInsets.all(8),
@@ -254,7 +288,11 @@ class TimePicker extends StatelessWidget {
         ),
         OutlinedButton(
           onPressed: onEndTimePressed,
-          child: CustomText.timePicker(text: endTime.format(context)),
+          child: CustomText.timePicker(
+            text: (endTime.minute < 10)
+                ? '${endTime.hour}:${endTime.minute.toString().padLeft(2, '0')}'
+                : '${endTime.hour}:${endTime.minute}',
+          ),
         ),
       ],
     );
@@ -262,7 +300,7 @@ class TimePicker extends StatelessWidget {
 }
 
 class DropDown extends StatelessWidget {
-  DropDown({
+  const DropDown({
     required this.items,
     required this.selectedValue,
     required this.onChanged,
@@ -270,8 +308,8 @@ class DropDown extends StatelessWidget {
   });
 
   final List<String> items;
-  String? selectedValue;
-  Function(String?)? onChanged;
+  final String? selectedValue;
+  final Function(String?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
