@@ -78,7 +78,7 @@ class _MainLayoutState extends State<MainLayout> {
                       user: widget.user,
                     ),
                   ),
-                ).then((_) => setState(() {}));
+                );
                 break;
               case 1:
                 // Calendar Screen
@@ -89,7 +89,7 @@ class _MainLayoutState extends State<MainLayout> {
                       user: widget.user,
                     ),
                   ),
-                ).then((_) => setState(() {}));
+                );
                 break;
             }
           });
