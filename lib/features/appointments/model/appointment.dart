@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Appointment {
   Appointment({
     required this.userId,
@@ -14,11 +12,9 @@ class Appointment {
   factory Appointment.fromJson(Map<dynamic, dynamic> appointment) {
     return Appointment(
       userId: appointment['userId'] as String,
-      date: DateTime.parse(appointment['date'].toString()),
-      startTime: TimeOfDay.fromDateTime(
-          DateTime.parse(appointment['startTime'].toString())),
-      endTime: TimeOfDay.fromDateTime(
-          DateTime.parse(appointment['endTime'].toString())),
+      date: DateTime.parse(appointment['date'] as String),
+      startTime: DateTime.parse(appointment['startTime'] as String),
+      endTime: DateTime.parse(appointment['endTime'] as String),
       services: appointment['services'] as String,
       description: appointment['description'] as String,
       isCompleted: appointment['isCompleted'] as bool,
@@ -27,9 +23,9 @@ class Appointment {
 
   Map<String, dynamic> toJson() => {
         'userId': userId,
-        'date': date.toString(),
-        'startTime': startTime.toString(),
-        'endTime': endTime.toString(),
+        'date': date.toIso8601String(),
+        'startTime': startTime.toIso8601String(),
+        'endTime': endTime.toIso8601String(),
         'services': services,
         'description': description,
         'isCompleted': isCompleted,
@@ -37,8 +33,8 @@ class Appointment {
 
   final String services;
   final DateTime date;
-  final TimeOfDay startTime;
-  final TimeOfDay endTime;
+  final DateTime startTime;
+  final DateTime endTime;
   final String userId;
   final String description;
   final bool isCompleted;
