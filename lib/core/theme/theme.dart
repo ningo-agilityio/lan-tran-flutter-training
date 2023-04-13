@@ -10,7 +10,7 @@ class ColorName {
   static const timeIconColor = Color(0xFFFDA901);
   static const iconButtonColor = Color(0xFFBFC8DC);
   static const errorColor = Color(0xFFF44336);
-  static const surfaceColor = Color(0xFF000000);
+  static const borderColor = Color(0xFFF7F8FC);
   static const backgroundColor = Color(0xFFFFFFFF);
 }
 
@@ -27,7 +27,7 @@ const ColorScheme colorScheme = ColorScheme(
   onError: ColorName.errorColor,
   background: ColorName.backgroundColor,
   onBackground: ColorName.backgroundColor,
-  surface: ColorName.surfaceColor,
+  surface: ColorName.borderColor,
   onSurface: ColorName.onSurfaceColor,
 );
 
