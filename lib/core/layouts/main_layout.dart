@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../features/appointments/screens/appointments_screen.dart';
+import '../../features/appointments/screens/calendar_screen.dart';
+import '../../features/appointments/screens/new_appointment_screen.dart';
+import '../../features/auth/model/user.dart';
 import '../../generated/l10n.dart';
 import '../theme/theme.dart';
 import '../widgets/buttons.dart';
@@ -11,12 +15,14 @@ class MainLayout extends StatefulWidget {
     required this.title,
     required this.child,
     required this.currentIndex,
+    required this.user,
     super.key,
   });
 
   final String title;
   final Widget child;
   final int currentIndex;
+  final User user;
 
   @override
   State<MainLayout> createState() => _MainLayoutState();
@@ -47,7 +53,14 @@ class _MainLayoutState extends State<MainLayout> {
       body: widget.child,
       floatingActionButton: SAButton.floating(
         child: CustomIcons.add,
-        onPressed: () => Navigator.of(context).pushNamed('/add'),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewAppointmentScreen(
+              user: widget.user,
+            ),
+          ),
+        ),
       ),
       floatingActionButtonLocation: _fabLocation,
       bottomNavigationBar: CustomBottomAppBar(
@@ -58,11 +71,25 @@ class _MainLayoutState extends State<MainLayout> {
             switch (_currentIndex) {
               case 0:
                 // Appointment Screen
-                Navigator.of(context).pushNamed('/appointment');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AppointmentScreen(
+                      user: widget.user,
+                    ),
+                  ),
+                ).then((_) => setState(() {}));
                 break;
               case 1:
                 // Calendar Screen
-                Navigator.of(context).pushNamed('/calendar');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CalendarScreen(
+                      user: widget.user,
+                    ),
+                  ),
+                ).then((_) => setState(() {}));
                 break;
             }
           });
@@ -98,19 +125,19 @@ class CustomBottomAppBar extends StatelessWidget {
         showUnselectedLabels: false,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.check),
+            icon: const Icon(Icons.check),
             label: S.of(context).appointmentsLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.schedule),
+            icon: const Icon(Icons.schedule),
             label: S.of(context).calendarLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: const Icon(Icons.person),
             label: S.of(context).profileLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             label: S.of(context).notificationsLabel,
           ),
         ],
