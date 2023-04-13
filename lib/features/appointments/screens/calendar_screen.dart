@@ -75,6 +75,43 @@ class _CalendarScreenState extends State<CalendarScreen> {
             calendarFormat: _calendarFormat,
             rangeSelectionMode: _rangeSelectionMode,
             startingDayOfWeek: StartingDayOfWeek.monday,
+            calendarStyle: CalendarStyle(
+              outsideDaysVisible: false,
+              cellMargin: EdgeInsets.zero,
+              selectedDecoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    themeData.colorScheme.onSurface,
+                    themeData.colorScheme.primary,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                shape: BoxShape.rectangle,
+              ),
+              todayDecoration: BoxDecoration(
+                color: themeData.colorScheme.primary.withOpacity(0.0798),
+                shape: BoxShape.rectangle,
+              ),
+              todayTextStyle: TextStyle(
+                color: themeData.colorScheme.secondary,
+              ),
+              rowDecoration: BoxDecoration(
+                border: Border.all(
+                  color: themeData.colorScheme.surface,
+                ),
+              ),
+            ),
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(
+                color: themeData.colorScheme.secondary,
+              ),
+              weekendStyle: TextStyle(
+                color: themeData.colorScheme.secondary,
+              ),
+            ),
+            daysOfWeekHeight: 44,
+            rowHeight: 52,
             onDaySelected: (selectedDay, focusedDay) {
               if (!isSameDay(_selectedDay, selectedDay)) {
                 setState(() {
