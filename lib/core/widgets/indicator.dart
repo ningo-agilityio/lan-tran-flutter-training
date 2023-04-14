@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/core/theme/theme.dart';
 
 class LoadingIndicator extends StatelessWidget {
   const LoadingIndicator({
@@ -15,7 +14,7 @@ class LoadingIndicator extends StatelessWidget {
       height: height,
       child: Center(
         child: CircularProgressIndicator(
-          color: themeData.colorScheme.onSurface,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/theme.dart';
-
-class CustomSnackBar {
+class SASnackBar {
   static void show({
     required BuildContext context,
     required String message,
@@ -11,7 +9,7 @@ class CustomSnackBar {
       elevation: 5,
       behavior: SnackBarBehavior.floating,
       duration: const Duration(seconds: 1),
-      backgroundColor: themeData.colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),

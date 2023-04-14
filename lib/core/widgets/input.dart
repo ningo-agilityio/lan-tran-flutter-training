@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/core/theme/theme.dart';
 import 'package:salon_appointment/features/auth/validations/validations.dart';
 
 class Input extends StatelessWidget {
@@ -52,14 +51,14 @@ class Input extends StatelessWidget {
         controller: controller,
         enableInteractiveSelection: true,
         focusNode: focusNode,
-        style: themeData.textTheme.labelSmall!.copyWith(
-          color: color,
-        ),
+        style: Theme.of(context).textTheme.labelSmall!.copyWith(
+              color: color,
+            ),
         decoration: InputDecoration(
           hintText: text,
-          hintStyle: themeData.textTheme.labelSmall!.copyWith(
-            color: color,
-          ),
+          hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
+                color: color,
+              ),
           border: border,
         ),
         maxLines: maxLines,
@@ -92,9 +91,9 @@ class _PhoneNumberInput extends Input {
         enableInteractiveSelection: true,
         focusNode: focusNode,
         keyboardType: TextInputType.phone,
-        style: themeData.textTheme.labelSmall!.copyWith(
-          color: themeData.colorScheme.onPrimary,
-        ),
+        style: Theme.of(context).textTheme.labelSmall!.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
         decoration: InputDecoration(
           hintText: text,
           errorText: errorText,
@@ -131,9 +130,9 @@ class _PasswordInput extends Input {
         enableInteractiveSelection: true,
         focusNode: focusNode,
         obscureText: true,
-        style: themeData.textTheme.labelSmall!.copyWith(
-          color: themeData.colorScheme.onPrimary,
-        ),
+        style: Theme.of(context).textTheme.labelSmall!.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
         decoration: InputDecoration(
           hintText: text,
           errorText: errorText,
