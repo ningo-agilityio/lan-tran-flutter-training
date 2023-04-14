@@ -9,7 +9,7 @@ class ColorName {
   static const breakTimeColor = Color(0xFF474F63);
   static const timeIconColor = Color(0xFFFDA901);
   static const iconButtonColor = Color(0xFFBFC8DC);
-  static const errorColor = Color(0xFFF44336);
+  static const errorColor = Color(0xFFCF2600);
   static const borderColor = Color(0xFFF7F8FC);
   static const backgroundColor = Color(0xFFFFFFFF);
   static const onBackgroundColor = Color(0x1F000000);
