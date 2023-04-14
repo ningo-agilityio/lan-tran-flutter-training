@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:salon_appointment/core/widgets/indicator.dart';
 import 'package:salon_appointment/core/widgets/snack_bar.dart';
 
+import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/common_layout.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/input.dart';
 import '../../../core/widgets/text.dart';
-import '../../../generated/l10n.dart';
 import '../../appointments/screens/calendar_screen.dart';
 import '../model/user.dart';
 import '../repository/user_repository.dart';
-import '../validations/errors.dart';
 import '../validations/validations.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -69,7 +68,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(
                         bottom: 147,
                       ),
-                      child: CustomText.logoText,
+                      child: SAText.logo(
+                        text: S.of(context).logo,
+                      ),
                     ),
             ),
             Input.phoneNumber(
@@ -111,18 +112,22 @@ class _LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {},
-                child: CustomText.forgetPasswordText,
+                child: SAText.forgotPassword(
+                  text: S.of(context).forgotPassword,
+                ),
               ),
             ),
             const SizedBox(height: 24),
             SAButton.outlined(
-                child: CustomText.loginText,
+                child: SAText.login(
+                  text: S.of(context).loginButton,
+                ),
                 onPressed: () {
                   if (FormValidation.isValidPassword(password) != null ||
                       FormValidation.isValidPhoneNumber(phoneNumber) != null) {
-                    CustomSnackBar.show(
+                    SASnackBar.show(
                       context: context,
-                      message: Errors.INVALID_ACCOUNT,
+                      message: S.of(context).invalidAccountError,
                     );
                     return;
                   }
@@ -153,9 +158,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     });
                   } else {
-                    CustomSnackBar.show(
+                    SASnackBar.show(
                       context: context,
-                      message: Errors.INCORRECT_ACCOUNT,
+                      message: S.of(context).incorrectAccountError,
                     );
                   }
                 }),

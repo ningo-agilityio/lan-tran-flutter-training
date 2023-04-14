@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/common_layout.dart';
-import '../../../core/theme/theme.dart';
-import '../../../generated/l10n.dart';
 import 'login_screen.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -42,7 +41,7 @@ class Logo extends StatelessWidget {
             style: TextStyle(
               fontSize: 70,
               fontFamily: 'Poppins',
-              color: themeData.colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ),
@@ -53,7 +52,7 @@ class Logo extends StatelessWidget {
             style: TextStyle(
               fontSize: 220,
               fontFamily: 'Poppins',
-              color: themeData.colorScheme.onPrimary.withOpacity(0.24),
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.24),
             ),
           ),
         ),
