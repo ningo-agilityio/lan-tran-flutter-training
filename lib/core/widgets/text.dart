@@ -16,9 +16,13 @@ class SAText extends StatelessWidget {
     required TextStyle style,
   }) = _CalendarSchedule;
 
+  const factory SAText.profileName({
+    required String text,
+  }) = _ProfileName;
+
   const factory SAText.appBarTitle({
     required String text,
-    required TextStyle style,
+    TextStyle style,
   }) = _AppBarTitle;
 
   const factory SAText.login({
@@ -48,16 +52,16 @@ class SAText extends StatelessWidget {
 class _AppBarTitle extends SAText {
   const _AppBarTitle({
     required super.text,
-    required super.style,
+    super.style,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: style!.copyWith(
-        color: Theme.of(context).colorScheme.secondary,
-      ),
+      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+            color: Theme.of(context).colorScheme.secondary,
+          ),
     );
   }
 }
@@ -140,6 +144,24 @@ class _Logo extends SAText {
       text,
       style: TextStyle(
         fontSize: 40,
+        color: Theme.of(context).colorScheme.onPrimary,
+      ),
+    );
+  }
+}
+
+class _ProfileName extends SAText {
+  const _ProfileName({
+    required super.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 30,
         color: Theme.of(context).colorScheme.onPrimary,
       ),
     );
