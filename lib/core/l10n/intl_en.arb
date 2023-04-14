@@ -10,6 +10,7 @@
     "calendarAppBarTitle": "Calendar",
     "appointmentAppBarTitle": "Appointments",
     "newAppointmentAppBarTitle": "New Appointment",
+    "profileAppBarTitle": "Profile",
 
     "emptyAppointments": "There are no appointments.",
 

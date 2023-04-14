@@ -140,6 +140,16 @@ class S {
     );
   }
 
+  /// `Profile`
+  String get profileAppBarTitle {
+    return Intl.message(
+      'Profile',
+      name: 'profileAppBarTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `There are no appointments.`
   String get emptyAppointments {
     return Intl.message(
