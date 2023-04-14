@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../core/generated/l10n.dart';
 import '../../features/appointments/screens/appointments_screen.dart';
 import '../../features/appointments/screens/calendar_screen.dart';
 import '../../features/appointments/screens/new_appointment_screen.dart';
 import '../../features/auth/model/user.dart';
-import '../../generated/l10n.dart';
-import '../theme/theme.dart';
 import '../widgets/buttons.dart';
 import '../widgets/icons.dart';
 import '../widgets/text.dart';
@@ -44,15 +43,15 @@ class _MainLayoutState extends State<MainLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CustomText.appBarTitle(
+        title: SAText.appBarTitle(
           text: widget.title,
-          style: themeData.textTheme.titleLarge!,
+          style: Theme.of(context).textTheme.titleLarge!,
         ),
         automaticallyImplyLeading: false,
       ),
       body: widget.child,
       floatingActionButton: SAButton.floating(
-        child: CustomIcons.add,
+        child: const SAIcons.add(),
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
@@ -115,12 +114,12 @@ class CustomBottomAppBar extends StatelessWidget {
       shape: const CircularNotchedRectangle(),
       clipBehavior: Clip.antiAlias,
       child: BottomNavigationBar(
-        backgroundColor: themeData.colorScheme.onPrimary,
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         currentIndex: currentIndex,
         onTap: onTap,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: themeData.colorScheme.primary,
-        unselectedItemColor: themeData.colorScheme.onTertiary,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: Theme.of(context).colorScheme.onTertiary,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: <BottomNavigationBarItem>[
