@@ -125,7 +125,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                 },
               ),
               const SizedBox(height: 12),
-              DropDown(
+              Dropdown(
                   items: const ['Back', 'Neck & Shoulders'],
                   selectedValue: selectedValue,
                   onChanged: (value) {
@@ -283,8 +283,8 @@ class TimePicker extends StatelessWidget {
   }
 }
 
-class DropDown extends StatelessWidget {
-  const DropDown({
+class Dropdown extends StatelessWidget {
+  const Dropdown({
     required this.items,
     required this.selectedValue,
     required this.onChanged,

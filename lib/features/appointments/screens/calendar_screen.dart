@@ -6,10 +6,10 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
+import '../../../core/utils.dart';
 import '../../../core/widgets/icons.dart';
 import '../../../core/widgets/indicator.dart';
 import '../../../core/widgets/text.dart';
-import '../../../utils.dart';
 import '../../auth/model/user.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
@@ -27,7 +27,7 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  final controller = AppointmentRepository();
+  final appointmentRepo = AppointmentRepository();
   final eventsController = StreamController<List<Appointment>?>();
 
   DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
@@ -42,7 +42,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   void _loadEvents() {
     eventsController.sink.add(null);
-    controller.load(_selectedDay!, widget.user.id).then((value) {
+    appointmentRepo.load(_selectedDay!, widget.user.id).then((value) {
       eventsController.sink.add(value);
     });
   }

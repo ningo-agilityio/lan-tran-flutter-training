@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:salon_appointment/utils.dart';
+import 'package:salon_appointment/core/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/generated/l10n.dart';
@@ -25,7 +25,7 @@ class AppointmentScreen extends StatefulWidget {
 }
 
 class _AppointmentScreenState extends State<AppointmentScreen> {
-  final controller = AppointmentRepository();
+  final appointmentRepo = AppointmentRepository();
   final eventsController = StreamController<List<Appointment>?>();
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
@@ -39,7 +39,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   void _loadEvents() {
     eventsController.sink.add(null);
-    controller.load(_selectedDay!, widget.user.id).then((value) {
+    appointmentRepo.load(_selectedDay!, widget.user.id).then((value) {
       eventsController.sink.add(value);
     });
   }
