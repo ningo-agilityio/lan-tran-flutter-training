@@ -12,6 +12,7 @@ class ColorName {
   static const errorColor = Color(0xFFF44336);
   static const borderColor = Color(0xFFF7F8FC);
   static const backgroundColor = Color(0xFFFFFFFF);
+  static const onBackgroundColor = Color(0x1F000000);
 }
 
 const ColorScheme colorScheme = ColorScheme(
@@ -26,7 +27,7 @@ const ColorScheme colorScheme = ColorScheme(
   error: ColorName.errorColor,
   onError: ColorName.errorColor,
   background: ColorName.backgroundColor,
-  onBackground: ColorName.backgroundColor,
+  onBackground: ColorName.onBackgroundColor,
   surface: ColorName.borderColor,
   onSurface: ColorName.onSurfaceColor,
 );
