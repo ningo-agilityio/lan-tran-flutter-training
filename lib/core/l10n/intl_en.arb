@@ -22,5 +22,8 @@
     "appointmentsLabel": "Appointments",
     "calendarLabel": "Calendar",
     "profileLabel": "Profile",
-    "notificationsLabel": "Notifications"
+    "notificationsLabel": "Notifications",
+
+    "invalidAccountError": "Phone number or Password is invalid.",
+    "incorrectAccountError": "Phone number or Password is incorrect."
 }
