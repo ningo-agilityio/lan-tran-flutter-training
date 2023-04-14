@@ -22,7 +22,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final controller = UserRepository();
+  final userRepo = UserRepository();
 
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    controller.getUser().then((value) => users = value);
+    userRepo.getUser().then((value) => users = value);
     super.initState();
   }
 
