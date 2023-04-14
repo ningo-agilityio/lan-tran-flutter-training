@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/theme/theme.dart';
+import '../../../core/generated/l10n.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/icons.dart';
 import '../../../core/widgets/input.dart';
 import '../../../core/widgets/snack_bar.dart';
 import '../../../core/widgets/text.dart';
-import '../../../generated/l10n.dart';
 import '../../auth/model/user.dart';
 import '../api/appointment_api.dart';
 import '../model/appointment.dart';
@@ -31,7 +30,6 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
   final nameFocusNode = FocusNode();
   final descpFocusNode = FocusNode();
 
-  final inputColor = themeData.colorScheme.secondaryContainer;
   late DateTime dateTime = DateTime.now();
   late DateTime startTime = DateTime.now();
   late DateTime endTime = autoAddHalfHour(startTime);
@@ -39,36 +37,22 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
   String? selectedValue;
 
   DateTime autoAddHalfHour(DateTime time) {
-    return (time.minute + 30) >= 60
-        ? DateTime(
-            time.year,
-            time.month,
-            time.day,
-            time.hour + 1,
-            (time.minute + 30) % 60,
-          )
-        : DateTime(
-            time.year,
-            time.month,
-            time.day,
-            time.hour,
-            time.minute + 30,
-          );
+    return time.add(const Duration(minutes: 30));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CustomText.appBarTitle(
+        title: SAText.appBarTitle(
           text: S.of(context).newAppointmentAppBarTitle,
-          style: themeData.textTheme.titleLarge!,
+          style: Theme.of(context).textTheme.titleLarge!,
         ),
         automaticallyImplyLeading: false,
         actions: [
           SAButton.icon(
             onPressed: () => Navigator.of(context).pop(),
-            child: CustomIcons.close,
+            child: const SAIcons.close(),
           ),
         ],
       ),
@@ -80,7 +64,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
               const SizedBox(height: 12),
               Text(
                 widget.user.name,
-                style: themeData.textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 12),
               DatePicker(
@@ -157,12 +141,12 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                 onEditCompleted: () {
                   FocusScope.of(context).unfocus();
                 },
-                color: inputColor,
+                color: Theme.of(context).colorScheme.secondaryContainer,
                 maxLines: 4,
                 border: OutlineInputBorder(
                   borderSide: BorderSide(
                     width: 1,
-                    color: inputColor,
+                    color: Theme.of(context).colorScheme.secondaryContainer,
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -183,20 +167,20 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                     );
                     Navigator.of(context).pop();
                   } catch (e) {
-                    CustomSnackBar.show(
+                    SASnackBar.show(
                       context: context,
                       message: e.toString(),
                     );
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: themeData.colorScheme.primary,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 child: Text(
                   S.of(context).createAppointmentButton,
-                  style: themeData.textTheme.labelMedium!.copyWith(
-                    color: themeData.colorScheme.onPrimary,
-                  ),
+                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                 ),
               )
             ],
@@ -228,14 +212,14 @@ class DatePicker extends StatelessWidget {
           Icon(
             Icons.schedule,
             size: 24,
-            color: themeData.colorScheme.secondaryContainer,
+            color: Theme.of(context).colorScheme.secondaryContainer,
           ),
           Text(
             dateFormat.format(dateTime),
-            style: themeData.textTheme.labelLarge!.copyWith(
-              color: themeData.colorScheme.secondaryContainer,
-              fontWeight: FontWeight.w400,
-            ),
+            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  fontWeight: FontWeight.w400,
+                ),
           ),
           Align(
             alignment: Alignment.centerRight,
@@ -244,7 +228,7 @@ class DatePicker extends StatelessWidget {
               icon: Icon(
                 Icons.calendar_month,
                 size: 24,
-                color: themeData.colorScheme.secondaryContainer,
+                color: Theme.of(context).colorScheme.secondaryContainer,
               ),
             ),
           ),
@@ -273,10 +257,10 @@ class TimePicker extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        const CustomText.timePicker(text: 'From:'),
+        const SAText.timePicker(text: 'From:'),
         OutlinedButton(
           onPressed: onStartTimePressed,
-          child: CustomText.timePicker(
+          child: SAText.timePicker(
             text: (startTime.minute < 10)
                 ? '${startTime.hour}:${startTime.minute.toString().padLeft(2, '0')}'
                 : '${startTime.hour}:${startTime.minute}',
@@ -284,11 +268,11 @@ class TimePicker extends StatelessWidget {
         ),
         const Padding(
           padding: EdgeInsets.all(8),
-          child: CustomText.timePicker(text: 'To:'),
+          child: SAText.timePicker(text: 'To:'),
         ),
         OutlinedButton(
           onPressed: onEndTimePressed,
-          child: CustomText.timePicker(
+          child: SAText.timePicker(
             text: (endTime.minute < 10)
                 ? '${endTime.hour}:${endTime.minute.toString().padLeft(2, '0')}'
                 : '${endTime.hour}:${endTime.minute}',
@@ -318,10 +302,10 @@ class DropDown extends StatelessWidget {
       height: 44,
       width: 345,
       decoration: BoxDecoration(
-          color: themeData.colorScheme.onPrimary,
+          color: Theme.of(context).colorScheme.onPrimary,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: themeData.colorScheme.secondaryContainer,
+            color: Theme.of(context).colorScheme.secondaryContainer,
           )),
       child: DropdownButton<String>(
         hint: const Text('Select Services'),

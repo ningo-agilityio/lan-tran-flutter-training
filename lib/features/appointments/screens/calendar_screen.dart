@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
-import '../../../core/theme/theme.dart';
 import '../../../core/widgets/icons.dart';
 import '../../../core/widgets/indicator.dart';
 import '../../../core/widgets/text.dart';
-import '../../../generated/l10n.dart';
 import '../../../utils.dart';
 import '../../auth/model/user.dart';
 import '../model/appointment.dart';
@@ -30,8 +29,6 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   final controller = AppointmentRepository();
   final eventsController = StreamController<List<Appointment>?>();
-
-  final colorScheme = themeData.colorScheme;
 
   DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
 
@@ -89,8 +86,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
               selectedDecoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    themeData.colorScheme.onSurface,
-                    themeData.colorScheme.primary,
+                    Theme.of(context).colorScheme.onSurface,
+                    Theme.of(context).colorScheme.primary,
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -98,24 +95,25 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 shape: BoxShape.rectangle,
               ),
               todayDecoration: BoxDecoration(
-                color: themeData.colorScheme.primary.withOpacity(0.0798),
+                color:
+                    Theme.of(context).colorScheme.primary.withOpacity(0.0798),
                 shape: BoxShape.rectangle,
               ),
               todayTextStyle: TextStyle(
-                color: themeData.colorScheme.secondary,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               rowDecoration: BoxDecoration(
                 border: Border.all(
-                  color: themeData.colorScheme.surface,
+                  color: Theme.of(context).colorScheme.surface,
                 ),
               ),
             ),
             daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle: TextStyle(
-                color: themeData.colorScheme.secondary,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               weekendStyle: TextStyle(
-                color: themeData.colorScheme.secondary,
+                color: Theme.of(context).colorScheme.secondary,
               ),
             ),
             daysOfWeekHeight: 44,
@@ -155,9 +153,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       child: Center(
                         child: Text(
                           S.of(context).emptyAppointments,
-                          style: themeData.textTheme.bodyLarge!.copyWith(
-                            color: colorScheme.secondary,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
                         ),
                       ),
                     );
@@ -170,8 +171,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            colorScheme.primary,
-                            colorScheme.onSurface,
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.onSurface,
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -213,9 +214,9 @@ class CalendarSchedule extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 26, left: 15),
-          child: CustomIcons.calendarSchedule,
+        const Padding(
+          padding: EdgeInsets.only(top: 26, left: 15),
+          child: SAIcons.calendarSchedule(),
         ),
         Expanded(
           child: Padding(
@@ -224,22 +225,22 @@ class CalendarSchedule extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 22),
-                CustomText.calendarSchedule(
+                SAText.calendarSchedule(
                   text: dateFormat.format(appointment.date),
-                  style: themeData.textTheme.labelLarge!,
+                  style: Theme.of(context).textTheme.labelLarge!,
                 ),
                 const SizedBox(height: 7),
-                CustomText.calendarSchedule(
+                SAText.calendarSchedule(
                   text:
                       '${appointment.startTime.hour}:${twoDigitsMinute(appointment.startTime)}-${appointment.endTime.hour}:${twoDigitsMinute(appointment.endTime)}',
-                  style: themeData.textTheme.bodyLarge!.copyWith(
-                    height: 24 / 14,
-                  ),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        height: 24 / 14,
+                      ),
                 ),
                 const SizedBox(height: 12),
-                CustomText.calendarSchedule(
+                SAText.calendarSchedule(
                   text: appointment.description,
-                  style: themeData.textTheme.bodySmall!,
+                  style: Theme.of(context).textTheme.bodySmall!,
                 ),
               ],
             ),

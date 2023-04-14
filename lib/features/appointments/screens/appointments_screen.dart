@@ -5,10 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:salon_appointment/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
-import '../../../core/theme/theme.dart';
 import '../../../core/widgets/icons.dart';
-import '../../../generated/l10n.dart';
 import '../../auth/model/user.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
@@ -28,7 +27,6 @@ class AppointmentScreen extends StatefulWidget {
 class _AppointmentScreenState extends State<AppointmentScreen> {
   final controller = AppointmentRepository();
   final eventsController = StreamController<List<Appointment>?>();
-  final textColor = themeData.colorScheme.secondary;
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
@@ -87,8 +85,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               selectedDecoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    themeData.colorScheme.onSurface,
-                    themeData.colorScheme.primary,
+                    Theme.of(context).colorScheme.onSurface,
+                    Theme.of(context).colorScheme.primary,
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -96,10 +94,12 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 shape: BoxShape.rectangle,
               ),
               todayDecoration: BoxDecoration(
-                color: themeData.colorScheme.primary.withOpacity(0.0798),
+                color:
+                    Theme.of(context).colorScheme.primary.withOpacity(0.0798),
                 shape: BoxShape.rectangle,
               ),
-              todayTextStyle: TextStyle(color: themeData.colorScheme.secondary),
+              todayTextStyle:
+                  TextStyle(color: Theme.of(context).colorScheme.secondary),
             ),
             daysOfWeekHeight: 44,
             onDaySelected: (selectedDay, focusedDay) {
@@ -121,9 +121,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
           ),
           Text(
             dateFormat.format(_selectedDay!),
-            style: themeData.textTheme.labelSmall!.copyWith(
-              color: textColor,
-            ),
+            style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
           ),
           const SizedBox(height: 8),
           StreamBuilder(
@@ -137,9 +137,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     child: Center(
                       child: Text(
                         S.of(context).emptyAppointments,
-                        style: themeData.textTheme.bodyLarge!.copyWith(
-                          color: textColor,
-                        ),
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
                       ),
                     ),
                   );
@@ -189,7 +189,7 @@ class AppointmentCard extends StatelessWidget {
     return Card(
       borderOnForeground: false,
       elevation: 2,
-      shadowColor: themeData.colorScheme.primary.withOpacity(0.16),
+      shadowColor: Theme.of(context).colorScheme.primary.withOpacity(0.16),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
@@ -230,13 +230,13 @@ class Time extends StatelessWidget {
       children: [
         Row(
           children: [
-            CustomIcons.appointmentSchedule,
+            const SAIcons.appointmentSchedule(),
             const SizedBox(
               width: 10,
             ),
             Text(
               '${startTime.hour}:${(startTime.minute < 10) ? startTime.minute.toString().padLeft(2, '0') : startTime.minute}-${endTime.hour}:${(endTime.minute < 10) ? endTime.minute.toString().padLeft(2, '0') : endTime.minute}',
-              style: themeData.textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.bodyLarge,
             )
           ],
         ),
@@ -263,7 +263,7 @@ class Customer extends StatelessWidget {
             height: 18,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: themeData.colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.onPrimary,
               image: DecorationImage(
                 fit: BoxFit.fill,
                 image: NetworkImage(user.avatar),
@@ -275,9 +275,9 @@ class Customer extends StatelessWidget {
           ),
           Text(
             user.name,
-            style: themeData.textTheme.bodyLarge!.copyWith(
-              color: themeData.colorScheme.primary,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
           )
         ],
       ),
@@ -305,9 +305,9 @@ class Services extends StatelessWidget {
           Expanded(
             child: Text(
               services,
-              style: themeData.textTheme.bodyLarge!.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
           ),
         ],
@@ -331,9 +331,9 @@ class Description extends StatelessWidget {
       child: Expanded(
         child: Text(
           description,
-          style: themeData.textTheme.bodySmall!.copyWith(
-            color: themeData.colorScheme.onSecondary,
-          ),
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
         ),
       ),
     );
