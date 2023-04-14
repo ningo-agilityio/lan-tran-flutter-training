@@ -1,23 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/constants/user_info.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/icons.dart';
+import '../../../core/widgets/indicator.dart';
 import '../../../core/widgets/input.dart';
 import '../../../core/widgets/snack_bar.dart';
 import '../../../core/widgets/text.dart';
-import '../../auth/model/user.dart';
 import '../api/appointment_api.dart';
 import '../model/appointment.dart';
 
 class NewAppointmentScreen extends StatefulWidget {
   const NewAppointmentScreen({
-    required this.user,
     super.key,
   });
-
-  final User user;
 
   @override
   State<NewAppointmentScreen> createState() => _NewAppointmentScreenState();
@@ -42,6 +42,8 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double indicatorHeight = MediaQuery.of(context).size.height / 2;
+
     return Scaffold(
       appBar: AppBar(
         title: SAText.appBarTitle(
@@ -63,7 +65,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
             children: [
               const SizedBox(height: 12),
               Text(
-                widget.user.name,
+                user!.name,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 12),
@@ -157,7 +159,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                   try {
                     await AppointmentApi.addAppointment(
                       Appointment(
-                        userId: widget.user.id,
+                        userId: user!.id,
                         date: dateTime,
                         startTime: startTime,
                         endTime: endTime,
@@ -165,7 +167,18 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                         description: descpController.text,
                       ),
                     );
-                    Navigator.of(context).pop();
+
+                    showDialog(
+                      context: context,
+                      barrierColor: Theme.of(context).colorScheme.onBackground,
+                      builder: (context) => LoadingIndicator(
+                        height: indicatorHeight,
+                      ),
+                    );
+
+                    Timer(const Duration(seconds: 3), () {
+                      Navigator.pushReplacementNamed(context, '/calendar');
+                    });
                   } catch (e) {
                     SASnackBar.show(
                       context: context,

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:salon_appointment/core/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../core/constants/user_info.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
 import '../../../core/widgets/icons.dart';
@@ -14,11 +15,8 @@ import '../repository/appointment_repository.dart';
 
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({
-    required this.user,
     super.key,
   });
-
-  final User user;
 
   @override
   State<AppointmentScreen> createState() => _AppointmentScreenState();
@@ -39,7 +37,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   void _loadEvents() {
     eventsController.sink.add(null);
-    appointmentRepo.load(_selectedDay!, widget.user.id).then((value) {
+    appointmentRepo.load(_selectedDay!, user!.id).then((value) {
       eventsController.sink.add(value);
     });
   }
@@ -63,7 +61,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     return MainLayout(
-      user: widget.user,
       currentIndex: 0,
       title: S.of(context).appointmentAppBarTitle,
       child: Column(
@@ -151,7 +148,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         itemBuilder: (_, index) => Padding(
                           padding: const EdgeInsets.all(8),
                           child: AppointmentCard(
-                            user: widget.user,
+                            user: user!,
                             appointment: events[index],
                           ),
                         ),
