@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/core/widgets/indicator.dart';
 import 'package:salon_appointment/core/widgets/snack_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/constants/user_info.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/common_layout.dart';
 import '../../../core/widgets/buttons.dart';
@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    userRepo.getUser().then((value) => users = value);
+    userRepo.load().then((value) => users = value);
     super.initState();
   }
 
@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: SAText.login(
                   text: S.of(context).loginButton,
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (FormValidation.isValidPassword(password) != null ||
                       FormValidation.isValidPhoneNumber(phoneNumber) != null) {
                     SASnackBar.show(
@@ -134,11 +134,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   final isSuccess = FormValidation.isLoginSuccess(
                       users, phoneNumber, password);
                   if (isSuccess) {
-                    user = users
+                    final user = users
                         .where((e) =>
                             e.phoneNumber == phoneNumber &&
                             e.password == password)
                         .first;
+
+                    final SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+
+                    prefs
+                      ..setString('id', user.id)
+                      ..setString('name', user.name)
+                      ..setString('phoneNumber', user.phoneNumber)
+                      ..setString('avatar', user.avatar)
+                      ..setString('password', user.password);
+
                     showDialog(
                       context: context,
                       barrierColor: Theme.of(context).colorScheme.onBackground,
