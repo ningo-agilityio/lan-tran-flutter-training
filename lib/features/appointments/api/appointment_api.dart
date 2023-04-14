@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:salon_appointment/features/appointments/model/appointment.dart';
 
@@ -36,11 +35,7 @@ class AppointmentApi {
     final body = json.encode(map);
 
     try {
-      await http.post(url, body: body, headers: headers).then((response) {
-        if (kDebugMode) {
-          print(response.body);
-        }
-      });
+      await http.post(url, body: body, headers: headers).then((response) {});
     } catch (e) {
       throw Exception(e);
     }
