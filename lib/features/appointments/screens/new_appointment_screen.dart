@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/constants/user_info.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/icons.dart';
@@ -43,163 +43,178 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     final double indicatorHeight = MediaQuery.of(context).size.height / 2;
+    late String userName = '';
+    late String userId = '';
 
-    return Scaffold(
-      appBar: AppBar(
-        title: SAText.appBarTitle(
-          text: S.of(context).newAppointmentAppBarTitle,
-          style: Theme.of(context).textTheme.titleLarge!,
-        ),
-        automaticallyImplyLeading: false,
-        actions: [
-          SAButton.icon(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const SAIcons.close(),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Center(
-          child: Column(
-            children: [
-              const SizedBox(height: 12),
-              Text(
-                user!.name,
-                style: Theme.of(context).textTheme.titleLarge,
+    return FutureBuilder(
+      future: SharedPreferences.getInstance(),
+      builder: (_, snapshot) {
+        SharedPreferences.getInstance().then((value) {
+          userName = value.getString('name')!;
+          userId = value.getString('id')!;
+        });
+        return Scaffold(
+          appBar: AppBar(
+            title: SAText.appBarTitle(
+              text: S.of(context).newAppointmentAppBarTitle,
+              style: Theme.of(context).textTheme.titleLarge!,
+            ),
+            automaticallyImplyLeading: false,
+            actions: [
+              SAButton.icon(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const SAIcons.close(),
               ),
-              const SizedBox(height: 12),
-              DatePicker(
-                  dateTime: dateTime,
-                  onPressed: () async {
-                    final DateTime? date = await showDatePicker(
-                      context: context,
-                      initialDate: dateTime,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(dateTime.year + 5),
-                    );
-
-                    if (date != null && date != dateTime) {
-                      setState(() {
-                        dateTime = date;
-                      });
-                    }
-                  }),
-              const SizedBox(height: 12),
-              TimePicker(
-                startTime: startTime,
-                endTime: endTime,
-                onStartTimePressed: () async {
-                  final TimeOfDay? time = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.fromDateTime(startTime),
-                  );
-                  if (time != null &&
-                      time != TimeOfDay.fromDateTime(startTime)) {
-                    setState(() {
-                      startTime = DateTime(
-                        dateTime.year,
-                        dateTime.month,
-                        dateTime.day,
-                        time.hour,
-                        time.minute,
-                      );
-                      endTime = autoAddHalfHour(startTime);
-                    });
-                  }
-                },
-                onEndTimePressed: () async {
-                  final TimeOfDay? time = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.fromDateTime(endTime),
-                  );
-                  if (time != null && time != TimeOfDay.fromDateTime(endTime)) {
-                    setState(() {
-                      endTime = DateTime(
-                        dateTime.year,
-                        dateTime.month,
-                        dateTime.day,
-                        time.hour,
-                        time.minute,
-                      );
-                    });
-                  }
-                },
-              ),
-              const SizedBox(height: 12),
-              Dropdown(
-                  items: const ['Back', 'Neck & Shoulders'],
-                  selectedValue: selectedValue,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedValue = value;
-                    });
-                  }),
-              const SizedBox(height: 12),
-              Input(
-                controller: descpController,
-                text: S.of(context).description,
-                focusNode: descpFocusNode,
-                onEditCompleted: () {
-                  FocusScope.of(context).unfocus();
-                },
-                color: Theme.of(context).colorScheme.secondaryContainer,
-                maxLines: 4,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    width: 1,
-                    color: Theme.of(context).colorScheme.secondaryContainer,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              const SizedBox(height: 12),
-              ElevatedButton(
-                onPressed: () async {
-                  try {
-                    await AppointmentApi.addAppointment(
-                      Appointment(
-                        userId: user!.id,
-                        date: dateTime,
-                        startTime: startTime,
-                        endTime: endTime,
-                        services: selectedValue!,
-                        description: descpController.text,
-                      ),
-                    );
-
-                    showDialog(
-                      context: context,
-                      barrierColor: Theme.of(context).colorScheme.onBackground,
-                      builder: (context) => LoadingIndicator(
-                        height: indicatorHeight,
-                      ),
-                    );
-
-                    Timer(const Duration(seconds: 3), () {
-                      Navigator.pushReplacementNamed(context, '/calendar');
-                    });
-                  } catch (e) {
-                    SASnackBar.show(
-                      context: context,
-                      message: e.toString(),
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                child: Text(
-                  S.of(context).createAppointmentButton,
-                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                ),
-              )
             ],
           ),
-        ),
-      ),
+          body: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Center(
+              child: Column(
+                children: [
+                  const SizedBox(height: 12),
+                  Text(
+                    userName,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 12),
+                  DatePicker(
+                      dateTime: dateTime,
+                      onPressed: () async {
+                        final DateTime? date = await showDatePicker(
+                          context: context,
+                          initialDate: dateTime,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(dateTime.year + 5),
+                        );
+
+                        if (date != null && date != dateTime) {
+                          setState(() {
+                            dateTime = date;
+                          });
+                        }
+                      }),
+                  const SizedBox(height: 12),
+                  TimePicker(
+                    startTime: startTime,
+                    endTime: endTime,
+                    onStartTimePressed: () async {
+                      final TimeOfDay? time = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.fromDateTime(startTime),
+                      );
+                      if (time != null &&
+                          time != TimeOfDay.fromDateTime(startTime)) {
+                        setState(() {
+                          startTime = DateTime(
+                            dateTime.year,
+                            dateTime.month,
+                            dateTime.day,
+                            time.hour,
+                            time.minute,
+                          );
+                          endTime = autoAddHalfHour(startTime);
+                        });
+                      }
+                    },
+                    onEndTimePressed: () async {
+                      final TimeOfDay? time = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.fromDateTime(endTime),
+                      );
+                      if (time != null &&
+                          time != TimeOfDay.fromDateTime(endTime)) {
+                        setState(() {
+                          endTime = DateTime(
+                            dateTime.year,
+                            dateTime.month,
+                            dateTime.day,
+                            time.hour,
+                            time.minute,
+                          );
+                        });
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  Dropdown(
+                      items: const ['Back', 'Neck & Shoulders'],
+                      selectedValue: selectedValue,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value;
+                        });
+                      }),
+                  const SizedBox(height: 12),
+                  Input(
+                    controller: descpController,
+                    text: S.of(context).description,
+                    focusNode: descpFocusNode,
+                    onEditCompleted: () {
+                      FocusScope.of(context).unfocus();
+                    },
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    maxLines: 4,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        bool isProcessing = true;
+                        if (isProcessing) {
+                          unawaited(
+                            showDialog(
+                              context: context,
+                              barrierColor:
+                                  Theme.of(context).colorScheme.onBackground,
+                              builder: (context) => LoadingIndicator(
+                                height: indicatorHeight,
+                              ),
+                            ),
+                          );
+                        }
+                        await AppointmentApi.addAppointment(
+                          Appointment(
+                            userId: userId,
+                            date: dateTime,
+                            startTime: startTime,
+                            endTime: endTime,
+                            services: selectedValue!,
+                            description: descpController.text,
+                          ),
+                        );
+                        isProcessing = false;
+                        Navigator.pushReplacementNamed(context, '/calendar');
+                      } catch (e) {
+                        SASnackBar.show(
+                          context: context,
+                          message: e.toString(),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                    ),
+                    child: Text(
+                      S.of(context).createAppointmentButton,
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

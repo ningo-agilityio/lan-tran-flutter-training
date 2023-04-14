@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../core/constants/user_info.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
 import '../../../core/utils.dart';
@@ -39,7 +38,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   void _loadEvents() {
     eventsController.sink.add(null);
-    appointmentRepo.load(_selectedDay!, user!.id).then((value) {
+    appointmentRepo.load(_selectedDay!).then((value) {
       eventsController.sink.add(value);
     });
   }
@@ -48,6 +47,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
+
     if (_selectedDay != null) {
       _loadEvents();
     }

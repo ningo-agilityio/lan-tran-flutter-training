@@ -5,11 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:salon_appointment/core/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../core/constants/user_info.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
 import '../../../core/widgets/icons.dart';
-import '../../auth/model/user.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
 
@@ -35,9 +33,13 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
+  late String userName;
+  late String userAvatar;
+
   void _loadEvents() {
     eventsController.sink.add(null);
-    appointmentRepo.load(_selectedDay!, user!.id).then((value) {
+    // add try-catch here: if error show snackbar
+    appointmentRepo.load(_selectedDay!).then((value) {
       eventsController.sink.add(value);
     });
   }
@@ -46,6 +48,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
+    getUserName().then((value) => userName = value);
+    getUserAvatar().then((value) => userAvatar = value);
 
     if (_selectedDay != null) {
       _loadEvents();
@@ -148,7 +152,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         itemBuilder: (_, index) => Padding(
                           padding: const EdgeInsets.all(8),
                           child: AppointmentCard(
-                            user: user!,
+                            name: userName,
+                            avatar: userAvatar,
                             appointment: events[index],
                           ),
                         ),
@@ -174,12 +179,14 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 class AppointmentCard extends StatelessWidget {
   const AppointmentCard({
     required this.appointment,
-    required this.user,
+    required this.name,
+    required this.avatar,
     super.key,
   });
 
   final Appointment appointment;
-  final User user;
+  final String name;
+  final String avatar;
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +205,10 @@ class AppointmentCard extends StatelessWidget {
               endTime: appointment.endTime,
             ),
             const SizedBox(height: 24),
-            Customer(user: user),
+            Customer(
+              name: name,
+              avatar: avatar,
+            ),
             const SizedBox(height: 24),
             Services(services: appointment.services),
             const SizedBox(height: 24),
@@ -244,11 +254,13 @@ class Time extends StatelessWidget {
 
 class Customer extends StatelessWidget {
   const Customer({
-    required this.user,
+    required this.name,
+    required this.avatar,
     super.key,
   });
 
-  final User user;
+  final String name;
+  final String avatar;
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +275,7 @@ class Customer extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimary,
               image: DecorationImage(
                 fit: BoxFit.fill,
-                image: NetworkImage(user.avatar),
+                image: NetworkImage(avatar),
               ),
             ),
           ),
@@ -271,7 +283,7 @@ class Customer extends StatelessWidget {
             width: 10,
           ),
           Text(
-            user.name,
+            name,
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Theme.of(context).colorScheme.primary,
                 ),
