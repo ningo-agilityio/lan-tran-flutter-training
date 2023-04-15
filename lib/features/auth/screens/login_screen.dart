@@ -68,8 +68,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(
                         bottom: 147,
                       ),
-                      child: SAText.logo(
+                      child: SAText(
                         text: S.of(context).logo,
+                        style: TextStyle(
+                          fontSize: 40,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                       ),
                     ),
             ),
@@ -112,15 +116,24 @@ class _LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {},
-                child: SAText.forgotPassword(
+                child: SAText(
                   text: S.of(context).forgotPassword,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onPrimary
+                            .withOpacity(0.6429),
+                      ),
                 ),
               ),
             ),
             const SizedBox(height: 24),
             SAButton.outlined(
-                child: SAText.login(
+                child: SAText(
                   text: S.of(context).loginButton,
+                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                 ),
                 onPressed: () {
                   if (FormValidation.isValidPassword(password) != null ||

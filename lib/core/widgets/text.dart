@@ -21,18 +21,6 @@ class SAText extends StatelessWidget {
     required TextStyle style,
   }) = _AppBarTitle;
 
-  const factory SAText.login({
-    required String text,
-  }) = _Login;
-
-  const factory SAText.logo({
-    required String text,
-  }) = _Logo;
-
-  const factory SAText.forgotPassword({
-    required String text,
-  }) = _ForgotPassword;
-
   final String text;
   final TextStyle? style;
 
@@ -93,55 +81,6 @@ class _TimePicker extends SAText {
       style: Theme.of(context).textTheme.labelLarge!.copyWith(
             color: Theme.of(context).colorScheme.secondaryContainer,
           ),
-    );
-  }
-}
-
-class _Login extends SAText {
-  const _Login({
-    required super.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: Theme.of(context).textTheme.labelMedium!.copyWith(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-    );
-  }
-}
-
-class _ForgotPassword extends SAText {
-  const _ForgotPassword({
-    required super.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6429),
-          ),
-    );
-  }
-}
-
-class _Logo extends SAText {
-  const _Logo({
-    required super.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 40,
-        color: Theme.of(context).colorScheme.onPrimary,
-      ),
     );
   }
 }
