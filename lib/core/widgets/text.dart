@@ -16,10 +16,6 @@ class SAText extends StatelessWidget {
     required TextStyle style,
   }) = _CalendarSchedule;
 
-  const factory SAText.profileName({
-    required String text,
-  }) = _ProfileName;
-
   const factory SAText.appBarTitle({
     required String text,
     TextStyle style,
@@ -144,24 +140,6 @@ class _Logo extends SAText {
       text,
       style: TextStyle(
         fontSize: 40,
-        color: Theme.of(context).colorScheme.onPrimary,
-      ),
-    );
-  }
-}
-
-class _ProfileName extends SAText {
-  const _ProfileName({
-    required super.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontSize: 30,
         color: Theme.of(context).colorScheme.onPrimary,
       ),
     );
