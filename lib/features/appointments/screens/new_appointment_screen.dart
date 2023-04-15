@@ -43,11 +43,14 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         title: SAText.appBarTitle(
           text: S.of(context).newAppointmentAppBarTitle,
-          style: Theme.of(context).textTheme.titleLarge!,
+          style: textTheme.titleLarge!,
         ),
         automaticallyImplyLeading: false,
         actions: [
@@ -55,7 +58,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
             onPressed: () => Navigator.of(context).pop(),
             child: SAIcons(
               icon: Assets.closeIcon,
-              color: Theme.of(context).colorScheme.secondaryContainer,
+              color: colorScheme.secondaryContainer,
             ),
           ),
         ],
@@ -68,7 +71,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
               const SizedBox(height: 12),
               Text(
                 widget.user.name,
-                style: Theme.of(context).textTheme.titleLarge,
+                style: textTheme.titleLarge,
               ),
               const SizedBox(height: 12),
               DatePicker(
@@ -145,12 +148,12 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                 onEditCompleted: () {
                   FocusScope.of(context).unfocus();
                 },
-                color: Theme.of(context).colorScheme.secondaryContainer,
+                color: colorScheme.secondaryContainer,
                 maxLines: 4,
                 border: OutlineInputBorder(
                   borderSide: BorderSide(
                     width: 1,
-                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    color: colorScheme.secondaryContainer,
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -178,13 +181,13 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: colorScheme.primary,
                 ),
                 child: Text(
                   S.of(context).createAppointmentButton,
-                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+                  style: textTheme.labelMedium!.copyWith(
+                    color: colorScheme.onPrimary,
+                  ),
                 ),
               )
             ],
@@ -297,15 +300,17 @@ class Dropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       height: 44,
       width: 345,
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: colorScheme.onPrimary,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: Theme.of(context).colorScheme.secondaryContainer,
+            color: colorScheme.secondaryContainer,
           )),
       child: DropdownButton<String>(
         hint: const Text('Select Services'),

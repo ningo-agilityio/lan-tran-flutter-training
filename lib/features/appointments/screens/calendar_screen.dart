@@ -65,6 +65,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return MainLayout(
       user: widget.user,
       currentIndex: 1,
@@ -87,8 +89,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
               selectedDecoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Theme.of(context).colorScheme.onSurface,
-                    Theme.of(context).colorScheme.primary,
+                    colorScheme.onSurface,
+                    colorScheme.primary,
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -96,25 +98,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 shape: BoxShape.rectangle,
               ),
               todayDecoration: BoxDecoration(
-                color:
-                    Theme.of(context).colorScheme.primary.withOpacity(0.0798),
+                color: colorScheme.primary.withOpacity(0.0798),
                 shape: BoxShape.rectangle,
               ),
               todayTextStyle: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
+                color: colorScheme.secondary,
               ),
               rowDecoration: BoxDecoration(
                 border: Border.all(
-                  color: Theme.of(context).colorScheme.surface,
+                  color: colorScheme.surface,
                 ),
               ),
             ),
             daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
+                color: colorScheme.secondary,
               ),
               weekendStyle: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
+                color: colorScheme.secondary,
               ),
             ),
             daysOfWeekHeight: 44,
@@ -154,12 +155,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       child: Center(
                         child: Text(
                           S.of(context).emptyAppointments,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    color: colorScheme.secondary,
+                                  ),
                         ),
                       ),
                     );
@@ -172,8 +171,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Theme.of(context).colorScheme.primary,
-                            Theme.of(context).colorScheme.onSurface,
+                            colorScheme.primary,
+                            colorScheme.onSurface,
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -211,6 +210,8 @@ class CalendarSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -232,20 +233,20 @@ class CalendarSchedule extends StatelessWidget {
                 const SizedBox(height: 22),
                 SAText.calendarSchedule(
                   text: dateFormat.format(appointment.date),
-                  style: Theme.of(context).textTheme.labelLarge!,
+                  style: textTheme.labelLarge!,
                 ),
                 const SizedBox(height: 7),
                 SAText.calendarSchedule(
                   text:
                       '${appointment.startTime.hour}:${twoDigitsMinute(appointment.startTime)}-${appointment.endTime.hour}:${twoDigitsMinute(appointment.endTime)}',
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        height: 24 / 14,
-                      ),
+                  style: textTheme.bodyLarge!.copyWith(
+                    height: 24 / 14,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 SAText.calendarSchedule(
                   text: appointment.description,
-                  style: Theme.of(context).textTheme.bodySmall!,
+                  style: textTheme.bodySmall!,
                 ),
               ],
             ),
