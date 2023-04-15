@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/core/widgets/indicator.dart';
@@ -143,12 +144,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     final SharedPreferences prefs =
                         await SharedPreferences.getInstance();
 
-                    prefs
-                      ..setString('id', user.id)
-                      ..setString('name', user.name)
-                      ..setString('phoneNumber', user.phoneNumber)
-                      ..setString('avatar', user.avatar)
-                      ..setString('password', user.password);
+                    final String userEncode = jsonEncode(user.toJson());
+
+                    await prefs.setString('user', userEncode);
 
                     showDialog(
                       context: context,
