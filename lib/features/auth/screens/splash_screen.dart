@@ -31,6 +31,8 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -41,7 +43,7 @@ class Logo extends StatelessWidget {
             style: TextStyle(
               fontSize: 70,
               fontFamily: 'Poppins',
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: colorScheme.onPrimary,
             ),
           ),
         ),
@@ -52,7 +54,7 @@ class Logo extends StatelessWidget {
             style: TextStyle(
               fontSize: 220,
               fontFamily: 'Poppins',
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.24),
+              color: colorScheme.onPrimary.withOpacity(0.24),
             ),
           ),
         ),

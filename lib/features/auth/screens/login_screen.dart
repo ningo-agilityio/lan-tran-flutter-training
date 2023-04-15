@@ -46,6 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
     final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final double screenHeight = MediaQuery.of(context).size.height;
     final double indicatorHeight = MediaQuery.of(context).size.height / 2;
@@ -72,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: S.of(context).logo,
                         style: TextStyle(
                           fontSize: 40,
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: colorScheme.onPrimary,
                         ),
                       ),
                     ),
@@ -118,12 +120,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {},
                 child: SAText(
                   text: S.of(context).forgotPassword,
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onPrimary
-                            .withOpacity(0.6429),
-                      ),
+                  style: textTheme.bodySmall!.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onPrimary
+                        .withOpacity(0.6429),
+                  ),
                 ),
               ),
             ),
@@ -131,9 +133,9 @@ class _LoginScreenState extends State<LoginScreen> {
             SAButton.outlined(
                 child: SAText(
                   text: S.of(context).loginButton,
-                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+                  style: textTheme.labelMedium!.copyWith(
+                    color: colorScheme.onPrimary,
+                  ),
                 ),
                 onPressed: () {
                   if (FormValidation.isValidPassword(password) != null ||
