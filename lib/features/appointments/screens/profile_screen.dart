@@ -64,8 +64,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    SAText.profileName(
+                    SAText(
                       text: userName,
+                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
                     ),
                     const SizedBox(
                       height: 200,
