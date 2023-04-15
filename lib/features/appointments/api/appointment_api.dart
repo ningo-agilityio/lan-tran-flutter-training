@@ -9,20 +9,17 @@ class AppointmentApi {
     final url = Uri.parse('$apiUrl/appointments?userId=$userId');
     late List<Appointment> responseData = [];
 
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        responseData = (json.decode(response.body) as List)
-            .map(
-              (appointment) =>
-                  Appointment.fromJson(appointment as Map<dynamic, dynamic>),
-            )
-            .toList();
-      } else {
-        throw Exception('Failed to load appointments.');
-      }
-    } catch (e) {
-      throw Exception(e);
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      responseData = (json.decode(response.body) as List)
+          .map(
+            (appointment) =>
+                Appointment.fromJson(appointment as Map<dynamic, dynamic>),
+          )
+          .toList();
+    } else {
+      // show on screens
+      throw Exception('Failed to load appointments.');
     }
 
     return responseData;
