@@ -46,6 +46,12 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
     late String userName = '';
     late String userId = '';
 
+    const List<String> items = [
+      'Back',
+      'Neck & Shoulders',
+      'Non-Invasive Body Contouring',
+    ];
+
     return FutureBuilder(
       future: SharedPreferences.getInstance(),
       builder: (_, snapshot) {
@@ -138,7 +144,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                   ),
                   const SizedBox(height: 12),
                   Dropdown(
-                      items: const ['Back', 'Neck & Shoulders'],
+                      items: items,
                       selectedValue: selectedValue,
                       onChanged: (value) {
                         setState(() {
