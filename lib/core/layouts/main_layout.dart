@@ -115,16 +115,18 @@ class CustomBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       clipBehavior: Clip.antiAlias,
       child: BottomNavigationBar(
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
+        backgroundColor: colorScheme.onPrimary,
         currentIndex: currentIndex,
         onTap: onTap,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: Theme.of(context).colorScheme.onTertiary,
+        selectedItemColor: colorScheme.primary,
+        unselectedItemColor: colorScheme.onTertiary,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: <BottomNavigationBarItem>[
