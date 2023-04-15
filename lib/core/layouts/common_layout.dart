@@ -21,7 +21,7 @@ class CommonLayout extends StatelessWidget {
         height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: bgImage ?? Assets.bgImange,
+            image: bgImage ?? Assets.bgImage,
             colorFilter: ColorFilter.mode(
               bgColor ?? Theme.of(context).colorScheme.primary.withOpacity(0.5),
               BlendMode.multiply,

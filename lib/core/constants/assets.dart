@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
 
 class Assets {
-  static const AssetImage bgImange = AssetImage('assets/background.png');
+  static const AssetImage bgImage = AssetImage('assets/background.png');
 }
