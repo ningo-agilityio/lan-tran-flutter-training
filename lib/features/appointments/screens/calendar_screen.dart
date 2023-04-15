@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
 import '../../../core/utils.dart';
@@ -214,9 +215,13 @@ class CalendarSchedule extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 26, left: 15),
-          child: SAIcons.calendarSchedule(),
+        Padding(
+          padding: const EdgeInsets.only(top: 26, left: 15),
+          child: SAIcons(
+            icon: Assets.scheduleIcon,
+            size: 20,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
         ),
         Expanded(
           child: Padding(

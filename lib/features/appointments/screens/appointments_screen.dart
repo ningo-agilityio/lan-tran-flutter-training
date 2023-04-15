@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:salon_appointment/core/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
 import '../../../core/widgets/icons.dart';
@@ -230,7 +231,11 @@ class Time extends StatelessWidget {
       children: [
         Row(
           children: [
-            const SAIcons.appointmentSchedule(),
+            SAIcons(
+              icon: Assets.scheduleIcon,
+              size: 20,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
             const SizedBox(
               width: 10,
             ),

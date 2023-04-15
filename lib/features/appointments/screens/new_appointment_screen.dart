@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/icons.dart';
@@ -52,7 +53,10 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
         actions: [
           SAButton.icon(
             onPressed: () => Navigator.of(context).pop(),
-            child: const SAIcons.close(),
+            child: SAIcons(
+              icon: Assets.closeIcon,
+              color: Theme.of(context).colorScheme.secondaryContainer,
+            ),
           ),
         ],
       ),
@@ -209,10 +213,8 @@ class DatePicker extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(
-            Icons.schedule,
-            size: 24,
-            color: Theme.of(context).colorScheme.secondaryContainer,
+          const SAIcons(
+            icon: Assets.scheduleIcon,
           ),
           Text(
             dateFormat.format(dateTime),
@@ -225,10 +227,8 @@ class DatePicker extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: IconButton(
               onPressed: onPressed,
-              icon: Icon(
-                Icons.calendar_month,
-                size: 24,
-                color: Theme.of(context).colorScheme.secondaryContainer,
+              icon: const SAIcons(
+                icon: Assets.calendarIcon,
               ),
             ),
           ),
@@ -317,8 +317,9 @@ class Dropdown extends StatelessWidget {
                   child: Text(value),
                 ))
             .toList(),
-        icon: const Icon(Icons.arrow_drop_down),
-        iconSize: 24,
+        icon: const SAIcons(
+          icon: Assets.dropdownIcon,
+        ),
         underline: const SizedBox(),
         isExpanded: true,
       ),
