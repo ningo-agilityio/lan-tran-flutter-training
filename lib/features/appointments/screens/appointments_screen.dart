@@ -33,8 +33,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  late String userName;
-  late String userAvatar;
+  late Map<String, dynamic> user;
 
   void _loadEvents() {
     eventsController.sink.add(null);
@@ -48,8 +47,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    getUserName().then((value) => userName = value);
-    getUserAvatar().then((value) => userAvatar = value);
+    getUser().then((value) => user = value);
 
     if (_selectedDay != null) {
       _loadEvents();
@@ -152,8 +150,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         itemBuilder: (_, index) => Padding(
                           padding: const EdgeInsets.all(8),
                           child: AppointmentCard(
-                            name: userName,
-                            avatar: userAvatar,
+                            name: user['name'],
+                            avatar: user['avatar'],
                             appointment: events[index],
                           ),
                         ),
@@ -264,32 +262,30 @@ class Customer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Row(
-        children: [
-          Container(
-            width: 18,
-            height: 18,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Theme.of(context).colorScheme.onPrimary,
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                image: NetworkImage(avatar),
-              ),
+    return Row(
+      children: [
+        Container(
+          width: 18,
+          height: 18,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Theme.of(context).colorScheme.onPrimary,
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: NetworkImage(avatar),
             ),
           ),
-          const SizedBox(
-            width: 10,
-          ),
-          Text(
-            name,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-          )
-        ],
-      ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        Text(
+          name,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+        )
+      ],
     );
   }
 }
@@ -304,23 +300,20 @@ class Services extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 34,
+    return Row(
+      children: [
+        const SizedBox(
+          width: 34,
+        ),
+        Expanded(
+          child: Text(
+            services,
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
           ),
-          Expanded(
-            child: Text(
-              services,
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -335,16 +328,17 @@ class Description extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Expanded(
-        child: Text(
-          description,
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSecondary,
-              ),
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            description,
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: Theme.of(context).colorScheme.onSecondary,
+                ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }
