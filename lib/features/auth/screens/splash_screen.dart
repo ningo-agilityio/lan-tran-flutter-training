@@ -12,9 +12,9 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Timer(const Duration(seconds: 2), () async {
-      final userId = await getUserId();
+      final user = await getUser();
 
-      (userId == null)
+      (user.isEmpty)
           ? Navigator.pushNamed(context, '/login')
           : Navigator.pushNamed(context, '/calendar');
     });
