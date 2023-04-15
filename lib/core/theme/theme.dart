@@ -47,6 +47,10 @@ class SATextTheme {
       );
 
   static final TextTheme textTheme = TextTheme(
+    displaySmall: _defaultTextStyle(
+      fontSize: 30,
+      fontWeight: FontWeight.bold,
+    ),
     titleLarge: _defaultTextStyle(
       fontSize: 20,
       fontWeight: FontWeight.w500,
