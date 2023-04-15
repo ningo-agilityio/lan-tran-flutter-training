@@ -113,6 +113,7 @@ class _SAFloatingButton extends SAButton {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return FloatingActionButton(
       onPressed: onPressed,
       child: Container(
@@ -123,8 +124,8 @@ class _SAFloatingButton extends SAButton {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Theme.of(context).colorScheme.primary,
-              Theme.of(context).colorScheme.onSurface,
+              colorScheme.primary,
+              colorScheme.onSurface,
             ],
           ),
           shape: BoxShape.circle,

@@ -45,20 +45,21 @@ class Input extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
     return SizedBox(
       height: height,
       child: TextFormField(
         controller: controller,
         enableInteractiveSelection: true,
         focusNode: focusNode,
-        style: Theme.of(context).textTheme.labelSmall!.copyWith(
-              color: color,
-            ),
+        style: textTheme.labelSmall!.copyWith(
+          color: color,
+        ),
         decoration: InputDecoration(
           hintText: text,
-          hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
-                color: color,
-              ),
+          hintStyle: textTheme.labelSmall!.copyWith(
+            color: color,
+          ),
           border: border,
         ),
         maxLines: maxLines,
@@ -84,6 +85,8 @@ class _PhoneNumberInput extends Input {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return SizedBox(
       height: height,
       child: TextFormField(
@@ -91,9 +94,9 @@ class _PhoneNumberInput extends Input {
         enableInteractiveSelection: true,
         focusNode: focusNode,
         keyboardType: TextInputType.phone,
-        style: Theme.of(context).textTheme.labelSmall!.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
+        style: theme.textTheme.labelSmall!.copyWith(
+          color: theme.colorScheme.onPrimary,
+        ),
         decoration: InputDecoration(
           hintText: text,
           errorText: errorText,
@@ -123,6 +126,8 @@ class _PasswordInput extends Input {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return SizedBox(
       height: height,
       child: TextFormField(
@@ -130,9 +135,9 @@ class _PasswordInput extends Input {
         enableInteractiveSelection: true,
         focusNode: focusNode,
         obscureText: true,
-        style: Theme.of(context).textTheme.labelSmall!.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
+        style: theme.textTheme.labelSmall!.copyWith(
+          color: theme.colorScheme.onPrimary,
+        ),
         decoration: InputDecoration(
           hintText: text,
           errorText: errorText,
