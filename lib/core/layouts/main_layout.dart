@@ -5,6 +5,7 @@ import '../../features/appointments/screens/appointments_screen.dart';
 import '../../features/appointments/screens/calendar_screen.dart';
 import '../../features/appointments/screens/new_appointment_screen.dart';
 import '../../features/auth/model/user.dart';
+import '../constants/assets.dart';
 import '../widgets/buttons.dart';
 import '../widgets/icons.dart';
 import '../widgets/text.dart';
@@ -51,7 +52,11 @@ class _MainLayoutState extends State<MainLayout> {
       ),
       body: widget.child,
       floatingActionButton: SAButton.floating(
-        child: const SAIcons.add(),
+        child: SAIcons(
+          icon: Assets.addIcon,
+          size: 30,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
@@ -124,19 +129,19 @@ class CustomBottomAppBar extends StatelessWidget {
         showUnselectedLabels: false,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: const Icon(Icons.check),
+            icon: const Icon(Assets.checkIcon),
             label: S.of(context).appointmentsLabel,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.schedule),
+            icon: const Icon(Assets.scheduleIcon),
             label: S.of(context).calendarLabel,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Assets.personIcon),
             label: S.of(context).profileLabel,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.notifications),
+            icon: const Icon(Assets.notificationsIcon),
             label: S.of(context).notificationsLabel,
           ),
         ],
