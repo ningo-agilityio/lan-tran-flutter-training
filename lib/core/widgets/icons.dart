@@ -14,9 +14,11 @@ class SAIcons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Icon(
       icon,
-      color: color ?? Theme.of(context).colorScheme.secondaryContainer,
+      color: color ?? colorScheme.secondaryContainer,
       size: size ?? 24,
     );
   }

@@ -52,13 +52,15 @@ class _SAOutlinedButton extends SAButton {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         fixedSize: size,
         side: BorderSide(
           width: 2,
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: colorScheme.onPrimary,
         ),
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -114,6 +116,7 @@ class _SAFloatingButton extends SAButton {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return FloatingActionButton(
       onPressed: onPressed,
       child: Container(

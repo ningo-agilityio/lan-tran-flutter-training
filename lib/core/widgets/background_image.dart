@@ -5,6 +5,8 @@ class BackgroundImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -12,7 +14,7 @@ class BackgroundImage extends StatelessWidget {
         image: DecorationImage(
           image: const AssetImage('assets/background.png'),
           colorFilter: ColorFilter.mode(
-            Theme.of(context).colorScheme.primary.withOpacity(0.5),
+            colorScheme.primary.withOpacity(0.5),
             BlendMode.multiply,
           ),
           fit: BoxFit.cover,

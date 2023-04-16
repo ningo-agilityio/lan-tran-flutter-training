@@ -75,13 +75,14 @@ class _TimePicker extends SAText {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Text(
       text,
       textAlign: TextAlign.justify,
-      style: theme.textTheme.labelLarge!.copyWith(
-        color: theme.colorScheme.secondaryContainer,
+      style: textTheme.labelLarge!.copyWith(
+        color: colorScheme.secondaryContainer,
       ),
     );
   }

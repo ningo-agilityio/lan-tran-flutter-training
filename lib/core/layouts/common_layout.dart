@@ -15,6 +15,8 @@ class CommonLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -23,7 +25,7 @@ class CommonLayout extends StatelessWidget {
           image: DecorationImage(
             image: bgImage ?? Assets.bgImage,
             colorFilter: ColorFilter.mode(
-              bgColor ?? Theme.of(context).colorScheme.primary.withOpacity(0.5),
+              bgColor ?? colorScheme.primary.withOpacity(0.5),
               BlendMode.multiply,
             ),
             fit: BoxFit.cover,
