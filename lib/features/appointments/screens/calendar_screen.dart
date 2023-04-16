@@ -66,6 +66,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return MainLayout(
       user: widget.user,
@@ -155,10 +156,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       child: Center(
                         child: Text(
                           S.of(context).emptyAppointments,
-                          style:
-                              Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    color: colorScheme.secondary,
-                                  ),
+                          style: textTheme.bodyLarge!.copyWith(
+                            color: colorScheme.secondary,
+                          ),
                         ),
                       ),
                     );

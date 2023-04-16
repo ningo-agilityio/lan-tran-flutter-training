@@ -264,6 +264,7 @@ class Customer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return SafeArea(
       child: Row(
@@ -285,9 +286,9 @@ class Customer extends StatelessWidget {
           ),
           Text(
             user.name,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: colorScheme.primary,
-                ),
+            style: textTheme.bodyLarge!.copyWith(
+              color: colorScheme.primary,
+            ),
           )
         ],
       ),
@@ -305,6 +306,7 @@ class Services extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -315,9 +317,9 @@ class Services extends StatelessWidget {
           Expanded(
             child: Text(
               services,
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: textTheme.bodyLarge!.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
