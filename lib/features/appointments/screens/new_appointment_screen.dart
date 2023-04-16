@@ -211,7 +211,9 @@ class DatePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return Padding(
       padding: const EdgeInsets.only(left: 10),
       child: Row(
@@ -222,8 +224,8 @@ class DatePicker extends StatelessWidget {
           ),
           Text(
             dateFormat.format(dateTime),
-            style: theme.textTheme.labelLarge!.copyWith(
-              color: theme.colorScheme.secondaryContainer,
+            style: textTheme.labelLarge!.copyWith(
+              color: colorScheme.secondaryContainer,
               fontWeight: FontWeight.w400,
             ),
           ),

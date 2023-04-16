@@ -42,11 +42,14 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         title: SAText.appBarTitle(
           text: widget.title,
-          style: Theme.of(context).textTheme.titleLarge!,
+          style: textTheme.titleLarge!,
         ),
         automaticallyImplyLeading: false,
       ),
@@ -55,7 +58,7 @@ class _MainLayoutState extends State<MainLayout> {
         child: SAIcons(
           icon: Assets.addIcon,
           size: 30,
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: colorScheme.onPrimary,
         ),
         onPressed: () => Navigator.push(
           context,

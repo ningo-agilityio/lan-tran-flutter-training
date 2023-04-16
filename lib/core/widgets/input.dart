@@ -46,6 +46,7 @@ class Input extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
+
     return SizedBox(
       height: height,
       child: TextFormField(
@@ -85,7 +86,8 @@ class _PhoneNumberInput extends Input {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return SizedBox(
       height: height,
@@ -94,8 +96,8 @@ class _PhoneNumberInput extends Input {
         enableInteractiveSelection: true,
         focusNode: focusNode,
         keyboardType: TextInputType.phone,
-        style: theme.textTheme.labelSmall!.copyWith(
-          color: theme.colorScheme.onPrimary,
+        style: textTheme.labelSmall!.copyWith(
+          color: colorScheme.onPrimary,
         ),
         decoration: InputDecoration(
           hintText: text,
@@ -126,7 +128,8 @@ class _PasswordInput extends Input {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return SizedBox(
       height: height,
@@ -135,8 +138,8 @@ class _PasswordInput extends Input {
         enableInteractiveSelection: true,
         focusNode: focusNode,
         obscureText: true,
-        style: theme.textTheme.labelSmall!.copyWith(
-          color: theme.colorScheme.onPrimary,
+        style: textTheme.labelSmall!.copyWith(
+          color: colorScheme.onPrimary,
         ),
         decoration: InputDecoration(
           hintText: text,

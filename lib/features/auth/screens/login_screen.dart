@@ -121,10 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: SAText(
                   text: S.of(context).forgotPassword,
                   style: textTheme.bodySmall!.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onPrimary
-                        .withOpacity(0.6429),
+                    color: colorScheme.onPrimary.withOpacity(0.6429),
                   ),
                 ),
               ),

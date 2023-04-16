@@ -307,6 +307,7 @@ class Services extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(

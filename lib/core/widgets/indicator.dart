@@ -10,11 +10,13 @@ class LoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return SizedBox(
       height: height,
       child: Center(
         child: CircularProgressIndicator(
-          color: Theme.of(context).colorScheme.onSurface,
+          color: colorScheme.onSurface,
         ),
       ),
     );
