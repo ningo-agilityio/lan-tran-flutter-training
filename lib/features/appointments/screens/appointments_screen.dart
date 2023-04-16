@@ -3,8 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:salon_appointment/core/utils.dart';
+import 'package:salon_appointment/core/widgets/buttons.dart';
+import 'package:salon_appointment/core/widgets/snack_bar.dart';
+import 'package:salon_appointment/features/appointments/api/appointment_api.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
 import '../../../core/widgets/icons.dart';
@@ -153,6 +157,31 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                             name: user['name'],
                             avatar: user['avatar'],
                             appointment: events[index],
+                            onEditPressed: () {
+                              if (events[index]
+                                      .date
+                                      .difference(DateTime.now())
+                                      .inHours <
+                                  24) {
+                                SASnackBar.show(
+                                  context: context,
+                                  message:
+                                      'You cannot edit appointments in less than 24 hours.',
+                                );
+                              } else {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/edit',
+                                  arguments: events[index],
+                                );
+                              }
+                            },
+                            onRemovePressed: () async {
+                              await AppointmentApi.deleteAppointment(
+                                  events[index]);
+
+                              setState(_loadEvents);
+                            },
                           ),
                         ),
                       ),
@@ -179,12 +208,16 @@ class AppointmentCard extends StatelessWidget {
     required this.appointment,
     required this.name,
     required this.avatar,
+    required this.onEditPressed,
+    required this.onRemovePressed,
     super.key,
   });
 
   final Appointment appointment;
   final String name;
   final String avatar;
+  final VoidCallback onEditPressed;
+  final VoidCallback onRemovePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -198,9 +231,30 @@ class AppointmentCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 12),
-            Time(
-              startTime: appointment.startTime,
-              endTime: appointment.endTime,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Time(
+                  startTime: appointment.startTime,
+                  endTime: appointment.endTime,
+                ),
+                Row(
+                  children: [
+                    SAButton.icon(
+                      onPressed: onEditPressed,
+                      child: const SAIcons(
+                        icon: Assets.editIcon,
+                      ),
+                    ),
+                    SAButton.icon(
+                      onPressed: onRemovePressed,
+                      child: const SAIcons(
+                        icon: Assets.removeIcon,
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
             const SizedBox(height: 24),
             Customer(
@@ -235,14 +289,16 @@ class Time extends StatelessWidget {
       children: [
         Row(
           children: [
-            const SAIcons.appointmentSchedule(),
+            const SAIcons(
+              icon: Icons.schedule,
+            ),
             const SizedBox(
               width: 10,
             ),
             Text(
-              '${startTime.hour}:${(startTime.minute < 10) ? startTime.minute.toString().padLeft(2, '0') : startTime.minute}-${endTime.hour}:${(endTime.minute < 10) ? endTime.minute.toString().padLeft(2, '0') : endTime.minute}',
+              '${formatTime(startTime)}-${formatTime(endTime)}',
               style: Theme.of(context).textTheme.bodyLarge,
-            )
+            ),
           ],
         ),
       ],
