@@ -21,7 +21,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final double indicatorHeight = MediaQuery.of(context).size.height / 2;
-
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     late Map<String, dynamic> user;
 
     return FutureBuilder(
@@ -37,8 +38,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.onSurface,
+                      colorScheme.primary,
+                      colorScheme.onSurface,
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -56,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 150,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: colorScheme.onPrimary,
                           image: DecorationImage(
                             fit: BoxFit.fill,
                             image: NetworkImage(user['avatar']),
@@ -65,12 +66,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       SAText(
                         text: user['name'],
-                        style: Theme.of(context)
-                            .textTheme
-                            .displaySmall!
-                            .copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
+                        style: textTheme.displaySmall!.copyWith(
+                          color: colorScheme.onPrimary,
+                        ),
                       ),
                       const SizedBox(
                         height: 200,
@@ -86,14 +84,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: SAButton.icon(
                           child: Icon(
                             Icons.logout,
-                            color: Theme.of(context).colorScheme.onPrimary,
+                            color: colorScheme.onPrimary,
                             size: 24,
                           ),
                           onPressed: () {
                             showDialog(
                               context: context,
-                              barrierColor:
-                                  Theme.of(context).colorScheme.onBackground,
+                              barrierColor: colorScheme.onBackground,
                               builder: (context) => LoadingIndicator(
                                 height: indicatorHeight,
                               ),
