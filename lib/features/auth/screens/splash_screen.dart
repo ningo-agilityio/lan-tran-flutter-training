@@ -11,15 +11,21 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Timer(const Duration(seconds: 2), () async {
-      final user = await getUser();
-
-      (user.isEmpty)
-          ? Navigator.pushNamed(context, '/login')
-          : Navigator.pushNamed(context, '/calendar');
-    });
-    return const CommonLayout(
-      child: Logo(),
+    return FutureBuilder(
+      future: getUser(),
+      builder: (_, snapshot) {
+        if (snapshot.hasData) {
+          final user = snapshot.data!;
+          Timer(const Duration(seconds: 2), () {
+            (user.isEmpty)
+                ? Navigator.pushNamed(context, '/login')
+                : Navigator.pushNamed(context, '/calendar');
+          });
+        }
+        return const CommonLayout(
+          child: Logo(),
+        );
+      },
     );
   }
 }
