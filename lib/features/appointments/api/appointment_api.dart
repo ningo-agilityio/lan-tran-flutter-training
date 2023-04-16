@@ -37,4 +37,19 @@ class AppointmentApi {
       throw Exception(e);
     }
   }
+
+  static Future<void> updateAppointment(Appointment appointment) async {
+    final url = Uri.parse('$apiUrl/appointments/${appointment.id}');
+    final headers = {'Content-Type': 'application/json'};
+    final map = appointment.toJson();
+    final body = json.encode(map);
+
+    await http.put(url, body: body, headers: headers);
+  }
+
+  static Future<void> deleteAppointment(Appointment appointment) async {
+    final url = Uri.parse('$apiUrl/appointments/${appointment.id}');
+
+    await http.delete(url);
+  }
 }
