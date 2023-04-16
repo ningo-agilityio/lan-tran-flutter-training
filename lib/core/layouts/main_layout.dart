@@ -45,7 +45,9 @@ class _MainLayoutState extends State<MainLayout> {
       ),
       body: widget.child,
       floatingActionButton: SAButton.floating(
-        child: const SAIcons.add(),
+        child: const SAIcons(
+          icon: Icons.add,
+        ),
         onPressed: () => Navigator.pushNamed(context, '/newAppointment'),
       ),
       floatingActionButtonLocation: _fabLocation,
