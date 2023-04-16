@@ -53,8 +53,12 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     _selectedDay = _focusedDay;
     getUser().then((value) => user = value);
 
-    if (_selectedDay != null) {
-      _loadEvents();
+    try {
+      if (_selectedDay != null) {
+        _loadEvents();
+      }
+    } catch (e) {
+      SASnackBar.show(context: context, message: e.toString());
     }
   }
 
