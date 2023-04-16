@@ -6,11 +6,13 @@ class Appointment {
     required this.endTime,
     required this.services,
     required this.description,
+    this.id,
     this.isCompleted = false,
   });
 
   factory Appointment.fromJson(Map<dynamic, dynamic> appointment) {
     return Appointment(
+      id: appointment['id'] as String,
       userId: appointment['userId'] as String,
       date: DateTime.parse(appointment['date'] as String),
       startTime: DateTime.parse(appointment['startTime'] as String),
@@ -31,11 +33,12 @@ class Appointment {
         'isCompleted': isCompleted,
       };
 
-  final String services;
-  final DateTime date;
-  final DateTime startTime;
-  final DateTime endTime;
+  final String? id;
+  late String services;
+  late DateTime date;
+  late DateTime startTime;
+  late DateTime endTime;
   final String userId;
-  final String description;
-  final bool isCompleted;
+  late String description;
+  late bool isCompleted;
 }
