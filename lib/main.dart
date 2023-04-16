@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:salon_appointment/features/appointments/screens/edit_appointment_screen.dart';
 
 import 'core/generated/l10n.dart';
 import 'core/theme/theme.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         '/appointment': (context) => const AppointmentScreen(),
         '/newAppointment': (context) => const NewAppointmentScreen(),
         '/profile': (context) => const ProfileScreen(),
+        '/edit': (context) => const EditAppointment(),
       },
       supportedLocales: S.delegate.supportedLocales,
     );
