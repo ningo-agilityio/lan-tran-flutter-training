@@ -50,8 +50,10 @@ bool isClosedTime(DateTime start, DateTime end) {
       DateTime(start.year, start.month, start.day, 22, 0);
   final DateTime afterTime = DateTime(start.year, start.month, start.day, 8, 0);
 
-  if ((start.isAfter(beforeTime) && start.isBefore(afterTime)) ||
-      (end.isAfter(beforeTime) && end.isBefore(afterTime))) {
+  if (start.isAfter(beforeTime) ||
+      start.isBefore(afterTime) ||
+      end.isAfter(beforeTime) ||
+      end.isBefore(afterTime)) {
     return true;
   }
   return false;
