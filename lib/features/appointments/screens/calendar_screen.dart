@@ -61,6 +61,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double indicatorHeight = MediaQuery.of(context).size.height / 4;
+
     return MainLayout(
       currentIndex: 1,
       title: S.of(context).calendarAppBarTitle,
@@ -145,7 +147,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   final events = snapshot.data ?? [];
                   if (events.isEmpty) {
                     return SizedBox(
-                      height: MediaQuery.of(context).size.height / 4,
+                      height: indicatorHeight,
                       child: Center(
                         child: Text(
                           S.of(context).emptyAppointments,
@@ -179,7 +181,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   }
                 }
                 return LoadingIndicator(
-                  height: MediaQuery.of(context).size.height / 4,
+                  height: indicatorHeight,
                 );
               }),
         ],
@@ -189,30 +191,26 @@ class _CalendarScreenState extends State<CalendarScreen> {
 }
 
 class CalendarSchedule extends StatelessWidget {
-  CalendarSchedule({
+  const CalendarSchedule({
     required this.appointment,
     super.key,
   });
 
   final Appointment appointment;
 
-  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
-
-  String twoDigitsMinute(DateTime time) {
-    return (time.minute < 10)
-        ? time.minute.toString().padLeft(2, '0')
-        : '${time.minute}';
-  }
-
   @override
   Widget build(BuildContext context) {
+    final DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         const Padding(
           padding: EdgeInsets.only(top: 26, left: 15),
-          child: SAIcons.calendarSchedule(),
+          child: SAIcons(
+            icon: Icons.schedule,
+          ),
         ),
         Expanded(
           child: Padding(
@@ -228,7 +226,7 @@ class CalendarSchedule extends StatelessWidget {
                 const SizedBox(height: 7),
                 SAText.calendarSchedule(
                   text:
-                      '${appointment.startTime.hour}:${twoDigitsMinute(appointment.startTime)}-${appointment.endTime.hour}:${twoDigitsMinute(appointment.endTime)}',
+                      '${formatTime(appointment.startTime)}-${formatTime(appointment.endTime)}',
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         height: 24 / 14,
                       ),
