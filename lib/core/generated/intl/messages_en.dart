@@ -38,6 +38,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("There are no appointments."),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
+        "incorrectAccountError": MessageLookupByLibrary.simpleMessage(
+            "Phone number or Password is incorrect."),
+        "invalidAccountError": MessageLookupByLibrary.simpleMessage(
+            "Phone number or Password is invalid."),
         "loginButton": MessageLookupByLibrary.simpleMessage("Login"),
         "logo": MessageLookupByLibrary.simpleMessage("avisit"),
         "logoText": MessageLookupByLibrary.simpleMessage("av"),

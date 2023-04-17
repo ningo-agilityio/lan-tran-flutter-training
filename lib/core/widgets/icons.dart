@@ -1,30 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/core/theme/theme.dart';
 
-class CustomIcons {
-  static Icon appointmentSchedule = Icon(
-    Icons.schedule_outlined,
-    color: themeData.colorScheme.tertiary,
-  );
+class SAIcons extends StatelessWidget {
+  const SAIcons({
+    required this.icon,
+    this.color,
+    this.size,
+    super.key,
+  });
 
-  static Icon breakTime = Icon(
-    Icons.schedule_outlined,
-    color: themeData.colorScheme.secondaryContainer,
-  );
+  final IconData icon;
+  final Color? color;
+  final double? size;
 
-  static Icon calendarSchedule = Icon(
-    Icons.schedule_outlined,
-    color: themeData.colorScheme.onPrimary,
-  );
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-  static Icon add = Icon(
-    Icons.add,
-    size: 30,
-    color: themeData.colorScheme.onPrimary,
-  );
-
-  static Icon close = Icon(
-    Icons.close,
-    color: themeData.colorScheme.onSecondary,
-  );
+    return Icon(
+      icon,
+      color: color ?? colorScheme.secondaryContainer,
+      size: size ?? 24,
+    );
+  }
 }

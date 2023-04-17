@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'core/generated/l10n.dart';
 import 'core/theme/theme.dart';
 import 'features/auth/screens/splash_screen.dart';
-import 'generated/l10n.dart';
 
 void main() {
   runApp(
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Salon Appointment',
       theme: themeData,
       localizationsDelegates: const [
         S.delegate,

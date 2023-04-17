@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../core/generated/l10n.dart';
 import '../../features/appointments/screens/appointments_screen.dart';
 import '../../features/appointments/screens/calendar_screen.dart';
 import '../../features/appointments/screens/new_appointment_screen.dart';
 import '../../features/auth/model/user.dart';
-import '../../generated/l10n.dart';
-import '../theme/theme.dart';
+import '../constants/assets.dart';
 import '../widgets/buttons.dart';
 import '../widgets/icons.dart';
 import '../widgets/text.dart';
@@ -42,17 +42,24 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: CustomText.appBarTitle(
+        title: SAText.appBarTitle(
           text: widget.title,
-          style: themeData.textTheme.titleLarge!,
+          style: textTheme.titleLarge!,
         ),
         automaticallyImplyLeading: false,
       ),
       body: widget.child,
       floatingActionButton: SAButton.floating(
-        child: CustomIcons.add,
+        child: SAIcons(
+          icon: Assets.addIcon,
+          size: 30,
+          color: colorScheme.onPrimary,
+        ),
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
@@ -111,33 +118,35 @@ class CustomBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       clipBehavior: Clip.antiAlias,
       child: BottomNavigationBar(
-        backgroundColor: themeData.colorScheme.onPrimary,
+        backgroundColor: colorScheme.onPrimary,
         currentIndex: currentIndex,
         onTap: onTap,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: themeData.colorScheme.primary,
-        unselectedItemColor: themeData.colorScheme.onTertiary,
+        selectedItemColor: colorScheme.primary,
+        unselectedItemColor: colorScheme.onTertiary,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: const Icon(Icons.check),
+            icon: const Icon(Assets.checkIcon),
             label: S.of(context).appointmentsLabel,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.schedule),
+            icon: const Icon(Assets.scheduleIcon),
             label: S.of(context).calendarLabel,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Assets.personIcon),
             label: S.of(context).profileLabel,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.notifications),
+            icon: const Icon(Assets.notificationsIcon),
             label: S.of(context).notificationsLabel,
           ),
         ],

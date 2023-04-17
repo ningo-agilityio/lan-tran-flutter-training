@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/core/constants/assets.dart';
-import 'package:salon_appointment/core/theme/theme.dart';
 
 class CommonLayout extends StatelessWidget {
   const CommonLayout({
@@ -16,15 +15,17 @@ class CommonLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: bgImage ?? Assets.BG_IMAGE,
+            image: bgImage ?? Assets.bgImage,
             colorFilter: ColorFilter.mode(
-              bgColor ?? themeData.colorScheme.primary.withOpacity(0.5),
+              bgColor ?? colorScheme.primary.withOpacity(0.5),
               BlendMode.multiply,
             ),
             fit: BoxFit.cover,

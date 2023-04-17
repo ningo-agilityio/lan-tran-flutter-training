@@ -229,6 +229,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Phone number or Password is invalid.`
+  String get invalidAccountError {
+    return Intl.message(
+      'Phone number or Password is invalid.',
+      name: 'invalidAccountError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number or Password is incorrect.`
+  String get incorrectAccountError {
+    return Intl.message(
+      'Phone number or Password is incorrect.',
+      name: 'incorrectAccountError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

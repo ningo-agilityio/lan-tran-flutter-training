@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../core/constants/assets.dart';
+import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
-import '../../../core/theme/theme.dart';
+import '../../../core/utils.dart';
 import '../../../core/widgets/icons.dart';
 import '../../../core/widgets/indicator.dart';
 import '../../../core/widgets/text.dart';
-import '../../../generated/l10n.dart';
-import '../../../utils.dart';
 import '../../auth/model/user.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
@@ -28,10 +28,8 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  final controller = AppointmentRepository();
+  final appointmentRepo = AppointmentRepository();
   final eventsController = StreamController<List<Appointment>?>();
-
-  final colorScheme = themeData.colorScheme;
 
   DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
 
@@ -45,7 +43,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   void _loadEvents() {
     eventsController.sink.add(null);
-    controller.load(_selectedDay!, widget.user.id).then((value) {
+    appointmentRepo.load(_selectedDay!, widget.user.id).then((value) {
       eventsController.sink.add(value);
     });
   }
@@ -67,6 +65,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return MainLayout(
       user: widget.user,
       currentIndex: 1,
@@ -89,8 +90,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
               selectedDecoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    themeData.colorScheme.onSurface,
-                    themeData.colorScheme.primary,
+                    colorScheme.onSurface,
+                    colorScheme.primary,
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -98,24 +99,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 shape: BoxShape.rectangle,
               ),
               todayDecoration: BoxDecoration(
-                color: themeData.colorScheme.primary.withOpacity(0.0798),
+                color: colorScheme.primary.withOpacity(0.0798),
                 shape: BoxShape.rectangle,
               ),
               todayTextStyle: TextStyle(
-                color: themeData.colorScheme.secondary,
+                color: colorScheme.secondary,
               ),
               rowDecoration: BoxDecoration(
                 border: Border.all(
-                  color: themeData.colorScheme.surface,
+                  color: colorScheme.surface,
                 ),
               ),
             ),
             daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle: TextStyle(
-                color: themeData.colorScheme.secondary,
+                color: colorScheme.secondary,
               ),
               weekendStyle: TextStyle(
-                color: themeData.colorScheme.secondary,
+                color: colorScheme.secondary,
               ),
             ),
             daysOfWeekHeight: 44,
@@ -155,7 +156,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       child: Center(
                         child: Text(
                           S.of(context).emptyAppointments,
-                          style: themeData.textTheme.bodyLarge!.copyWith(
+                          style: textTheme.bodyLarge!.copyWith(
                             color: colorScheme.secondary,
                           ),
                         ),
@@ -209,13 +210,19 @@ class CalendarSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 26, left: 15),
-          child: CustomIcons.calendarSchedule,
+          child: SAIcons(
+            icon: Assets.scheduleIcon,
+            size: 20,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
         ),
         Expanded(
           child: Padding(
@@ -224,22 +231,22 @@ class CalendarSchedule extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 22),
-                CustomText.calendarSchedule(
+                SAText.calendarSchedule(
                   text: dateFormat.format(appointment.date),
-                  style: themeData.textTheme.labelLarge!,
+                  style: textTheme.labelLarge!,
                 ),
                 const SizedBox(height: 7),
-                CustomText.calendarSchedule(
+                SAText.calendarSchedule(
                   text:
                       '${appointment.startTime.hour}:${twoDigitsMinute(appointment.startTime)}-${appointment.endTime.hour}:${twoDigitsMinute(appointment.endTime)}',
-                  style: themeData.textTheme.bodyLarge!.copyWith(
+                  style: textTheme.bodyLarge!.copyWith(
                     height: 24 / 14,
                   ),
                 ),
                 const SizedBox(height: 12),
-                CustomText.calendarSchedule(
+                SAText.calendarSchedule(
                   text: appointment.description,
-                  style: themeData.textTheme.bodySmall!,
+                  style: textTheme.bodySmall!,
                 ),
               ],
             ),

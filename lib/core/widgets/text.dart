@@ -1,48 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/core/theme/theme.dart';
 
-class CustomText extends StatelessWidget {
-  const CustomText({
+class SAText extends StatelessWidget {
+  const SAText({
     required this.text,
     this.style,
     super.key,
   });
 
-  const factory CustomText.timePicker({
+  const factory SAText.timePicker({
     required String text,
   }) = _TimePicker;
 
-  const factory CustomText.calendarSchedule({
+  const factory SAText.calendarSchedule({
     required String text,
     required TextStyle style,
   }) = _CalendarSchedule;
 
-  const factory CustomText.appBarTitle({
+  const factory SAText.appBarTitle({
     required String text,
     required TextStyle style,
   }) = _AppBarTitle;
-
-  static Text loginText = Text(
-    'Login',
-    style: themeData.textTheme.labelMedium!.copyWith(
-      color: themeData.colorScheme.onPrimary,
-    ),
-  );
-
-  static Text forgetPasswordText = Text(
-    'Forget password?',
-    style: themeData.textTheme.bodySmall!.copyWith(
-      color: themeData.colorScheme.onPrimary.withOpacity(0.6429),
-    ),
-  );
-
-  static Text logoText = Text(
-    'avisit',
-    style: TextStyle(
-      fontSize: 40,
-      color: themeData.colorScheme.onPrimary,
-    ),
-  );
 
   final String text;
   final TextStyle? style;
@@ -56,7 +33,7 @@ class CustomText extends StatelessWidget {
   }
 }
 
-class _AppBarTitle extends CustomText {
+class _AppBarTitle extends SAText {
   const _AppBarTitle({
     required super.text,
     required super.style,
@@ -67,13 +44,13 @@ class _AppBarTitle extends CustomText {
     return Text(
       text,
       style: style!.copyWith(
-        color: themeData.colorScheme.secondary,
+        color: Theme.of(context).colorScheme.secondary,
       ),
     );
   }
 }
 
-class _CalendarSchedule extends CustomText {
+class _CalendarSchedule extends SAText {
   const _CalendarSchedule({
     required super.text,
     required super.style,
@@ -85,24 +62,27 @@ class _CalendarSchedule extends CustomText {
       text,
       textAlign: TextAlign.justify,
       style: style!.copyWith(
-        color: themeData.colorScheme.onPrimary,
+        color: Theme.of(context).colorScheme.onPrimary,
       ),
     );
   }
 }
 
-class _TimePicker extends CustomText {
+class _TimePicker extends SAText {
   const _TimePicker({
     required super.text,
   });
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return Text(
       text,
       textAlign: TextAlign.justify,
-      style: themeData.textTheme.labelLarge!.copyWith(
-        color: themeData.colorScheme.secondaryContainer,
+      style: textTheme.labelLarge!.copyWith(
+        color: colorScheme.secondaryContainer,
       ),
     );
   }

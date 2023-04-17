@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:salon_appointment/utils.dart';
+import 'package:salon_appointment/core/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../core/constants/assets.dart';
+import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
-import '../../../core/theme/theme.dart';
 import '../../../core/widgets/icons.dart';
-import '../../../generated/l10n.dart';
 import '../../auth/model/user.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
@@ -26,9 +26,8 @@ class AppointmentScreen extends StatefulWidget {
 }
 
 class _AppointmentScreenState extends State<AppointmentScreen> {
-  final controller = AppointmentRepository();
+  final appointmentRepo = AppointmentRepository();
   final eventsController = StreamController<List<Appointment>?>();
-  final textColor = themeData.colorScheme.secondary;
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
@@ -41,7 +40,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   void _loadEvents() {
     eventsController.sink.add(null);
-    controller.load(_selectedDay!, widget.user.id).then((value) {
+    appointmentRepo.load(_selectedDay!, widget.user.id).then((value) {
       eventsController.sink.add(value);
     });
   }
@@ -64,6 +63,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return MainLayout(
       user: widget.user,
       currentIndex: 0,
@@ -87,8 +89,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               selectedDecoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    themeData.colorScheme.onSurface,
-                    themeData.colorScheme.primary,
+                    colorScheme.onSurface,
+                    colorScheme.primary,
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -96,10 +98,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 shape: BoxShape.rectangle,
               ),
               todayDecoration: BoxDecoration(
-                color: themeData.colorScheme.primary.withOpacity(0.0798),
+                color: colorScheme.primary.withOpacity(0.0798),
                 shape: BoxShape.rectangle,
               ),
-              todayTextStyle: TextStyle(color: themeData.colorScheme.secondary),
+              todayTextStyle: TextStyle(color: colorScheme.secondary),
             ),
             daysOfWeekHeight: 44,
             onDaySelected: (selectedDay, focusedDay) {
@@ -121,8 +123,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
           ),
           Text(
             dateFormat.format(_selectedDay!),
-            style: themeData.textTheme.labelSmall!.copyWith(
-              color: textColor,
+            style: textTheme.labelSmall!.copyWith(
+              color: colorScheme.secondary,
             ),
           ),
           const SizedBox(height: 8),
@@ -137,8 +139,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     child: Center(
                       child: Text(
                         S.of(context).emptyAppointments,
-                        style: themeData.textTheme.bodyLarge!.copyWith(
-                          color: textColor,
+                        style: textTheme.bodyLarge!.copyWith(
+                          color: colorScheme.secondary,
                         ),
                       ),
                     ),
@@ -189,7 +191,7 @@ class AppointmentCard extends StatelessWidget {
     return Card(
       borderOnForeground: false,
       elevation: 2,
-      shadowColor: themeData.colorScheme.primary.withOpacity(0.16),
+      shadowColor: Theme.of(context).colorScheme.primary.withOpacity(0.16),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
@@ -226,17 +228,23 @@ class Time extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Column(
       children: [
         Row(
           children: [
-            CustomIcons.appointmentSchedule,
+            SAIcons(
+              icon: Assets.scheduleIcon,
+              size: 20,
+              color: theme.colorScheme.secondary,
+            ),
             const SizedBox(
               width: 10,
             ),
             Text(
               '${startTime.hour}:${(startTime.minute < 10) ? startTime.minute.toString().padLeft(2, '0') : startTime.minute}-${endTime.hour}:${(endTime.minute < 10) ? endTime.minute.toString().padLeft(2, '0') : endTime.minute}',
-              style: themeData.textTheme.bodyLarge,
+              style: theme.textTheme.bodyLarge,
             )
           ],
         ),
@@ -255,6 +263,9 @@ class Customer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return SafeArea(
       child: Row(
         children: [
@@ -263,7 +274,7 @@ class Customer extends StatelessWidget {
             height: 18,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: themeData.colorScheme.onPrimary,
+              color: colorScheme.onPrimary,
               image: DecorationImage(
                 fit: BoxFit.fill,
                 image: NetworkImage(user.avatar),
@@ -275,8 +286,8 @@ class Customer extends StatelessWidget {
           ),
           Text(
             user.name,
-            style: themeData.textTheme.bodyLarge!.copyWith(
-              color: themeData.colorScheme.primary,
+            style: textTheme.bodyLarge!.copyWith(
+              color: colorScheme.primary,
             ),
           )
         ],
@@ -295,6 +306,8 @@ class Services extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -305,7 +318,7 @@ class Services extends StatelessWidget {
           Expanded(
             child: Text(
               services,
-              style: themeData.textTheme.bodyLarge!.copyWith(
+              style: textTheme.bodyLarge!.copyWith(
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -326,13 +339,15 @@ class Description extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Expanded(
         child: Text(
           description,
-          style: themeData.textTheme.bodySmall!.copyWith(
-            color: themeData.colorScheme.onSecondary,
+          style: theme.textTheme.bodySmall!.copyWith(
+            color: theme.colorScheme.onSecondary,
           ),
         ),
       ),

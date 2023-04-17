@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/core/theme/theme.dart';
 import 'package:salon_appointment/features/auth/validations/validations.dart';
 
 class Input extends StatelessWidget {
@@ -46,18 +45,20 @@ class Input extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return SizedBox(
       height: height,
       child: TextFormField(
         controller: controller,
         enableInteractiveSelection: true,
         focusNode: focusNode,
-        style: themeData.textTheme.labelSmall!.copyWith(
+        style: textTheme.labelSmall!.copyWith(
           color: color,
         ),
         decoration: InputDecoration(
           hintText: text,
-          hintStyle: themeData.textTheme.labelSmall!.copyWith(
+          hintStyle: textTheme.labelSmall!.copyWith(
             color: color,
           ),
           border: border,
@@ -85,6 +86,9 @@ class _PhoneNumberInput extends Input {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return SizedBox(
       height: height,
       child: TextFormField(
@@ -92,8 +96,8 @@ class _PhoneNumberInput extends Input {
         enableInteractiveSelection: true,
         focusNode: focusNode,
         keyboardType: TextInputType.phone,
-        style: themeData.textTheme.labelSmall!.copyWith(
-          color: themeData.colorScheme.onPrimary,
+        style: textTheme.labelSmall!.copyWith(
+          color: colorScheme.onPrimary,
         ),
         decoration: InputDecoration(
           hintText: text,
@@ -124,6 +128,9 @@ class _PasswordInput extends Input {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return SizedBox(
       height: height,
       child: TextFormField(
@@ -131,8 +138,8 @@ class _PasswordInput extends Input {
         enableInteractiveSelection: true,
         focusNode: focusNode,
         obscureText: true,
-        style: themeData.textTheme.labelSmall!.copyWith(
-          color: themeData.colorScheme.onPrimary,
+        style: textTheme.labelSmall!.copyWith(
+          color: colorScheme.onPrimary,
         ),
         decoration: InputDecoration(
           hintText: text,

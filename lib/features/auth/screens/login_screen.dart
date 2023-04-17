@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:salon_appointment/core/widgets/indicator.dart';
 import 'package:salon_appointment/core/widgets/snack_bar.dart';
 
+import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/common_layout.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/input.dart';
 import '../../../core/widgets/text.dart';
-import '../../../generated/l10n.dart';
 import '../../appointments/screens/calendar_screen.dart';
 import '../model/user.dart';
 import '../repository/user_repository.dart';
-import '../validations/errors.dart';
 import '../validations/validations.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -23,7 +22,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final controller = UserRepository();
+  final userRepo = UserRepository();
 
   final phoneNumberController = TextEditingController();
   final passwordController = TextEditingController();
@@ -41,12 +40,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    controller.getUser().then((value) => users = value);
+    userRepo.getUser().then((value) => users = value);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
     final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final double screenHeight = MediaQuery.of(context).size.height;
     final double indicatorHeight = MediaQuery.of(context).size.height / 2;
@@ -69,7 +70,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(
                         bottom: 147,
                       ),
-                      child: CustomText.logoText,
+                      child: SAText(
+                        text: S.of(context).logo,
+                        style: TextStyle(
+                          fontSize: 40,
+                          color: colorScheme.onPrimary,
+                        ),
+                      ),
                     ),
             ),
             Input.phoneNumber(
@@ -111,18 +118,28 @@ class _LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {},
-                child: CustomText.forgetPasswordText,
+                child: SAText(
+                  text: S.of(context).forgotPassword,
+                  style: textTheme.bodySmall!.copyWith(
+                    color: colorScheme.onPrimary.withOpacity(0.6429),
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 24),
             SAButton.outlined(
-                child: CustomText.loginText,
+                child: SAText(
+                  text: S.of(context).loginButton,
+                  style: textTheme.labelMedium!.copyWith(
+                    color: colorScheme.onPrimary,
+                  ),
+                ),
                 onPressed: () {
                   if (FormValidation.isValidPassword(password) != null ||
                       FormValidation.isValidPhoneNumber(phoneNumber) != null) {
-                    CustomSnackBar.show(
+                    SASnackBar.show(
                       context: context,
-                      message: Errors.INVALID_ACCOUNT,
+                      message: S.of(context).invalidAccountError,
                     );
                     return;
                   }
@@ -153,9 +170,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     });
                   } else {
-                    CustomSnackBar.show(
+                    SASnackBar.show(
                       context: context,
-                      message: Errors.INCORRECT_ACCOUNT,
+                      message: S.of(context).incorrectAccountError,
                     );
                   }
                 }),

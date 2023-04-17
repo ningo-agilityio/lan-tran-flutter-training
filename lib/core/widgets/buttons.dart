@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/core/theme/theme.dart';
 
 class SAButton extends StatelessWidget {
   const SAButton({
@@ -53,13 +52,15 @@ class _SAOutlinedButton extends SAButton {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         fixedSize: size,
         side: BorderSide(
           width: 2,
-          color: themeData.colorScheme.onPrimary,
+          color: colorScheme.onPrimary,
         ),
         backgroundColor: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -114,6 +115,8 @@ class _SAFloatingButton extends SAButton {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return FloatingActionButton(
       onPressed: onPressed,
       child: Container(
@@ -124,8 +127,8 @@ class _SAFloatingButton extends SAButton {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              themeData.colorScheme.primary,
-              themeData.colorScheme.onSurface,
+              colorScheme.primary,
+              colorScheme.onSurface,
             ],
           ),
           shape: BoxShape.circle,
