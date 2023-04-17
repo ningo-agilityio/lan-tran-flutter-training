@@ -70,6 +70,26 @@ class S {
     );
   }
 
+  /// `From:`
+  String get fromText {
+    return Intl.message(
+      'From:',
+      name: 'fromText',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To:`
+  String get toText {
+    return Intl.message(
+      'To:',
+      name: 'toText',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Phone Number`
   String get phoneNumber {
     return Intl.message(
@@ -335,6 +355,16 @@ class S {
     return Intl.message(
       'You must choose a service.',
       name: 'emptyServicesError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You cannot edit appointments in less than 24 hours.`
+  String get unableEditError {
+    return Intl.message(
+      'You cannot edit appointments in less than 24 hours.',
+      name: 'unableEditError',
       desc: '',
       args: [],
     );

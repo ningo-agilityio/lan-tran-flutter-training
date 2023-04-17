@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("You must choose a service."),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
+        "fromText": MessageLookupByLibrary.simpleMessage("From:"),
         "incorrectAccountError": MessageLookupByLibrary.simpleMessage(
             "Phone number or Password is incorrect."),
         "invalidAccountError": MessageLookupByLibrary.simpleMessage(
@@ -66,6 +67,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
         "profileAppBarTitle": MessageLookupByLibrary.simpleMessage("Profile"),
         "profileLabel": MessageLookupByLibrary.simpleMessage("Profile"),
+        "toText": MessageLookupByLibrary.simpleMessage("To:"),
+        "unableEditError": MessageLookupByLibrary.simpleMessage(
+            "You cannot edit appointments in less than 24 hours."),
         "updateSuccess":
             MessageLookupByLibrary.simpleMessage("Appointment updated.")
       };
