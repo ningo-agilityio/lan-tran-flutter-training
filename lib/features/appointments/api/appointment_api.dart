@@ -7,20 +7,12 @@ import '../../../core/constants/constants.dart';
 class AppointmentApi {
   static Future<List<Appointment>> getAppointments(String userId) async {
     final url = Uri.parse('$apiUrl/appointments?userId=$userId');
-    late List<Appointment> responseData = [];
 
     final response = await http.get(url);
-    if (response.statusCode == 200) {
-      responseData = (json.decode(response.body) as List)
-          .map(
-            (appointment) =>
-                Appointment.fromJson(appointment as Map<dynamic, dynamic>),
-          )
-          .toList();
-    } else {
-      // show on screens
-      throw Exception('Failed to load appointments.');
-    }
+    final responseData = (json.decode(response.body) as List)
+        .map((appointment) =>
+            Appointment.fromJson(appointment as Map<dynamic, dynamic>))
+        .toList();
 
     return responseData;
   }
@@ -31,10 +23,21 @@ class AppointmentApi {
     final map = appointment.toJson();
     final body = json.encode(map);
 
-    try {
-      await http.post(url, body: body, headers: headers).then((response) {});
-    } catch (e) {
-      throw Exception(e);
-    }
+    await http.post(url, body: body, headers: headers).then((response) {});
+  }
+
+  static Future<void> updateAppointment(Appointment appointment) async {
+    final url = Uri.parse('$apiUrl/appointments/${appointment.id}');
+    final headers = {'Content-Type': 'application/json'};
+    final map = appointment.toJson();
+    final body = json.encode(map);
+
+    await http.put(url, body: body, headers: headers);
+  }
+
+  static Future<void> deleteAppointment(Appointment appointment) async {
+    final url = Uri.parse('$apiUrl/appointments/${appointment.id}');
+
+    await http.delete(url);
   }
 }

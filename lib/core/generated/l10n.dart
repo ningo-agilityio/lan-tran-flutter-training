@@ -150,11 +150,31 @@ class S {
     );
   }
 
+  /// `Edit Appointment`
+  String get editAppointmentAppBarTitle {
+    return Intl.message(
+      'Edit Appointment',
+      name: 'editAppointmentAppBarTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `There are no appointments.`
   String get emptyAppointments {
     return Intl.message(
       'There are no appointments.',
       name: 'emptyAppointments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nothing to write.`
+  String get defaultDescription {
+    return Intl.message(
+      'Nothing to write.',
+      name: 'defaultDescription',
       desc: '',
       args: [],
     );
@@ -180,6 +200,16 @@ class S {
     );
   }
 
+  /// `Submit`
+  String get editAppointmentButton {
+    return Intl.message(
+      'Submit',
+      name: 'editAppointmentButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Appointment added`
   String get addSuccess {
     return Intl.message(
@@ -195,6 +225,26 @@ class S {
     return Intl.message(
       'Failed to create appointment',
       name: 'addFail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Appointment updated.`
+  String get updateSuccess {
+    return Intl.message(
+      'Appointment updated.',
+      name: 'updateSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Appointment deleted.`
+  String get deleteSuccess {
+    return Intl.message(
+      'Appointment deleted.',
+      name: 'deleteSuccess',
       desc: '',
       args: [],
     );
@@ -255,6 +305,36 @@ class S {
     return Intl.message(
       'Phone number or Password is incorrect.',
       name: 'incorrectAccountError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This is the break time of Salon. You must pick another time not between 12 pm and 3:20 pm.`
+  String get breakTimeConflictError {
+    return Intl.message(
+      'This is the break time of Salon. You must pick another time not between 12 pm and 3:20 pm.',
+      name: 'breakTimeConflictError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Salon is already closed. Please schedule an appointment after 8 am the after day.`
+  String get closedTimeError {
+    return Intl.message(
+      'Salon is already closed. Please schedule an appointment after 8 am the after day.',
+      name: 'closedTimeError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You must choose a service.`
+  String get emptyServicesError {
+    return Intl.message(
+      'You must choose a service.',
+      name: 'emptyServicesError',
       desc: '',
       args: [],
     );

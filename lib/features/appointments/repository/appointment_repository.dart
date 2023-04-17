@@ -9,11 +9,14 @@ class AppointmentRepository {
     final Map<String, dynamic> userJson = await getUser();
 
     final appointments = await AppointmentApi.getAppointments(userJson['id']);
-    final dateMap = groupBy(appointments, (p0) => p0.date);
+    final dateMap = groupBy(
+      appointments,
+      (e) => DateFormat.yMd().format(e.date),
+    );
     final dateStr = DateFormat.yMd().format(date);
 
     for (final d in dateMap.keys) {
-      if (DateFormat.yMd().format(d) == dateStr) {
+      if (d == dateStr) {
         return dateMap[d]!;
       }
     }

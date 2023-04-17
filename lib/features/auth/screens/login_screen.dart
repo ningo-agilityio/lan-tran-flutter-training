@@ -41,7 +41,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    userRepo.load().then((value) => users = value);
+    try {
+      userRepo.load().then((value) => users = value);
+    } catch (e) {
+      SASnackBar.show(context: context, message: e.toString());
+    }
+
     super.initState();
   }
 
@@ -129,55 +134,59 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 24),
             SAButton.outlined(
-                child: SAText(
-                  text: S.of(context).loginButton,
-                  style: textTheme.labelMedium!.copyWith(
-                    color: colorScheme.onPrimary,
-                  ),
+              child: SAText(
+                text: S.of(context).loginButton,
+                style: textTheme.labelMedium!.copyWith(
+                  color: colorScheme.onPrimary,
                 ),
-                onPressed: () async {
-                  if (FormValidation.isValidPassword(password) != null ||
-                      FormValidation.isValidPhoneNumber(phoneNumber) != null) {
-                    SASnackBar.show(
-                      context: context,
-                      message: S.of(context).invalidAccountError,
-                    );
-                    return;
-                  }
-                  final isSuccess = FormValidation.isLoginSuccess(
-                      users, phoneNumber, password);
-                  if (isSuccess) {
-                    final user = users
-                        .where((e) =>
-                            e.phoneNumber == phoneNumber &&
-                            e.password == password)
-                        .first;
+              ),
+              onPressed: () async {
+                if (FormValidation.isValidPassword(password) != null ||
+                    FormValidation.isValidPhoneNumber(phoneNumber) != null) {
+                  SASnackBar.show(
+                    context: context,
+                    message: S.of(context).invalidAccountError,
+                  );
+                  return;
+                }
+                final isSuccess =
+                    FormValidation.isLoginSuccess(users, phoneNumber, password);
+                if (isSuccess) {
+                  final user = users
+                      .where((e) =>
+                          e.phoneNumber == phoneNumber &&
+                          e.password == password)
+                      .first;
 
-                    final SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  final String userEncode = jsonEncode(user.toJson());
+                  await prefs.setString('user', userEncode);
 
-                    final String userEncode = jsonEncode(user.toJson());
+                  setState(
+                    () {
+                      showDialog(
+                        context: context,
+                        barrierColor:
+                            Theme.of(context).colorScheme.onBackground,
+                        builder: (context) => LoadingIndicator(
+                          height: indicatorHeight,
+                        ),
+                      );
+                    },
+                  );
 
-                    await prefs.setString('user', userEncode);
-
-                    showDialog(
-                      context: context,
-                      barrierColor: Theme.of(context).colorScheme.onBackground,
-                      builder: (context) => LoadingIndicator(
-                        height: indicatorHeight,
-                      ),
-                    );
-
-                    Timer(const Duration(seconds: 3), () {
-                      Navigator.pushReplacementNamed(context, '/calendar');
-                    });
-                  } else {
-                    SASnackBar.show(
-                      context: context,
-                      message: S.of(context).incorrectAccountError,
-                    );
-                  }
-                }),
+                  Timer(const Duration(seconds: 3), () {
+                    Navigator.pushReplacementNamed(context, '/calendar');
+                  });
+                } else {
+                  SASnackBar.show(
+                    context: context,
+                    message: S.of(context).incorrectAccountError,
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),

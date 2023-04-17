@@ -18,4 +18,8 @@ class Assets {
   static const IconData calendarIcon = Icons.calendar_month;
 
   static const IconData dropdownIcon = Icons.arrow_drop_down;
+
+  static const IconData editIcon = Icons.edit;
+
+  static const IconData removeIcon = Icons.delete_outline;
 }

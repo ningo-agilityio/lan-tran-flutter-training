@@ -11,14 +11,19 @@
     "appointmentAppBarTitle": "Appointments",
     "newAppointmentAppBarTitle": "New Appointment",
     "profileAppBarTitle": "Profile",
+    "editAppointmentAppBarTitle": "Edit Appointment",
 
     "emptyAppointments": "There are no appointments.",
+    "defaultDescription": "Nothing to write.",
 
     "description": "Description",
     "createAppointmentButton": "Create New Appointment",
+    "editAppointmentButton": "Submit",
 
     "addSuccess": "Appointment added",
     "addFail": "Failed to create appointment",
+    "updateSuccess": "Appointment updated.",
+    "deleteSuccess": "Appointment deleted.",
 
     "appointmentsLabel": "Appointments",
     "calendarLabel": "Calendar",
@@ -26,5 +31,8 @@
     "notificationsLabel": "Notifications",
 
     "invalidAccountError": "Phone number or Password is invalid.",
-    "incorrectAccountError": "Phone number or Password is incorrect."
+    "incorrectAccountError": "Phone number or Password is incorrect.",
+    "breakTimeConflictError": "This is the break time of Salon. You must pick another time not between 12 pm and 3:20 pm.",
+    "closedTimeError": "Salon is already closed. Please schedule an appointment after 8 am the after day.",
+    "emptyServicesError": "You must choose a service."
 }

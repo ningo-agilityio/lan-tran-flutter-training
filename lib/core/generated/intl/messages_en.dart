@@ -29,13 +29,26 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Appointments"),
         "appointmentsLabel":
             MessageLookupByLibrary.simpleMessage("Appointments"),
+        "breakTimeConflictError": MessageLookupByLibrary.simpleMessage(
+            "This is the break time of Salon. You must pick another time not between 12 pm and 3:20 pm."),
         "calendarAppBarTitle": MessageLookupByLibrary.simpleMessage("Calendar"),
         "calendarLabel": MessageLookupByLibrary.simpleMessage("Calendar"),
+        "closedTimeError": MessageLookupByLibrary.simpleMessage(
+            "Salon is already closed. Please schedule an appointment after 8 am the after day."),
         "createAppointmentButton":
             MessageLookupByLibrary.simpleMessage("Create New Appointment"),
+        "defaultDescription":
+            MessageLookupByLibrary.simpleMessage("Nothing to write."),
+        "deleteSuccess":
+            MessageLookupByLibrary.simpleMessage("Appointment deleted."),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
+        "editAppointmentAppBarTitle":
+            MessageLookupByLibrary.simpleMessage("Edit Appointment"),
+        "editAppointmentButton": MessageLookupByLibrary.simpleMessage("Submit"),
         "emptyAppointments":
             MessageLookupByLibrary.simpleMessage("There are no appointments."),
+        "emptyServicesError":
+            MessageLookupByLibrary.simpleMessage("You must choose a service."),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
         "incorrectAccountError": MessageLookupByLibrary.simpleMessage(
@@ -52,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
         "profileAppBarTitle": MessageLookupByLibrary.simpleMessage("Profile"),
-        "profileLabel": MessageLookupByLibrary.simpleMessage("Profile")
+        "profileLabel": MessageLookupByLibrary.simpleMessage("Profile"),
+        "updateSuccess":
+            MessageLookupByLibrary.simpleMessage("Appointment updated.")
       };
 }

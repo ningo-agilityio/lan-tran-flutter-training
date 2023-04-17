@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/core/utils.dart';
 
-import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
+import '../../../core/utils.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/date_picker.dart';
 import '../../../core/widgets/dropdown.dart';
@@ -17,33 +16,29 @@ import '../../../core/widgets/time_picker.dart';
 import '../api/appointment_api.dart';
 import '../model/appointment.dart';
 
-class NewAppointmentScreen extends StatefulWidget {
-  const NewAppointmentScreen({
-    super.key,
-  });
+class EditAppointment extends StatefulWidget {
+  const EditAppointment({super.key});
 
   @override
-  State<NewAppointmentScreen> createState() => _NewAppointmentScreenState();
+  State<EditAppointment> createState() => _EditAppointmentState();
 }
 
-class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
+class _EditAppointmentState extends State<EditAppointment> {
   final nameController = TextEditingController();
   final descpController = TextEditingController();
 
   final nameFocusNode = FocusNode();
   final descpFocusNode = FocusNode();
 
-  late DateTime dateTime = DateTime.now();
-  late DateTime startTime = DateTime.now();
-  late DateTime endTime = autoAddHalfHour(startTime);
-
-  String? selectedValue;
-
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    final appointment =
+        ModalRoute.of(context)!.settings.arguments as Appointment;
+
+    final i10n = S.of(context);
     final double indicatorHeight = MediaQuery.of(context).size.height / 2;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     late Map<String, dynamic> user;
 
     const List<String> items = [
@@ -64,16 +59,15 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
           return Scaffold(
             appBar: AppBar(
               title: SAText.appBarTitle(
-                text: S.of(context).newAppointmentAppBarTitle,
+                text: i10n.editAppointmentAppBarTitle,
                 style: textTheme.titleLarge!,
               ),
               automaticallyImplyLeading: false,
               actions: [
                 SAButton.icon(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: SAIcons(
-                    icon: Assets.closeIcon,
-                    color: colorScheme.secondaryContainer,
+                  child: const SAIcons(
+                    icon: Icons.close,
                   ),
                 ),
               ],
@@ -90,54 +84,68 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                     ),
                     const SizedBox(height: 12),
                     DatePicker(
-                        dateTime: dateTime,
+                        dateTime: appointment.date,
                         onPressed: () async {
                           final DateTime? date = await showDatePicker(
                             context: context,
-                            initialDate: dateTime,
+                            initialDate: appointment.date,
                             firstDate: DateTime.now(),
-                            lastDate: DateTime(dateTime.year + 5),
+                            lastDate: DateTime(appointment.date.year + 5),
                           );
-                          if (date != null && date != dateTime) {
+
+                          if (date != null && date != appointment.date) {
                             setState(() {
-                              dateTime = date;
-                              startTime = setDateTime(
-                                dateTime,
-                                TimeOfDay.fromDateTime(startTime),
-                              );
-                              endTime = setDateTime(
-                                dateTime,
-                                TimeOfDay.fromDateTime(endTime),
-                              );
+                              appointment
+                                ..date = date
+                                ..startTime = setDateTime(
+                                  appointment.date,
+                                  TimeOfDay.fromDateTime(appointment.startTime),
+                                )
+                                ..endTime = setDateTime(
+                                  appointment.date,
+                                  TimeOfDay.fromDateTime(appointment.endTime),
+                                );
                             });
                           }
                         }),
                     const SizedBox(height: 12),
                     TimePicker(
-                      startTime: startTime,
-                      endTime: endTime,
+                      startTime: appointment.startTime,
+                      endTime: appointment.endTime,
                       onStartTimePressed: () async {
                         final TimeOfDay? time = await showTimePicker(
                           context: context,
-                          initialTime: TimeOfDay.fromDateTime(startTime),
+                          initialTime:
+                              TimeOfDay.fromDateTime(appointment.startTime),
                         );
                         if (time != null &&
-                            time != TimeOfDay.fromDateTime(startTime)) {
+                            time !=
+                                TimeOfDay.fromDateTime(appointment.startTime)) {
                           setState(() {
-                            startTime = setDateTime(dateTime, time);
-                            endTime = autoAddHalfHour(startTime);
+                            appointment
+                              ..startTime = setDateTime(
+                                appointment.date,
+                                time,
+                              )
+                              ..endTime =
+                                  autoAddHalfHour(appointment.startTime);
                           });
                         }
                       },
                       onEndTimePressed: () async {
                         final TimeOfDay? time = await showTimePicker(
                           context: context,
-                          initialTime: TimeOfDay.fromDateTime(endTime),
+                          initialTime:
+                              TimeOfDay.fromDateTime(appointment.endTime),
                         );
                         if (time != null &&
-                            time != TimeOfDay.fromDateTime(endTime)) {
+                            time !=
+                                TimeOfDay.fromDateTime(appointment.endTime)) {
                           setState(() {
-                            endTime = setDateTime(dateTime, time);
+                            appointment.endTime = setDateTime(
+                              appointment.date,
+                              time,
+                            );
                           });
                         }
                       },
@@ -145,16 +153,16 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                     const SizedBox(height: 12),
                     Dropdown(
                         items: items,
-                        selectedValue: selectedValue,
+                        selectedValue: appointment.services,
                         onChanged: (value) {
                           setState(() {
-                            selectedValue = value;
+                            appointment.services = value!;
                           });
                         }),
                     const SizedBox(height: 12),
                     Input(
                       controller: descpController,
-                      text: S.of(context).description,
+                      text: appointment.description,
                       focusNode: descpFocusNode,
                       onEditCompleted: () {
                         FocusScope.of(context).unfocus();
@@ -173,57 +181,53 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                     ElevatedButton(
                       onPressed: () async {
                         try {
-                          if (isBreakTime(startTime, endTime)) {
+                          if (isBreakTime(
+                            appointment.startTime,
+                            appointment.endTime,
+                          )) {
                             SASnackBar.show(
                               context: context,
-                              message: S.of(context).breakTimeConflictError,
+                              message: i10n.breakTimeConflictError,
                             );
-                          } else if (isClosedTime(startTime, endTime)) {
+                          } else if (isClosedTime(
+                            appointment.startTime,
+                            appointment.endTime,
+                          )) {
                             SASnackBar.show(
                               context: context,
-                              message: S.of(context).closedTimeError,
-                            );
-                          } else if (selectedValue == null) {
-                            SASnackBar.show(
-                              context: context,
-                              message: S.of(context).emptyServicesError,
+                              message: i10n.closedTimeError,
                             );
                           } else {
                             bool isProcessing = true;
                             if (isProcessing) {
-                              unawaited(
-                                showDialog(
-                                  context: context,
-                                  barrierColor: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                  builder: (context) => LoadingIndicator(
-                                    height: indicatorHeight,
-                                  ),
+                              unawaited(showDialog(
+                                context: context,
+                                barrierColor: colorScheme.onBackground,
+                                builder: (context) => LoadingIndicator(
+                                  height: indicatorHeight,
                                 ),
-                              );
+                              ));
                             }
-                            await AppointmentApi.addAppointment(
+                            await AppointmentApi.updateAppointment(
                               Appointment(
+                                id: appointment.id,
                                 userId: user['id'],
-                                date: dateTime,
-                                startTime: startTime,
-                                endTime: endTime,
-                                services: selectedValue!,
+                                date: appointment.date,
+                                startTime: appointment.startTime,
+                                endTime: appointment.endTime,
+                                services: appointment.services,
                                 description: descpController.text == ''
-                                    ? S.of(context).defaultDescription
+                                    ? appointment.description
                                     : descpController.text,
                               ),
                             );
                             setState(() {
                               isProcessing = false;
+                              Navigator.popAndPushNamed(
+                                  context, '/appointment');
                               SASnackBar.show(
                                 context: context,
-                                message: S.of(context).addSuccess,
-                              );
-                              Navigator.pushReplacementNamed(
-                                context,
-                                '/calendar',
+                                message: i10n.updateSuccess,
                               );
                             });
                           }
@@ -238,7 +242,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                         backgroundColor: colorScheme.primary,
                       ),
                       child: Text(
-                        S.of(context).createAppointmentButton,
+                        i10n.editAppointmentButton,
                         style: textTheme.labelMedium!.copyWith(
                           color: colorScheme.onPrimary,
                         ),

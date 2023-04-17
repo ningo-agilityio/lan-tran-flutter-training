@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:salon_appointment/core/widgets/snack_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/constants/assets.dart';
@@ -49,8 +50,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.initState();
     _selectedDay = _focusedDay;
 
-    if (_selectedDay != null) {
-      _loadEvents();
+    try {
+      if (_selectedDay != null) {
+        _loadEvents();
+      }
+    } catch (e) {
+      SASnackBar.show(context: context, message: e.toString());
     }
   }
 
@@ -64,6 +69,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final TextTheme textTheme = Theme.of(context).textTheme;
+    final double indicatorHeight = MediaQuery.of(context).size.height / 4;
 
     return MainLayout(
       currentIndex: 1,
@@ -148,7 +154,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   final events = snapshot.data ?? [];
                   if (events.isEmpty) {
                     return SizedBox(
-                      height: MediaQuery.of(context).size.height / 4,
+                      height: indicatorHeight,
                       child: Center(
                         child: Text(
                           S.of(context).emptyAppointments,
@@ -179,7 +185,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   }
                 }
                 return LoadingIndicator(
-                  height: MediaQuery.of(context).size.height / 4,
+                  height: indicatorHeight,
                 );
               }),
         ],
@@ -189,24 +195,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
 }
 
 class CalendarSchedule extends StatelessWidget {
-  CalendarSchedule({
+  const CalendarSchedule({
     required this.appointment,
     super.key,
   });
 
   final Appointment appointment;
 
-  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
-
-  String twoDigitsMinute(DateTime time) {
-    return (time.minute < 10)
-        ? time.minute.toString().padLeft(2, '0')
-        : '${time.minute}';
-  }
-
   @override
   Widget build(BuildContext context) {
+    final DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
     final TextTheme textTheme = Theme.of(context).textTheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,7 +217,7 @@ class CalendarSchedule extends StatelessWidget {
           child: SAIcons(
             icon: Assets.scheduleIcon,
             size: 20,
-            color: Theme.of(context).colorScheme.onPrimary,
+            color: colorScheme.onPrimary,
           ),
         ),
         Expanded(
@@ -234,7 +234,7 @@ class CalendarSchedule extends StatelessWidget {
                 const SizedBox(height: 7),
                 SAText.calendarSchedule(
                   text:
-                      '${appointment.startTime.hour}:${twoDigitsMinute(appointment.startTime)}-${appointment.endTime.hour}:${twoDigitsMinute(appointment.endTime)}',
+                      '${formatTime(appointment.startTime)}-${formatTime(appointment.endTime)}',
                   style: textTheme.bodyLarge!.copyWith(
                     height: 24 / 14,
                   ),

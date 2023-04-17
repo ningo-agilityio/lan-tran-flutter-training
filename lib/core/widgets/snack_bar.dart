@@ -8,7 +8,7 @@ class SASnackBar {
     final snackBar = SnackBar(
       elevation: 5,
       behavior: SnackBarBehavior.floating,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 3),
       backgroundColor: Theme.of(context).colorScheme.primary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
