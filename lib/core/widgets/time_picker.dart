@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:salon_appointment/core/utils.dart';
 import 'package:salon_appointment/core/widgets/text.dart';
 
+import '../generated/l10n.dart';
+
 class TimePicker extends StatelessWidget {
   const TimePicker({
     required this.startTime,
@@ -21,16 +23,16 @@ class TimePicker extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        const SAText.timePicker(text: 'From:'),
+        SAText.timePicker(text: S.of(context).fromText),
         OutlinedButton(
           onPressed: onStartTimePressed,
           child: SAText.timePicker(
             text: formatTime(startTime),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.all(8),
-          child: SAText.timePicker(text: 'To:'),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: SAText.timePicker(text: S.of(context).toText),
         ),
         OutlinedButton(
           onPressed: onEndTimePressed,
