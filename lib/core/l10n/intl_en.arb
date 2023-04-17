@@ -11,15 +11,19 @@
     "appointmentAppBarTitle": "Appointments",
     "newAppointmentAppBarTitle": "New Appointment",
     "profileAppBarTitle": "Profile",
+    "editAppointmentAppBarTitle": "Edit Appointment",
 
     "emptyAppointments": "There are no appointments.",
     "defaultDescription": "Nothing to write.",
 
     "description": "Description",
     "createAppointmentButton": "Create New Appointment",
+    "editAppointmentButton": "Submit",
 
     "addSuccess": "Appointment added",
     "addFail": "Failed to create appointment",
+    "updateSuccess": "Appointment updated.",
+    "deleteSuccess": "Appointment deleted.",
 
     "appointmentsLabel": "Appointments",
     "calendarLabel": "Calendar",

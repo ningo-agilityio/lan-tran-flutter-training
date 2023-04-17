@@ -39,7 +39,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Create New Appointment"),
         "defaultDescription":
             MessageLookupByLibrary.simpleMessage("Nothing to write."),
+        "deleteSuccess":
+            MessageLookupByLibrary.simpleMessage("Appointment deleted."),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
+        "editAppointmentAppBarTitle":
+            MessageLookupByLibrary.simpleMessage("Edit Appointment"),
+        "editAppointmentButton": MessageLookupByLibrary.simpleMessage("Submit"),
         "emptyAppointments":
             MessageLookupByLibrary.simpleMessage("There are no appointments."),
         "emptyServicesError":
@@ -60,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
         "profileAppBarTitle": MessageLookupByLibrary.simpleMessage("Profile"),
-        "profileLabel": MessageLookupByLibrary.simpleMessage("Profile")
+        "profileLabel": MessageLookupByLibrary.simpleMessage("Profile"),
+        "updateSuccess":
+            MessageLookupByLibrary.simpleMessage("Appointment updated.")
       };
 }

@@ -150,6 +150,16 @@ class S {
     );
   }
 
+  /// `Edit Appointment`
+  String get editAppointmentAppBarTitle {
+    return Intl.message(
+      'Edit Appointment',
+      name: 'editAppointmentAppBarTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `There are no appointments.`
   String get emptyAppointments {
     return Intl.message(
@@ -190,6 +200,16 @@ class S {
     );
   }
 
+  /// `Submit`
+  String get editAppointmentButton {
+    return Intl.message(
+      'Submit',
+      name: 'editAppointmentButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Appointment added`
   String get addSuccess {
     return Intl.message(
@@ -205,6 +225,26 @@ class S {
     return Intl.message(
       'Failed to create appointment',
       name: 'addFail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Appointment updated.`
+  String get updateSuccess {
+    return Intl.message(
+      'Appointment updated.',
+      name: 'updateSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Appointment deleted.`
+  String get deleteSuccess {
+    return Intl.message(
+      'Appointment deleted.',
+      name: 'deleteSuccess',
       desc: '',
       args: [],
     );
