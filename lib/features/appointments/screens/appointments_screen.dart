@@ -57,7 +57,11 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         _loadEvents();
       }
     } catch (e) {
-      SASnackBar.show(context: context, message: e.toString());
+      SASnackBar.show(
+        context: context,
+        message: e.toString(),
+        isSuccess: false,
+      );
     }
   }
 
@@ -171,6 +175,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   context: context,
                                   message:
                                       'You cannot edit appointments in less than 24 hours.',
+                                  isSuccess: false,
                                 );
                               } else {
                                 Navigator.pushNamed(

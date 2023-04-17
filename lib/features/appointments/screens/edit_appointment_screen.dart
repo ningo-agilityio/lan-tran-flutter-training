@@ -188,6 +188,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                             SASnackBar.show(
                               context: context,
                               message: i10n.breakTimeConflictError,
+                              isSuccess: false,
                             );
                           } else if (isClosedTime(
                             appointment.startTime,
@@ -196,6 +197,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                             SASnackBar.show(
                               context: context,
                               message: i10n.closedTimeError,
+                              isSuccess: false,
                             );
                           } else {
                             bool isProcessing = true;
@@ -228,6 +230,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                               SASnackBar.show(
                                 context: context,
                                 message: i10n.updateSuccess,
+                                isSuccess: true,
                               );
                             });
                           }
@@ -235,6 +238,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                           SASnackBar.show(
                             context: context,
                             message: e.toString(),
+                            isSuccess: false,
                           );
                         }
                       },

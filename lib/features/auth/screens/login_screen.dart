@@ -44,7 +44,11 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       userRepo.load().then((value) => users = value);
     } catch (e) {
-      SASnackBar.show(context: context, message: e.toString());
+      SASnackBar.show(
+        context: context,
+        message: e.toString(),
+        isSuccess: false,
+      );
     }
 
     super.initState();
@@ -146,6 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SASnackBar.show(
                     context: context,
                     message: S.of(context).invalidAccountError,
+                    isSuccess: false,
                   );
                   return;
                 }
@@ -183,6 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SASnackBar.show(
                     context: context,
                     message: S.of(context).incorrectAccountError,
+                    isSuccess: false,
                   );
                 }
               },

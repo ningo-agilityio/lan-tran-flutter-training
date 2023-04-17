@@ -55,7 +55,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
         _loadEvents();
       }
     } catch (e) {
-      SASnackBar.show(context: context, message: e.toString());
+      SASnackBar.show(
+        context: context,
+        message: e.toString(),
+        isSuccess: false,
+      );
     }
   }
 

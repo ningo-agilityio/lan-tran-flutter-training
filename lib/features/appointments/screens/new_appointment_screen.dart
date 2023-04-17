@@ -177,16 +177,19 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                             SASnackBar.show(
                               context: context,
                               message: S.of(context).breakTimeConflictError,
+                              isSuccess: false,
                             );
                           } else if (isClosedTime(startTime, endTime)) {
                             SASnackBar.show(
                               context: context,
                               message: S.of(context).closedTimeError,
+                              isSuccess: false,
                             );
                           } else if (selectedValue == null) {
                             SASnackBar.show(
                               context: context,
                               message: S.of(context).emptyServicesError,
+                              isSuccess: false,
                             );
                           } else {
                             bool isProcessing = true;
@@ -220,6 +223,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                               SASnackBar.show(
                                 context: context,
                                 message: S.of(context).addSuccess,
+                                isSuccess: true,
                               );
                               Navigator.pushReplacementNamed(
                                 context,
@@ -231,6 +235,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                           SASnackBar.show(
                             context: context,
                             message: e.toString(),
+                            isSuccess: false,
                           );
                         }
                       },
