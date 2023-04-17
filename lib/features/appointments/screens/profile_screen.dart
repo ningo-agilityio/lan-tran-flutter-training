@@ -64,6 +64,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       ),
+                      const SizedBox(
+                        height: 30,
+                      ),
                       SAText(
                         text: user['name'],
                         style: textTheme.displaySmall!.copyWith(
