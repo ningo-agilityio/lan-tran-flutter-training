@@ -4,12 +4,14 @@ class SASnackBar {
   static void show({
     required BuildContext context,
     required String message,
+    required bool isSuccess,
   }) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final snackBar = SnackBar(
       elevation: 5,
       behavior: SnackBarBehavior.floating,
       duration: const Duration(seconds: 3),
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: isSuccess ? colorScheme.primary : colorScheme.error,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
