@@ -41,7 +41,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    userRepo.load().then((value) => users = value);
+    try {
+      userRepo.load().then((value) => users = value);
+    } catch (e) {
+      SASnackBar.show(context: context, message: e.toString());
+    }
+
     super.initState();
   }
 

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:salon_appointment/core/widgets/snack_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/generated/l10n.dart';
@@ -48,8 +49,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.initState();
     _selectedDay = _focusedDay;
 
-    if (_selectedDay != null) {
-      _loadEvents();
+    try {
+      if (_selectedDay != null) {
+        _loadEvents();
+      }
+    } catch (e) {
+      SASnackBar.show(context: context, message: e.toString());
     }
   }
 
