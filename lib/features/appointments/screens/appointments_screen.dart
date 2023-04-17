@@ -75,10 +75,11 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final i10n = S.of(context);
 
     return MainLayout(
       currentIndex: 0,
-      title: S.of(context).appointmentAppBarTitle,
+      title: i10n.appointmentAppBarTitle,
       child: Column(
         children: [
           TableCalendar<Appointment>(
@@ -147,7 +148,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     height: MediaQuery.of(context).size.height / 2,
                     child: Center(
                       child: Text(
-                        S.of(context).emptyAppointments,
+                        i10n.emptyAppointments,
                         style: textTheme.bodyLarge!.copyWith(
                           color: colorScheme.secondary,
                         ),
@@ -173,8 +174,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   24) {
                                 SASnackBar.show(
                                   context: context,
-                                  message:
-                                      'You cannot edit appointments in less than 24 hours.',
+                                  message: i10n.unableEditError,
                                   isSuccess: false,
                                 );
                               } else {
