@@ -214,6 +214,10 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                             );
                             setState(() {
                               isProcessing = false;
+                              SASnackBar.show(
+                                context: context,
+                                message: S.of(context).addSuccess,
+                              );
                               Navigator.pushReplacementNamed(
                                 context,
                                 '/calendar',

@@ -35,6 +35,7 @@ class _EditAppointmentState extends State<EditAppointment> {
     final appointment =
         ModalRoute.of(context)!.settings.arguments as Appointment;
 
+    final i10n = S.of(context);
     final double indicatorHeight = MediaQuery.of(context).size.height / 2;
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -58,7 +59,7 @@ class _EditAppointmentState extends State<EditAppointment> {
           return Scaffold(
             appBar: AppBar(
               title: SAText.appBarTitle(
-                text: 'Edit Appointment',
+                text: i10n.editAppointmentAppBarTitle,
                 style: textTheme.titleLarge!,
               ),
               automaticallyImplyLeading: false,
@@ -186,7 +187,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                           )) {
                             SASnackBar.show(
                               context: context,
-                              message: S.of(context).breakTimeConflictError,
+                              message: i10n.breakTimeConflictError,
                             );
                           } else if (isClosedTime(
                             appointment.startTime,
@@ -194,7 +195,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                           )) {
                             SASnackBar.show(
                               context: context,
-                              message: S.of(context).closedTimeError,
+                              message: i10n.closedTimeError,
                             );
                           } else {
                             bool isProcessing = true;
@@ -224,6 +225,10 @@ class _EditAppointmentState extends State<EditAppointment> {
                               isProcessing = false;
                               Navigator.popAndPushNamed(
                                   context, '/appointment');
+                              SASnackBar.show(
+                                context: context,
+                                message: i10n.updateSuccess,
+                              );
                             });
                           }
                         } catch (e) {
@@ -237,7 +242,7 @@ class _EditAppointmentState extends State<EditAppointment> {
                         backgroundColor: colorScheme.primary,
                       ),
                       child: Text(
-                        S.of(context).createAppointmentButton,
+                        i10n.editAppointmentButton,
                         style: textTheme.labelMedium!.copyWith(
                           color: colorScheme.onPrimary,
                         ),

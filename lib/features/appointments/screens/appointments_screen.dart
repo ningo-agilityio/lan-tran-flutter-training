@@ -41,7 +41,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   void _loadEvents() {
     eventsController.sink.add(null);
-    // add try-catch here: if error show snackbar
     appointmentRepo.load(_selectedDay!).then((value) {
       eventsController.sink.add(value);
     });
