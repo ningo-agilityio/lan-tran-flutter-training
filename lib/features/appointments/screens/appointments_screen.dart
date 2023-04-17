@@ -14,7 +14,12 @@ import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
 
 class AppointmentScreen extends StatefulWidget {
-  const AppointmentScreen({super.key});
+  const AppointmentScreen({
+    required this.user,
+    super.key,
+  });
+
+  final User user;
 
   @override
   State<AppointmentScreen> createState() => _AppointmentScreenState();
@@ -36,7 +41,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   void _loadEvents() {
     eventsController.sink.add(null);
-    controller.load(_selectedDay!, '1').then((value) {
+    controller.load(_selectedDay!, widget.user.id).then((value) {
       eventsController.sink.add(value);
     });
   }
@@ -60,6 +65,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     return MainLayout(
+      user: widget.user,
       currentIndex: 0,
       title: S.of(context).appointmentAppBarTitle,
       child: Column(
@@ -75,21 +81,27 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             calendarFormat: CalendarFormat.week,
             rangeSelectionMode: _rangeSelectionMode,
             startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: const CalendarStyle(
+            calendarStyle: CalendarStyle(
               outsideDaysVisible: false,
-            ),
-            daysOfWeekStyle: DaysOfWeekStyle(
-              decoration: BoxDecoration(
-                color: themeData.colorScheme.primary,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(0, 8),
-                    color: themeData.colorScheme.primary.withOpacity(0.3219),
-                  ),
-                ],
+              cellMargin: EdgeInsets.zero,
+              selectedDecoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    themeData.colorScheme.onSurface,
+                    themeData.colorScheme.primary,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                shape: BoxShape.rectangle,
               ),
+              todayDecoration: BoxDecoration(
+                color: themeData.colorScheme.primary.withOpacity(0.0798),
+                shape: BoxShape.rectangle,
+              ),
+              todayTextStyle: TextStyle(color: themeData.colorScheme.secondary),
             ),
+            daysOfWeekHeight: 44,
             onDaySelected: (selectedDay, focusedDay) {
               if (!isSameDay(_selectedDay, selectedDay)) {
                 setState(() {
@@ -139,6 +151,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         itemBuilder: (_, index) => Padding(
                           padding: const EdgeInsets.all(8),
                           child: AppointmentCard(
+                            user: widget.user,
                             appointment: events[index],
                           ),
                         ),
@@ -162,40 +175,40 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 }
 
 class AppointmentCard extends StatelessWidget {
-  AppointmentCard({
+  const AppointmentCard({
     required this.appointment,
+    required this.user,
     super.key,
   });
-  Appointment appointment;
+
+  final Appointment appointment;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       borderOnForeground: false,
+      elevation: 2,
       shadowColor: themeData.colorScheme.primary.withOpacity(0.16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Time(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 12),
+            Time(
               startTime: appointment.startTime,
               endTime: appointment.endTime,
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(12),
-            // child: Customer(user: User(),),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Services(services: appointment.services),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Description(description: appointment.description),
-          ),
-        ],
+            const SizedBox(height: 24),
+            Customer(user: user),
+            const SizedBox(height: 24),
+            Services(services: appointment.services),
+            const SizedBox(height: 24),
+            Description(description: appointment.description),
+            const SizedBox(height: 12),
+          ],
+        ),
       ),
     );
   }
@@ -208,8 +221,8 @@ class Time extends StatelessWidget {
     super.key,
   });
 
-  final TimeOfDay startTime;
-  final TimeOfDay endTime;
+  final DateTime startTime;
+  final DateTime endTime;
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +235,7 @@ class Time extends StatelessWidget {
               width: 10,
             ),
             Text(
-              '${startTime.format(context)}-${endTime.format(context)}',
+              '${startTime.hour}:${(startTime.minute < 10) ? startTime.minute.toString().padLeft(2, '0') : startTime.minute}-${endTime.hour}:${(endTime.minute < 10) ? endTime.minute.toString().padLeft(2, '0') : endTime.minute}',
               style: themeData.textTheme.bodyLarge,
             )
           ],
@@ -233,11 +246,12 @@ class Time extends StatelessWidget {
 }
 
 class Customer extends StatelessWidget {
-  Customer({
+  const Customer({
     required this.user,
     super.key,
   });
-  User user;
+
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -314,20 +328,13 @@ class Description extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 24,
+      child: Expanded(
+        child: Text(
+          description,
+          style: themeData.textTheme.bodySmall!.copyWith(
+            color: themeData.colorScheme.onSecondary,
           ),
-          Expanded(
-            child: Text(
-              S.of(context).description,
-              style: themeData.textTheme.bodySmall!.copyWith(
-                color: themeData.colorScheme.onSecondary,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

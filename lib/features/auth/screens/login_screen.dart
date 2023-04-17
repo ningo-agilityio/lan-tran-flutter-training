@@ -129,6 +129,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   final isSuccess = FormValidation.isLoginSuccess(
                       users, phoneNumber, password);
                   if (isSuccess) {
+                    final User user = users
+                        .where((e) =>
+                            e.phoneNumber == phoneNumber &&
+                            e.password == password)
+                        .first;
                     showDialog(
                       context: context,
                       barrierColor: Colors.black12,
@@ -136,11 +141,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: indicatorHeight,
                       ),
                     );
+
                     Timer(const Duration(seconds: 3), () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const CalendarScreen()),
+                          builder: (context) => CalendarScreen(
+                            user: user,
+                          ),
+                        ),
                       );
                     });
                   } else {

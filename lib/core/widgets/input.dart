@@ -3,7 +3,7 @@ import 'package:salon_appointment/core/theme/theme.dart';
 import 'package:salon_appointment/features/auth/validations/validations.dart';
 
 class Input extends StatelessWidget {
-  Input({
+  const Input({
     required this.text,
     required this.controller,
     required this.focusNode,
@@ -15,7 +15,7 @@ class Input extends StatelessWidget {
     super.key,
   });
 
-  factory Input.phoneNumber({
+  const factory Input.phoneNumber({
     required String text,
     required TextEditingController controller,
     required FocusNode focusNode,
@@ -23,9 +23,9 @@ class Input extends StatelessWidget {
     double? height,
     String? errorText,
     Function(String)? onChanged,
-  }) = _InputPhoneNumber;
+  }) = _PhoneNumberInput;
 
-  factory Input.password({
+  const factory Input.password({
     required String text,
     required TextEditingController controller,
     required FocusNode focusNode,
@@ -33,7 +33,7 @@ class Input extends StatelessWidget {
     double? height,
     String? errorText,
     Function(String)? onChanged,
-  }) = _InputPassword;
+  }) = _PasswordInput;
 
   final String text;
   final Color? color;
@@ -69,8 +69,8 @@ class Input extends StatelessWidget {
   }
 }
 
-class _InputPhoneNumber extends Input {
-  _InputPhoneNumber({
+class _PhoneNumberInput extends Input {
+  const _PhoneNumberInput({
     required super.text,
     required super.controller,
     required super.focusNode,
@@ -80,8 +80,8 @@ class _InputPhoneNumber extends Input {
     this.onChanged,
   });
 
-  String? errorText;
-  Function(String)? onChanged;
+  final String? errorText;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +108,8 @@ class _InputPhoneNumber extends Input {
 }
 
 @immutable
-class _InputPassword extends Input {
-  _InputPassword({
+class _PasswordInput extends Input {
+  const _PasswordInput({
     required super.text,
     required super.controller,
     required super.focusNode,
@@ -119,8 +119,8 @@ class _InputPassword extends Input {
     this.onChanged,
   });
 
-  String? errorText;
-  Function(String)? onChanged;
+  final String? errorText;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {

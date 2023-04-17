@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:salon_appointment/features/appointments/model/appointment.dart';
 
-import '../../../constants.dart';
+import '../../../core/constants/constants.dart';
 
 class AppointmentApi {
   static Future<List<Appointment>> getAppointments(String userId) async {
