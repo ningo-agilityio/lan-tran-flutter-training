@@ -1,25 +1,23 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/core/utils.dart';
 
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/common_layout.dart';
-import 'login_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Timer(
-      const Duration(seconds: 2),
-      () => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-        ),
-      ),
-    );
+    Timer(const Duration(seconds: 2), () async {
+      final user = await getUser();
+
+      (user.isEmpty)
+          ? Navigator.pushNamed(context, '/login')
+          : Navigator.pushNamed(context, '/calendar');
+    });
     return const CommonLayout(
       child: Logo(),
     );

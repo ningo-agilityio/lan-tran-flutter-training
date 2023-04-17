@@ -17,6 +17,14 @@ class User {
     );
   }
 
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'phoneNumber': phoneNumber,
+        'avatar': avatar,
+        'password': password,
+      };
+
   final String id;
   final String name;
   final String phoneNumber;

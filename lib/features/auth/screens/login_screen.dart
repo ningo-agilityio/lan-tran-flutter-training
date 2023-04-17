@@ -1,15 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/core/widgets/indicator.dart';
 import 'package:salon_appointment/core/widgets/snack_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/common_layout.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/input.dart';
 import '../../../core/widgets/text.dart';
-import '../../appointments/screens/calendar_screen.dart';
 import '../model/user.dart';
 import '../repository/user_repository.dart';
 import '../validations/validations.dart';
@@ -40,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    userRepo.getUser().then((value) => users = value);
+    userRepo.load().then((value) => users = value);
     super.initState();
   }
 
@@ -134,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: colorScheme.onPrimary,
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (FormValidation.isValidPassword(password) != null ||
                       FormValidation.isValidPhoneNumber(phoneNumber) != null) {
                     SASnackBar.show(
@@ -146,28 +147,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   final isSuccess = FormValidation.isLoginSuccess(
                       users, phoneNumber, password);
                   if (isSuccess) {
-                    final User user = users
+                    final user = users
                         .where((e) =>
                             e.phoneNumber == phoneNumber &&
                             e.password == password)
                         .first;
+
+                    final SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+
+                    final String userEncode = jsonEncode(user.toJson());
+
+                    await prefs.setString('user', userEncode);
+
                     showDialog(
                       context: context,
-                      barrierColor: Colors.black12,
+                      barrierColor: Theme.of(context).colorScheme.onBackground,
                       builder: (context) => LoadingIndicator(
                         height: indicatorHeight,
                       ),
                     );
 
                     Timer(const Duration(seconds: 3), () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CalendarScreen(
-                            user: user,
-                          ),
-                        ),
-                      );
+                      Navigator.pushReplacementNamed(context, '/calendar');
                     });
                   } else {
                     SASnackBar.show(

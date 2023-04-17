@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../core/generated/l10n.dart';
-import '../../features/appointments/screens/appointments_screen.dart';
-import '../../features/appointments/screens/calendar_screen.dart';
-import '../../features/appointments/screens/new_appointment_screen.dart';
-import '../../features/auth/model/user.dart';
 import '../constants/assets.dart';
 import '../widgets/buttons.dart';
 import '../widgets/icons.dart';
@@ -13,16 +9,14 @@ import '../widgets/text.dart';
 class MainLayout extends StatefulWidget {
   const MainLayout({
     required this.title,
-    required this.child,
     required this.currentIndex,
-    required this.user,
+    required this.child,
     super.key,
   });
 
   final String title;
   final Widget child;
   final int currentIndex;
-  final User user;
 
   @override
   State<MainLayout> createState() => _MainLayoutState();
@@ -60,14 +54,7 @@ class _MainLayoutState extends State<MainLayout> {
           size: 30,
           color: colorScheme.onPrimary,
         ),
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NewAppointmentScreen(
-              user: widget.user,
-            ),
-          ),
-        ),
+        onPressed: () => Navigator.pushNamed(context, '/newAppointment'),
       ),
       floatingActionButtonLocation: _fabLocation,
       bottomNavigationBar: CustomBottomAppBar(
@@ -78,25 +65,16 @@ class _MainLayoutState extends State<MainLayout> {
             switch (_currentIndex) {
               case 0:
                 // Appointment Screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AppointmentScreen(
-                      user: widget.user,
-                    ),
-                  ),
-                );
+                Navigator.pushNamed(context, '/appointment');
                 break;
               case 1:
                 // Calendar Screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CalendarScreen(
-                      user: widget.user,
-                    ),
-                  ),
-                );
+                Navigator.pushNamed(context, '/calendar');
+
+                break;
+              case 2:
+                // Profile Screen
+                Navigator.pushNamed(context, '/profile');
                 break;
             }
           });

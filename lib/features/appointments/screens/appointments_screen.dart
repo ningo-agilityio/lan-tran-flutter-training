@@ -9,17 +9,13 @@ import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
 import '../../../core/widgets/icons.dart';
-import '../../auth/model/user.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
 
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({
-    required this.user,
     super.key,
   });
-
-  final User user;
 
   @override
   State<AppointmentScreen> createState() => _AppointmentScreenState();
@@ -38,9 +34,12 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
+  late Map<String, dynamic> user;
+
   void _loadEvents() {
     eventsController.sink.add(null);
-    appointmentRepo.load(_selectedDay!, widget.user.id).then((value) {
+    // add try-catch here: if error show snackbar
+    appointmentRepo.load(_selectedDay!).then((value) {
       eventsController.sink.add(value);
     });
   }
@@ -49,6 +48,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
+    getUser().then((value) => user = value);
 
     if (_selectedDay != null) {
       _loadEvents();
@@ -67,7 +67,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return MainLayout(
-      user: widget.user,
       currentIndex: 0,
       title: S.of(context).appointmentAppBarTitle,
       child: Column(
@@ -153,7 +152,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         itemBuilder: (_, index) => Padding(
                           padding: const EdgeInsets.all(8),
                           child: AppointmentCard(
-                            user: widget.user,
+                            name: user['name'],
+                            avatar: user['avatar'],
                             appointment: events[index],
                           ),
                         ),
@@ -179,12 +179,14 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 class AppointmentCard extends StatelessWidget {
   const AppointmentCard({
     required this.appointment,
-    required this.user,
+    required this.name,
+    required this.avatar,
     super.key,
   });
 
   final Appointment appointment;
-  final User user;
+  final String name;
+  final String avatar;
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +205,10 @@ class AppointmentCard extends StatelessWidget {
               endTime: appointment.endTime,
             ),
             const SizedBox(height: 24),
-            Customer(user: user),
+            Customer(
+              name: name,
+              avatar: avatar,
+            ),
             const SizedBox(height: 24),
             Services(services: appointment.services),
             const SizedBox(height: 24),
@@ -255,43 +260,43 @@ class Time extends StatelessWidget {
 
 class Customer extends StatelessWidget {
   const Customer({
-    required this.user,
+    required this.name,
+    required this.avatar,
     super.key,
   });
 
-  final User user;
+  final String name;
+  final String avatar;
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final TextTheme textTheme = Theme.of(context).textTheme;
 
-    return SafeArea(
-      child: Row(
-        children: [
-          Container(
-            width: 18,
-            height: 18,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: colorScheme.onPrimary,
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                image: NetworkImage(user.avatar),
-              ),
+    return Row(
+      children: [
+        Container(
+          width: 18,
+          height: 18,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: colorScheme.onPrimary,
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: NetworkImage(avatar),
             ),
           ),
-          const SizedBox(
-            width: 10,
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        Text(
+          name,
+          style: textTheme.bodyLarge!.copyWith(
+            color: colorScheme.primary,
           ),
-          Text(
-            user.name,
-            style: textTheme.bodyLarge!.copyWith(
-              color: colorScheme.primary,
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }
@@ -308,23 +313,20 @@ class Services extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 34,
-          ),
-          Expanded(
-            child: Text(
-              services,
-              style: textTheme.bodyLarge!.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+    return Row(
+      children: [
+        const SizedBox(
+          width: 34,
+        ),
+        Expanded(
+          child: Text(
+            services,
+            style: textTheme.bodyLarge!.copyWith(
+              fontWeight: FontWeight.w500,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -339,18 +341,20 @@ class Description extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
 
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Expanded(
-        child: Text(
-          description,
-          style: theme.textTheme.bodySmall!.copyWith(
-            color: theme.colorScheme.onSecondary,
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            description,
+            style: textTheme.bodySmall!.copyWith(
+              color: colorScheme.onSecondary,
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

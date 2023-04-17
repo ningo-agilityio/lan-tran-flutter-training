@@ -11,17 +11,13 @@ import '../../../core/utils.dart';
 import '../../../core/widgets/icons.dart';
 import '../../../core/widgets/indicator.dart';
 import '../../../core/widgets/text.dart';
-import '../../auth/model/user.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({
-    required this.user,
     super.key,
   });
-
-  final User user;
 
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
@@ -43,7 +39,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   void _loadEvents() {
     eventsController.sink.add(null);
-    appointmentRepo.load(_selectedDay!, widget.user.id).then((value) {
+    appointmentRepo.load(_selectedDay!).then((value) {
       eventsController.sink.add(value);
     });
   }
@@ -52,6 +48,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
+
     if (_selectedDay != null) {
       _loadEvents();
     }
@@ -69,7 +66,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return MainLayout(
-      user: widget.user,
       currentIndex: 1,
       title: S.of(context).calendarAppBarTitle,
       child: Column(

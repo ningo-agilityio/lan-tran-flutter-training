@@ -3,6 +3,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/generated/l10n.dart';
 import 'core/theme/theme.dart';
+import 'features/appointments/screens/appointments_screen.dart';
+import 'features/appointments/screens/calendar_screen.dart';
+import 'features/appointments/screens/new_appointment_screen.dart';
+import 'features/appointments/screens/profile_screen.dart';
+import 'features/auth/screens/login_screen.dart';
 import 'features/auth/screens/splash_screen.dart';
 
 void main() {
@@ -26,8 +31,16 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/calendar': (context) => const CalendarScreen(),
+        '/appointment': (context) => const AppointmentScreen(),
+        '/newAppointment': (context) => const NewAppointmentScreen(),
+        '/profile': (context) => const ProfileScreen(),
+      },
       supportedLocales: S.delegate.supportedLocales,
-      home: const SplashScreen(),
     );
   }
 }

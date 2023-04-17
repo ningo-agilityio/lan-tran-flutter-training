@@ -18,7 +18,7 @@ class SAText extends StatelessWidget {
 
   const factory SAText.appBarTitle({
     required String text,
-    required TextStyle style,
+    TextStyle style,
   }) = _AppBarTitle;
 
   final String text;
@@ -36,16 +36,16 @@ class SAText extends StatelessWidget {
 class _AppBarTitle extends SAText {
   const _AppBarTitle({
     required super.text,
-    required super.style,
+    super.style,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: style!.copyWith(
-        color: Theme.of(context).colorScheme.secondary,
-      ),
+      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+            color: Theme.of(context).colorScheme.secondary,
+          ),
     );
   }
 }
