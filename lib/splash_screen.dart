@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/core/utils.dart';
 
-import '../../../core/generated/l10n.dart';
-import '../../../core/layouts/common_layout.dart';
+import 'core/generated/l10n.dart';
+import 'core/layouts/common_layout.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
