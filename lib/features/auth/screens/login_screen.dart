@@ -8,12 +8,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/common_layout.dart';
+import '../../../core/validations/validations.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/input.dart';
 import '../../../core/widgets/text.dart';
 import '../model/user.dart';
 import '../repository/user_repository.dart';
-import '../validations/validations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/features/auth/validations/validations.dart';
+import 'package:salon_appointment/core/validations/validations.dart';
 
 class Input extends StatelessWidget {
   const Input({

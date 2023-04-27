@@ -9,7 +9,7 @@ import 'features/appointments/screens/calendar_screen.dart';
 import 'features/appointments/screens/new_appointment_screen.dart';
 import 'features/appointments/screens/profile_screen.dart';
 import 'features/auth/screens/login_screen.dart';
-import 'features/auth/screens/splash_screen.dart';
+import 'splash_screen.dart';
 
 void main() {
   runApp(
