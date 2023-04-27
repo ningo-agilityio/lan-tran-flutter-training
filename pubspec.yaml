@@ -17,7 +17,6 @@ dependencies:
   table_calendar: ^3.0.8
   intl: ^0.17.0
   http: ^0.13.5
-  collection: 1.17.0
   shared_preferences: ^2.1.0
 
   flutter_localizations:
@@ -28,6 +27,12 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.12.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_logo.png"
 
 flutter:
   uses-material-design: true
@@ -42,3 +47,4 @@ flutter_intl:
 
   arb_dir: lib/core/l10n
   output_dir: lib/core/generated
+
