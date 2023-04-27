@@ -26,12 +26,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Salon Appointment',
       theme: themeData,
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      supportedLocales: S.delegate.supportedLocales,
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
@@ -42,7 +44,6 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const ProfileScreen(),
         '/edit': (context) => const EditAppointment(),
       },
-      supportedLocales: S.delegate.supportedLocales,
     );
   }
 }
