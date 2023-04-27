@@ -1,4 +1,4 @@
-import '../model/user.dart';
+import '../../features/auth/model/user.dart';
 
 class FormValidation {
   static String? isValidPhoneNumber(String? phoneNumber) {
