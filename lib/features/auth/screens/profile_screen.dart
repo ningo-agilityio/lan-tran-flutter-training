@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/generated/l10n.dart';
 import '../../../core/widgets/buttons.dart';
+import '../../../core/widgets/dialog.dart';
 import '../../../core/widgets/indicator.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -24,6 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     late Map<String, dynamic> user;
+    final i10n = S.of(context);
 
     return FutureBuilder(
         future: getUser(),
@@ -32,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             user = snapshot.data!;
 
             return MainLayout(
-              title: S.of(context).profileAppBarTitle,
+              title: i10n.profileAppBarTitle,
               currentIndex: 2,
               child: Container(
                 decoration: BoxDecoration(
@@ -91,25 +93,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             size: 24,
                           ),
                           onPressed: () {
-                            showDialog(
+                            AlertConfirmDialog.show(
                               context: context,
-                              barrierColor: colorScheme.onBackground,
-                              builder: (context) => LoadingIndicator(
-                                height: indicatorHeight,
-                              ),
+                              title: i10n.logoutConfirmTitle,
+                              message: i10n.logoutConfirmMessage,
+                              onPressedRight: () {
+                                showDialog(
+                                  context: context,
+                                  barrierColor: colorScheme.onBackground,
+                                  builder: (context) => LoadingIndicator(
+                                    height: indicatorHeight,
+                                  ),
+                                );
+
+                                SharedPreferences.getInstance().then((value) {
+                                  value.remove('user');
+                                });
+
+                                Timer(const Duration(seconds: 3), () {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/login',
+                                    (route) => false,
+                                  );
+                                });
+                              },
+                              onPressedLeft: () {
+                                Navigator.pop(context, false);
+                              },
                             );
-
-                            SharedPreferences.getInstance().then((value) {
-                              value.remove('user');
-                            });
-
-                            Timer(const Duration(seconds: 3), () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                '/login',
-                                (route) => false,
-                              );
-                            });
                           },
                         ),
                       ),
