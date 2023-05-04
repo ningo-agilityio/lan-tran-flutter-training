@@ -121,12 +121,24 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                           context: context,
                           initialTime: TimeOfDay.fromDateTime(startTime),
                         );
-                        if (time != null &&
-                            time != TimeOfDay.fromDateTime(startTime)) {
-                          setState(() {
-                            startTime = setDateTime(dateTime, time);
-                            endTime = autoAddHalfHour(startTime);
-                          });
+                        if (time != null) {
+                          final DateTime tempStartTime =
+                              setDateTime(dateTime, time);
+                          if (isBeforeNow(tempStartTime)) {
+                            setState(() {
+                              SASnackBar.show(
+                                context: context,
+                                message: S.of(context).invalidStartTimeError,
+                                isSuccess: false,
+                              );
+                            });
+                          } else if (time !=
+                              TimeOfDay.fromDateTime(startTime)) {
+                            setState(() {
+                              startTime = setDateTime(dateTime, time);
+                              endTime = autoAddHalfHour(startTime);
+                            });
+                          }
                         }
                       },
                       onEndTimePressed: () async {
@@ -134,11 +146,22 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                           context: context,
                           initialTime: TimeOfDay.fromDateTime(endTime),
                         );
-                        if (time != null &&
-                            time != TimeOfDay.fromDateTime(endTime)) {
-                          setState(() {
-                            endTime = setDateTime(dateTime, time);
-                          });
+                        if (time != null) {
+                          final DateTime tempEndTime =
+                              setDateTime(dateTime, time);
+                          if (!isAfterStartTime(startTime, tempEndTime)) {
+                            setState(() {
+                              SASnackBar.show(
+                                context: context,
+                                message: S.of(context).invalidEndTimeError,
+                                isSuccess: false,
+                              );
+                            });
+                          } else if (time != TimeOfDay.fromDateTime(endTime)) {
+                            setState(() {
+                              endTime = setDateTime(dateTime, time);
+                            });
+                          }
                         }
                       },
                     ),

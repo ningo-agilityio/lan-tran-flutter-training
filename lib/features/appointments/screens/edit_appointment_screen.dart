@@ -138,15 +138,25 @@ class _EditAppointmentState extends State<EditAppointment> {
                           initialTime:
                               TimeOfDay.fromDateTime(appointment.endTime),
                         );
-                        if (time != null &&
-                            time !=
-                                TimeOfDay.fromDateTime(appointment.endTime)) {
-                          setState(() {
-                            appointment.endTime = setDateTime(
-                              appointment.date,
-                              time,
-                            );
-                          });
+                        if (time != null) {
+                          final DateTime tempEndTime =
+                              setDateTime(appointment.date, time);
+                          if (!isAfterStartTime(
+                              appointment.startTime, tempEndTime)) {
+                            setState(() {
+                              SASnackBar.show(
+                                context: context,
+                                message: S.of(context).invalidEndTimeError,
+                                isSuccess: false,
+                              );
+                            });
+                          } else if (time !=
+                              TimeOfDay.fromDateTime(appointment.endTime)) {
+                            setState(() {
+                              appointment.endTime =
+                                  setDateTime(appointment.date, time);
+                            });
+                          }
                         }
                       },
                     ),
