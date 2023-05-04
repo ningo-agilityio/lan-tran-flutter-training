@@ -46,17 +46,17 @@ samples, guidance on mobile development, and a full API reference.
 1. Clone the repository:  
 
     ```
-    git clone https://github.com/ningo-agilityio/lan-tran-flutter-training.git
+    git clone https://github.com/lantrannk/salon-appointment.git
     ```
 2. Checkout branch:  
 
     ```
-    git checkout -b flutter_practice
+    git checkout -b stable
     ```
 3. Pull origin branch:  
 
     ```
-    git pull origin flutter_practice
+    git pull origin stable
     ```
 
 ## How to run
