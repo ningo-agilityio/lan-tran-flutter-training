@@ -12,7 +12,8 @@ class AppointmentRepository {
 
     final List<Appointment> appointmentsOfDate = appointments
         .where((e) => DateFormat.yMd().format(e.date) == dateStr)
-        .toList();
+        .toList()
+      ..sort((a, b) => a.startTime.compareTo(b.startTime));
 
     return appointmentsOfDate;
   }
