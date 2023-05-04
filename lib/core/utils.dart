@@ -64,6 +64,16 @@ bool isClosedTime(DateTime start, DateTime end) {
   return false;
 }
 
+bool isBeforeNow(DateTime time) {
+  return time.isBefore(DateTime.now());
+}
+
+bool isAfterStartTime(DateTime start, DateTime end) {
+  return end.isAfter(
+    start.add(const Duration(minutes: 30)),
+  );
+}
+
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year - 10, kToday.month, kToday.day);
 final kLastDay = DateTime(kToday.year + 10, kToday.month, kToday.day);
