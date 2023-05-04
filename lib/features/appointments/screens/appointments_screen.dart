@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:salon_appointment/core/utils.dart';
 import 'package:salon_appointment/core/widgets/buttons.dart';
+import 'package:salon_appointment/core/widgets/dialog.dart';
 import 'package:salon_appointment/core/widgets/snack_bar.dart';
 import 'package:salon_appointment/features/appointments/api/appointment_api.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -185,11 +186,24 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                 );
                               }
                             },
-                            onRemovePressed: () async {
-                              await AppointmentApi.deleteAppointment(
-                                  events[index]);
+                            onRemovePressed: () {
+                              AlertConfirmDialog.show(
+                                context: context,
+                                title: S.of(context).removeConfirmTitle,
+                                message: S.of(context).removeConfirmMessage,
+                                onPressedRight: () async {
+                                  await AppointmentApi.deleteAppointment(
+                                      events[index]);
 
-                              setState(_loadEvents);
+                                  setState(() {
+                                    _loadEvents();
+                                    Navigator.pop(context, true);
+                                  });
+                                },
+                                onPressedLeft: () {
+                                  Navigator.pop(context, false);
+                                },
+                              );
                             },
                           ),
                         ),
