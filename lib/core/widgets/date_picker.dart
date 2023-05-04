@@ -13,7 +13,7 @@ class DatePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat dateFormat = DateFormat('MM/dd/yyyy');
+    final DateFormat dateFormat = DateFormat('dd/MM/yyyy');
 
     return Padding(
       padding: const EdgeInsets.only(left: 10),
