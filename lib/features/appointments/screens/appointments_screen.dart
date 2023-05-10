@@ -12,6 +12,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
+import '../../../core/storage/user_storage.dart';
 import '../../../core/widgets/icons.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
@@ -51,7 +52,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    getUser().then((value) => user = value);
+    UserStorage.getUser().then((value) => user = value);
 
     try {
       if (_selectedDay != null) {

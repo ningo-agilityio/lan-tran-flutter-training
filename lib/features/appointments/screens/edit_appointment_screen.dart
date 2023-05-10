@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../../core/generated/l10n.dart';
+import '../../../core/storage/user_storage.dart';
 import '../../../core/utils.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/date_picker.dart';
@@ -48,7 +49,7 @@ class _EditAppointmentState extends State<EditAppointment> {
     ];
 
     return FutureBuilder(
-      future: getUser(),
+      future: UserStorage.getUser(),
       builder: (_, snapshot) {
         if (snapshot.hasError) {
           return SnackBar(content: Text(snapshot.error.toString()));

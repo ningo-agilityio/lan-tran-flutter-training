@@ -5,6 +5,7 @@ import 'package:salon_appointment/core/utils.dart';
 
 import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
+import '../../../core/storage/user_storage.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/date_picker.dart';
 import '../../../core/widgets/dropdown.dart';
@@ -53,7 +54,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
     ];
 
     return FutureBuilder(
-      future: getUser(),
+      future: UserStorage.getUser(),
       builder: (_, snapshot) {
         if (snapshot.hasError) {
           return SnackBar(content: Text(snapshot.error.toString()));
