@@ -135,7 +135,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                           } else if (time !=
                               TimeOfDay.fromDateTime(startTime)) {
                             setState(() {
-                              startTime = setDateTime(dateTime, time);
+                              startTime = tempStartTime;
                               endTime = autoAddHalfHour(startTime);
                             });
                           }
@@ -159,7 +159,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                             });
                           } else if (time != TimeOfDay.fromDateTime(endTime)) {
                             setState(() {
-                              endTime = setDateTime(dateTime, time);
+                              endTime = tempEndTime;
                             });
                           }
                         }
