@@ -1,16 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/core/widgets/indicator.dart';
-import 'package:salon_appointment/core/widgets/snack_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/common_layout.dart';
+import '../../../core/storage/user_storage.dart';
 import '../../../core/validations/validations.dart';
 import '../../../core/widgets/buttons.dart';
+import '../../../core/widgets/indicator.dart';
 import '../../../core/widgets/input.dart';
+import '../../../core/widgets/snack_bar.dart';
 import '../../../core/widgets/text.dart';
 import '../model/user.dart';
 import '../repository/user_repository.dart';
@@ -163,10 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           e.password == password)
                       .first;
 
-                  final SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  final String userEncode = jsonEncode(user.toJson());
-                  await prefs.setString('user', userEncode);
+                  await UserStorage.setUser(user);
 
                   setState(
                     () {
