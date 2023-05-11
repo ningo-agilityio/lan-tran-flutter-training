@@ -7,9 +7,9 @@ import '../../features/appointments/model/appointment.dart';
 
 class AppointmentStorage {
   /// Save a [List] of [String] appointment encode
-  static Future<void> setAppointments(String userId) async {
+  static Future<void> setAppointments() async {
     final List<Appointment> appointments =
-        await AppointmentApi.getAppointments(userId);
+        await AppointmentApi.getAppointments();
 
     final List<String> appointmentsEncode = [];
     for (final e in appointments) {
@@ -22,14 +22,16 @@ class AppointmentStorage {
 
   /// Returns a [List] of [Appointment] from storage
   static Future<List<Appointment>> getAppointments() async {
+    await setAppointments();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String>? appointmentsEncode =
         prefs.getStringList('appointments');
 
-    final List<Appointment> appointments = [];
-    for (final e in appointmentsEncode!) {
-      appointments.add(Appointment.fromJson(jsonDecode(e)));
-    }
+    final List<Appointment> appointments = appointmentsEncode!
+        .map((appointment) => Appointment.fromJson(
+            jsonDecode(appointment) as Map<dynamic, dynamic>))
+        .toList();
+
     return appointments;
   }
 }
