@@ -449,6 +449,16 @@ class S {
       args: [],
     );
   }
+
+  /// `This time is full of appointments. Please pick another time.`
+  String get fullAppointmentsError {
+    return Intl.message(
+      'This time is full of appointments. Please pick another time.',
+      name: 'fullAppointmentsError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

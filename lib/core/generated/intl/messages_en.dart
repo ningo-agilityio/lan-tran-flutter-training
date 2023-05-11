@@ -52,6 +52,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
         "fromText": MessageLookupByLibrary.simpleMessage("From:"),
+        "fullAppointmentsError": MessageLookupByLibrary.simpleMessage(
+            "This time is full of appointments. Please pick another time."),
         "incorrectAccountError": MessageLookupByLibrary.simpleMessage(
             "Phone number or Password is incorrect."),
         "invalidAccountError": MessageLookupByLibrary.simpleMessage(
