@@ -8,7 +8,8 @@ class AppointmentRepository {
   Future<List<Appointment>> load(DateTime date) async {
     final Map<String, dynamic> userJson = await UserStorage.getUser();
 
-    final appointments = await AppointmentApi.getAppointments(userJson['id']);
+    final appointments =
+        await AppointmentApi.getAppointmentsOfUser(userJson['id']);
     final dateStr = DateFormat.yMd().format(date);
 
     final List<Appointment> appointmentsOfDate = appointments
