@@ -5,7 +5,19 @@ import 'package:salon_appointment/features/appointments/model/appointment.dart';
 import '../../../core/constants/constants.dart';
 
 class AppointmentApi {
-  static Future<List<Appointment>> getAppointments(String userId) async {
+  static Future<List<Appointment>> getAppointments() async {
+    final url = Uri.parse('$apiUrl/appointments');
+
+    final response = await http.get(url);
+    final responseData = (json.decode(response.body) as List)
+        .map((appointment) =>
+            Appointment.fromJson(appointment as Map<dynamic, dynamic>))
+        .toList();
+
+    return responseData;
+  }
+
+  static Future<List<Appointment>> getAppointmentsOfUser(String userId) async {
     final url = Uri.parse('$apiUrl/appointments?userId=$userId');
 
     final response = await http.get(url);
