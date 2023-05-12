@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/assets.dart';
+
 class BackgroundImage extends StatelessWidget {
   const BackgroundImage({super.key});
 
@@ -12,7 +14,7 @@ class BackgroundImage extends StatelessWidget {
       height: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: const AssetImage('assets/images/background.png'),
+          image: Assets.bgImage,
           colorFilter: ColorFilter.mode(
             colorScheme.primary.withOpacity(0.5),
             BlendMode.multiply,
