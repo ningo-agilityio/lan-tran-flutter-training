@@ -56,21 +56,34 @@ class MessageLookup extends MessageLookupByLibrary {
             "Phone number or Password is incorrect."),
         "invalidAccountError": MessageLookupByLibrary.simpleMessage(
             "Phone number or Password is invalid."),
+        "invalidEndTimeError": MessageLookupByLibrary.simpleMessage(
+            "The end time must be after the start time of at least 30 minutes."),
+        "invalidStartTimeError": MessageLookupByLibrary.simpleMessage(
+            "You cannot choose a time before now."),
         "loginButton": MessageLookupByLibrary.simpleMessage("Login"),
         "logo": MessageLookupByLibrary.simpleMessage("avisit"),
         "logoText": MessageLookupByLibrary.simpleMessage("av"),
+        "logoutConfirmMessage": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to logout?"),
+        "logoutConfirmTitle": MessageLookupByLibrary.simpleMessage("Logout"),
         "newAppointmentAppBarTitle":
             MessageLookupByLibrary.simpleMessage("New Appointment"),
+        "noConfirm": MessageLookupByLibrary.simpleMessage("No"),
         "notificationsLabel":
             MessageLookupByLibrary.simpleMessage("Notifications"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
         "profileAppBarTitle": MessageLookupByLibrary.simpleMessage("Profile"),
         "profileLabel": MessageLookupByLibrary.simpleMessage("Profile"),
+        "removeConfirmMessage": MessageLookupByLibrary.simpleMessage(
+            "Do you want to delete this appointment?"),
+        "removeConfirmTitle":
+            MessageLookupByLibrary.simpleMessage("Remove Appointment"),
         "toText": MessageLookupByLibrary.simpleMessage("To:"),
         "unableEditError": MessageLookupByLibrary.simpleMessage(
             "You cannot edit appointments in less than 24 hours."),
         "updateSuccess":
-            MessageLookupByLibrary.simpleMessage("Appointment updated.")
+            MessageLookupByLibrary.simpleMessage("Appointment updated."),
+        "yesConfirm": MessageLookupByLibrary.simpleMessage("Yes")
       };
 }

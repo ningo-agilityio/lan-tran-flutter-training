@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Returns a list of [DateTime] objects from [first] to [last], inclusive.
 List<DateTime> daysInRange(DateTime first, DateTime last) {
@@ -64,13 +61,16 @@ bool isClosedTime(DateTime start, DateTime end) {
   return false;
 }
 
+bool isBeforeNow(DateTime time) {
+  return time.isBefore(DateTime.now());
+}
+
+bool isAfterStartTime(DateTime start, DateTime end) {
+  return end.isAfter(
+    start.add(const Duration(minutes: 30)),
+  );
+}
+
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year - 10, kToday.month, kToday.day);
 final kLastDay = DateTime(kToday.year + 10, kToday.month, kToday.day);
-
-/// Returns a [Map] of a user from storage
-Future<Map<String, dynamic>> getUser() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  final String userStr = prefs.getString('user') ?? '{}';
-  return jsonDecode(userStr);
-}

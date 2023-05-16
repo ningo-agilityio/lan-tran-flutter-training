@@ -11,6 +11,7 @@ class Input extends StatelessWidget {
     this.height,
     this.maxLines,
     this.border,
+    this.textInputAction,
     super.key,
   });
 
@@ -42,6 +43,7 @@ class Input extends StatelessWidget {
   final double? height;
   final int? maxLines;
   final OutlineInputBorder? border;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,7 @@ class Input extends StatelessWidget {
           border: border,
         ),
         maxLines: maxLines,
+        textInputAction: textInputAction,
         onEditingComplete: onEditCompleted,
       ),
     );
@@ -105,6 +108,7 @@ class _PhoneNumberInput extends Input {
         ),
         onEditingComplete: onEditCompleted,
         validator: FormValidation.isValidPhoneNumber,
+        textInputAction: TextInputAction.next,
         onChanged: onChanged,
       ),
     );

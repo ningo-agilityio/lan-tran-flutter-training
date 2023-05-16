@@ -5,6 +5,7 @@ import 'package:salon_appointment/core/utils.dart';
 
 import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
+import '../../../core/storage/user_storage.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/date_picker.dart';
 import '../../../core/widgets/dropdown.dart';
@@ -53,7 +54,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
     ];
 
     return FutureBuilder(
-      future: getUser(),
+      future: UserStorage.getUser(),
       builder: (_, snapshot) {
         if (snapshot.hasError) {
           return SnackBar(content: Text(snapshot.error.toString()));
@@ -121,12 +122,24 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                           context: context,
                           initialTime: TimeOfDay.fromDateTime(startTime),
                         );
-                        if (time != null &&
-                            time != TimeOfDay.fromDateTime(startTime)) {
-                          setState(() {
-                            startTime = setDateTime(dateTime, time);
-                            endTime = autoAddHalfHour(startTime);
-                          });
+                        if (time != null) {
+                          final DateTime tempStartTime =
+                              setDateTime(dateTime, time);
+                          if (isBeforeNow(tempStartTime)) {
+                            setState(() {
+                              SASnackBar.show(
+                                context: context,
+                                message: S.of(context).invalidStartTimeError,
+                                isSuccess: false,
+                              );
+                            });
+                          } else if (time !=
+                              TimeOfDay.fromDateTime(startTime)) {
+                            setState(() {
+                              startTime = tempStartTime;
+                              endTime = autoAddHalfHour(startTime);
+                            });
+                          }
                         }
                       },
                       onEndTimePressed: () async {
@@ -134,11 +147,22 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                           context: context,
                           initialTime: TimeOfDay.fromDateTime(endTime),
                         );
-                        if (time != null &&
-                            time != TimeOfDay.fromDateTime(endTime)) {
-                          setState(() {
-                            endTime = setDateTime(dateTime, time);
-                          });
+                        if (time != null) {
+                          final DateTime tempEndTime =
+                              setDateTime(dateTime, time);
+                          if (!isAfterStartTime(startTime, tempEndTime)) {
+                            setState(() {
+                              SASnackBar.show(
+                                context: context,
+                                message: S.of(context).invalidEndTimeError,
+                                isSuccess: false,
+                              );
+                            });
+                          } else if (time != TimeOfDay.fromDateTime(endTime)) {
+                            setState(() {
+                              endTime = tempEndTime;
+                            });
+                          }
                         }
                       },
                     ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:salon_appointment/core/utils.dart';
 import 'package:salon_appointment/core/widgets/buttons.dart';
+import 'package:salon_appointment/core/widgets/dialog.dart';
 import 'package:salon_appointment/core/widgets/snack_bar.dart';
 import 'package:salon_appointment/features/appointments/api/appointment_api.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -11,6 +12,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
+import '../../../core/storage/user_storage.dart';
 import '../../../core/widgets/icons.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
@@ -50,7 +52,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    getUser().then((value) => user = value);
+    UserStorage.getUser().then((value) => user = value);
 
     try {
       if (_selectedDay != null) {
@@ -185,11 +187,24 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                 );
                               }
                             },
-                            onRemovePressed: () async {
-                              await AppointmentApi.deleteAppointment(
-                                  events[index]);
+                            onRemovePressed: () {
+                              AlertConfirmDialog.show(
+                                context: context,
+                                title: S.of(context).removeConfirmTitle,
+                                message: S.of(context).removeConfirmMessage,
+                                onPressedRight: () async {
+                                  await AppointmentApi.deleteAppointment(
+                                      events[index]);
 
-                              setState(_loadEvents);
+                                  setState(() {
+                                    _loadEvents();
+                                    Navigator.pop(context, true);
+                                  });
+                                },
+                                onPressedLeft: () {
+                                  Navigator.pop(context, false);
+                                },
+                              );
                             },
                           ),
                         ),

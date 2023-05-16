@@ -60,24 +60,28 @@ class _MainLayoutState extends State<MainLayout> {
       bottomNavigationBar: CustomBottomAppBar(
         currentIndex: _currentIndex,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-            switch (_currentIndex) {
-              case 0:
-                // Appointment Screen
-                Navigator.pushNamed(context, '/appointment');
-                break;
-              case 1:
-                // Calendar Screen
-                Navigator.pushNamed(context, '/calendar');
+          if (_currentIndex == index) {
+            return;
+          } else {
+            setState(() {
+              _currentIndex = index;
+              switch (_currentIndex) {
+                case 0:
+                  // Appointment Screen
+                  Navigator.pushNamed(context, '/appointment');
+                  break;
+                case 1:
+                  // Calendar Screen
+                  Navigator.pushNamed(context, '/calendar');
 
-                break;
-              case 2:
-                // Profile Screen
-                Navigator.pushNamed(context, '/profile');
-                break;
-            }
-          });
+                  break;
+                case 2:
+                  // Profile Screen
+                  Navigator.pushNamed(context, '/profile');
+                  break;
+              }
+            });
+          }
         },
       ),
     );

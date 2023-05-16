@@ -310,6 +310,66 @@ class S {
     );
   }
 
+  /// `Remove Appointment`
+  String get removeConfirmTitle {
+    return Intl.message(
+      'Remove Appointment',
+      name: 'removeConfirmTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to delete this appointment?`
+  String get removeConfirmMessage {
+    return Intl.message(
+      'Do you want to delete this appointment?',
+      name: 'removeConfirmMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get logoutConfirmTitle {
+    return Intl.message(
+      'Logout',
+      name: 'logoutConfirmTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to logout?`
+  String get logoutConfirmMessage {
+    return Intl.message(
+      'Are you sure you want to logout?',
+      name: 'logoutConfirmMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yesConfirm {
+    return Intl.message(
+      'Yes',
+      name: 'yesConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get noConfirm {
+    return Intl.message(
+      'No',
+      name: 'noConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Phone number or Password is invalid.`
   String get invalidAccountError {
     return Intl.message(
@@ -365,6 +425,26 @@ class S {
     return Intl.message(
       'You cannot edit appointments in less than 24 hours.',
       name: 'unableEditError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The end time must be after the start time of at least 30 minutes.`
+  String get invalidEndTimeError {
+    return Intl.message(
+      'The end time must be after the start time of at least 30 minutes.',
+      name: 'invalidEndTimeError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You cannot choose a time before now.`
+  String get invalidStartTimeError {
+    return Intl.message(
+      'You cannot choose a time before now.',
+      name: 'invalidStartTimeError',
       desc: '',
       args: [],
     );
