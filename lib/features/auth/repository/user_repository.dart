@@ -1,10 +1,10 @@
-import '../api/user_api.dart';
+import '../../../core/storage/user_storage.dart';
 import '../model/user.dart';
 
 class UserRepository {
   Future<List<User>> load() async {
-    final users = await UserApi.getUsers();
-
+    await UserStorage.setUsers();
+    final users = await UserStorage.getUsers();
     return users;
   }
 }

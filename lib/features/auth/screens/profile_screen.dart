@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:salon_appointment/core/layouts/main_layout.dart';
-import 'package:salon_appointment/core/utils.dart';
 import 'package:salon_appointment/core/widgets/text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/generated/l10n.dart';
+import '../../../core/storage/user_storage.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/dialog.dart';
 import '../../../core/widgets/indicator.dart';
@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final i10n = S.of(context);
 
     return FutureBuilder(
-        future: getUser(),
+        future: UserStorage.getUser(),
         builder: (_, snapshot) {
           if (snapshot.hasData) {
             user = snapshot.data!;

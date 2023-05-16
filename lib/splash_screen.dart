@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:salon_appointment/core/utils.dart';
 
 import 'core/generated/l10n.dart';
 import 'core/layouts/common_layout.dart';
+import 'core/storage/user_storage.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getUser(),
+      future: UserStorage.getUser(),
       builder: (_, snapshot) {
         if (snapshot.hasData) {
           final user = snapshot.data!;
