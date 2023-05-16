@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Assets {
-  static const AssetImage bgImage = AssetImage('assets/background.png');
+  static const AssetImage bgImage = AssetImage('assets/images/background.png');
 
   static const IconData scheduleIcon = Icons.schedule_outlined;
 
