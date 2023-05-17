@@ -144,11 +144,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: BlocListener<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state is LoginLoading) {
-                      const Center(
-                        child: CircularProgressIndicator(),
+                      loadingIndicator.show(
+                        context: context,
+                        height: indicatorHeight,
                       );
                     }
                     if (state is LoginSuccess) {
+                      loadingIndicator.hide(context);
                       final user = users
                           .where((e) =>
                               e.phoneNumber == phoneNumber &&
@@ -156,19 +158,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           .first;
                       UserStorage.setUser(user);
 
-                      showDialog(
-                        context: context,
-                        barrierColor:
-                            Theme.of(context).colorScheme.onBackground,
-                        builder: (context) => LoadingIndicator(
-                          height: indicatorHeight,
-                        ),
-                      );
-                      Timer(const Duration(seconds: 3), () {
-                        Navigator.pushReplacementNamed(context, '/calendar');
-                      });
+                      Navigator.pushReplacementNamed(context, '/calendar');
                     }
                     if (state is LoginError) {
+                      loadingIndicator.hide(context);
                       switch (state.error) {
                         case 'invalid-account':
                           SASnackBar.show(
