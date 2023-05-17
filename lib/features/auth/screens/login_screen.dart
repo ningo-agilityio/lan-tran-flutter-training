@@ -184,6 +184,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             isSuccess: false,
                           );
                           break;
+                        default:
+                          SASnackBar.show(
+                            context: context,
+                            message: state.error,
+                            isSuccess: false,
+                          );
+                          break;
                       }
                     }
                   },
