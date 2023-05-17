@@ -18,8 +18,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     LoginEvent event,
     Emitter<AuthState> emit,
   ) async {
+    emit(LoginLoading());
     try {
-      emit(LoginLoading());
       final List<User> users = await UserStorage.getUsers();
       if (FormValidation.isValidPassword(event.password) != null ||
           FormValidation.isValidPhoneNumber(event.phoneNumber) != null) {
@@ -28,6 +28,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
       if (FormValidation.isLoginSuccess(
           users, event.phoneNumber, event.password)) {
+        final user = users
+            .where((e) =>
+                e.phoneNumber == event.phoneNumber &&
+                e.password == event.password)
+            .first;
+        await UserStorage.setUser(user);
         emit(LoginSuccess());
       } else {
         emit(const LoginError('incorrect-account'));

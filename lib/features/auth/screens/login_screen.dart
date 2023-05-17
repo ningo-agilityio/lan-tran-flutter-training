@@ -1,11 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/common_layout.dart';
-import '../../../core/storage/user_storage.dart';
 import '../../../core/validations/validations.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/indicator.dart';
@@ -151,13 +148,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
                     if (state is LoginSuccess) {
                       loadingIndicator.hide(context);
-                      final user = users
-                          .where((e) =>
-                              e.phoneNumber == phoneNumber &&
-                              e.password == password)
-                          .first;
-                      UserStorage.setUser(user);
-
                       Navigator.pushReplacementNamed(context, '/calendar');
                     }
                     if (state is LoginError) {
