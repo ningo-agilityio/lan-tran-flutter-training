@@ -7,14 +7,12 @@ abstract class AuthState extends Equatable {
   List<Object> get props => [];
 }
 
-class LoginInitial extends AuthState {}
-
 class LoginLoading extends AuthState {}
 
 class LoginError extends AuthState {
-  const LoginError([this.error]);
+  const LoginError(this.error);
 
-  final String? error;
+  final String error;
 }
 
 class LoginSuccess extends AuthState {}
