@@ -9,8 +9,9 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(LoginInitial()) {
+  AuthBloc() : super(LoginLoading()) {
     on<LoginEvent>(_handleLoginEvent);
+    on<LogoutEvent>(_handleLogOutEvent);
   }
 
   Future<void> _handleLoginEvent(
@@ -18,14 +19,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
-      final List<User> users = await UserStorage.getUsers();
-
       emit(LoginLoading());
+      final List<User> users = await UserStorage.getUsers();
+      if (FormValidation.isValidPassword(event.password) != null ||
+          FormValidation.isValidPhoneNumber(event.phoneNumber) != null) {
+        emit(const LoginError('invalid-account'));
+        return;
+      }
       if (FormValidation.isLoginSuccess(
           users, event.phoneNumber, event.password)) {
         emit(LoginSuccess());
       } else {
-        emit(const LoginError());
+        emit(const LoginError('incorrect-account'));
       }
     } on Exception catch (e) {
       emit(
@@ -33,4 +38,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
     }
   }
+
+  Future<void> _handleLogOutEvent(
+    LogoutEvent event,
+    Emitter<AuthState> emit,
+  ) async {}
 }
