@@ -16,18 +16,13 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     try {
       emit(AppointmentLoading());
       final Map<String, dynamic> user = await UserStorage.getUser();
-      List<Appointment> appointments = [];
-      if (user['isAdmin']) {
-        appointments = await AppointmentStorage.getAppointments();
-        emit(
-          AppointmentLoadSuccess(appointments: appointments),
-        );
-      } else {
-        appointments = await AppointmentApi.getAppointmentsOfUser(user['id']);
-        emit(
-          AppointmentLoadSuccess(appointments: appointments),
-        );
-      }
+      final List<Appointment> appointments = user['isAdmin']
+          ? await AppointmentStorage.getAppointments()
+          : await AppointmentApi.getAppointmentsOfUser(user['id']);
+
+      emit(
+        AppointmentLoadSuccess(appointments: appointments),
+      );
     } on Exception catch (e) {
       emit(AppointmentLoadError(error: e.toString()));
     }
