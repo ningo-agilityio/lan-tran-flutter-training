@@ -11,10 +11,8 @@ class AppointmentStorage {
     final List<Appointment> appointments =
         await AppointmentApi.getAppointments();
 
-    final List<String> appointmentsEncode = [];
-    for (final e in appointments) {
-      appointmentsEncode.add(jsonEncode(e.toJson()));
-    }
+    final List<String> appointmentsEncode =
+        appointments.map((e) => jsonEncode(e.toJson())).toList();
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('appointments', appointmentsEncode);
@@ -24,14 +22,11 @@ class AppointmentStorage {
   static Future<List<Appointment>> getAppointments() async {
     await setAppointments();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final List<String>? appointmentsEncode =
-        prefs.getStringList('appointments');
-
-    final List<Appointment> appointments = appointmentsEncode!
-        .map((appointment) => Appointment.fromJson(
-            jsonDecode(appointment) as Map<dynamic, dynamic>))
+    final List<Appointment> appointments = prefs
+        .getStringList('appointments')!
+        .map((e) => Appointment.fromJson(jsonDecode(e)))
         .toList();
-
+    
     return appointments;
   }
 }
