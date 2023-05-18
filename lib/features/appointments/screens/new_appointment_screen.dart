@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:salon_appointment/core/storage/appointment_storage.dart';
 import 'package:salon_appointment/core/utils.dart';
 
 import '../../../core/constants/assets.dart';
@@ -122,23 +123,33 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                           context: context,
                           initialTime: TimeOfDay.fromDateTime(startTime),
                         );
+                        final List<Appointment> appointments =
+                            await AppointmentStorage.getAppointments();
                         if (time != null) {
                           final DateTime tempStartTime =
                               setDateTime(dateTime, time);
+
                           if (isBeforeNow(tempStartTime)) {
-                            setState(() {
-                              SASnackBar.show(
-                                context: context,
-                                message: S.of(context).invalidStartTimeError,
-                                isSuccess: false,
-                              );
-                            });
+                            SASnackBar.show(
+                              context: context,
+                              message: S.of(context).invalidStartTimeError,
+                              isSuccess: false,
+                            );
                           } else if (time !=
                               TimeOfDay.fromDateTime(startTime)) {
-                            setState(() {
-                              startTime = setDateTime(dateTime, time);
-                              endTime = autoAddHalfHour(startTime);
-                            });
+                            if (isFullAppointments(
+                                appointments, tempStartTime)) {
+                              SASnackBar.show(
+                                context: context,
+                                message: S.of(context).fullAppointmentsError,
+                                isSuccess: false,
+                              );
+                            } else {
+                              setState(() {
+                                startTime = tempStartTime;
+                                endTime = autoAddHalfHour(startTime);
+                              });
+                            }
                           }
                         }
                       },
@@ -151,13 +162,11 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                           final DateTime tempEndTime =
                               setDateTime(dateTime, time);
                           if (!isAfterStartTime(startTime, tempEndTime)) {
-                            setState(() {
-                              SASnackBar.show(
-                                context: context,
-                                message: S.of(context).invalidEndTimeError,
-                                isSuccess: false,
-                              );
-                            });
+                            SASnackBar.show(
+                              context: context,
+                              message: S.of(context).invalidEndTimeError,
+                              isSuccess: false,
+                            );
                           } else if (time != TimeOfDay.fromDateTime(endTime)) {
                             setState(() {
                               endTime = setDateTime(dateTime, time);

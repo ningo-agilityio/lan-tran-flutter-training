@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../features/appointments/model/appointment.dart';
+
 /// Returns a list of [DateTime] objects from [first] to [last], inclusive.
 List<DateTime> daysInRange(DateTime first, DateTime last) {
   final dayCount = last.difference(first).inDays + 1;
@@ -69,6 +71,12 @@ bool isAfterStartTime(DateTime start, DateTime end) {
   return end.isAfter(
     start.add(const Duration(minutes: 30)),
   );
+}
+
+bool isFullAppointments(List<Appointment> appointments, DateTime dateTime) {
+  final appointmentsOfDateTime =
+      appointments.where((e) => e.startTime == dateTime);
+  return appointmentsOfDateTime.length >= 5;
 }
 
 final kToday = DateTime.now();
