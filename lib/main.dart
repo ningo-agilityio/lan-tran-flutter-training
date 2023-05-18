@@ -25,17 +25,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(),
-          child: const LoginScreen(),
-        ),
-        BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(),
-          child: const ProfileScreen(),
-        ),
-      ],
+    return BlocProvider<AuthBloc>(
+      create: (context) => AuthBloc(),
       child: MaterialApp(
         title: 'Salon Appointment',
         theme: themeData,
