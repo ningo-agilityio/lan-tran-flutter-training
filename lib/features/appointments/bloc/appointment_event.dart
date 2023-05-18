@@ -4,22 +4,22 @@ abstract class AppointmentEvent {
   const AppointmentEvent();
 }
 
-class FetchAppointment extends AppointmentEvent {}
+class AppointmenFetch extends AppointmentEvent {}
 
-class LoadAppointment extends AppointmentEvent {}
+class AppointmentLoad extends AppointmentEvent {}
 
-class AddAppointment extends AppointmentEvent {}
+class AppointmentAdd extends AppointmentEvent {}
 
-class EditAppointment extends AppointmentEvent {
-  const EditAppointment({
+class AppointmentEdit extends AppointmentEvent {
+  const AppointmentEdit({
     required this.appointment,
   });
 
   final Appointment appointment;
 }
 
-class RemoveAppointment extends AppointmentEvent {
-  const RemoveAppointment({
+class AppointmentRemovePressed extends AppointmentEvent {
+  const AppointmentRemovePressed({
     required this.appointmentId,
   });
 
