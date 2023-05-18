@@ -188,7 +188,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     );
                   }
                 }
-                return LoadingIndicator(
+                return SAIndicator(
                   height: indicatorHeight,
                 );
               }),
