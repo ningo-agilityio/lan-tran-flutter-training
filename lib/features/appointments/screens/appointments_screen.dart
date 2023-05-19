@@ -55,13 +55,13 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final double indicatorHeight = MediaQuery.of(context).size.height / 2;
-    final i10n = S.of(context);
+    final l10n = S.of(context);
 
     return BlocProvider<AppointmentBloc>(
       create: (context) => AppointmentBloc(),
       child: MainLayout(
         currentIndex: 0,
-        title: i10n.appointmentAppBarTitle,
+        title: l10n.appointmentAppBarTitle,
         child: Column(
           children: [
             BlocBuilder<AppointmentBloc, AppointmentState>(
@@ -175,7 +175,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                     24) {
                                   SASnackBar.show(
                                     context: context,
-                                    message: i10n.unableEditError,
+                                    message: l10n.unableEditError,
                                     isSuccess: false,
                                   );
                                 } else {
@@ -189,8 +189,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                               onRemovePressed: () {
                                 AlertConfirmDialog.show(
                                   context: context,
-                                  title: S.of(context).removeConfirmTitle,
-                                  message: S.of(context).removeConfirmMessage,
+                                  title: l10n.removeConfirmTitle,
+                                  message: l10n.removeConfirmMessage,
                                   onPressedRight: () {
                                     context.read<AppointmentBloc>().add(
                                           AppointmentRemovePressed(
@@ -213,7 +213,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     height: MediaQuery.of(context).size.height / 2,
                     child: Center(
                       child: Text(
-                        i10n.emptyAppointments,
+                        l10n.emptyAppointments,
                         style: textTheme.bodyLarge!.copyWith(
                           color: colorScheme.secondary,
                         ),
