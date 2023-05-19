@@ -15,8 +15,6 @@ import '../../../core/widgets/indicator.dart';
 import '../../../core/widgets/snack_bar.dart';
 import '../api/appointment_api.dart';
 import '../bloc/appointment_bloc.dart';
-import '../bloc/appointment_event.dart';
-import '../bloc/appointment_state.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
 
@@ -55,13 +53,16 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final double indicatorHeight = MediaQuery.of(context).size.height / 2;
-    final i10n = S.of(context);
+    final l10n = S.of(context);
 
     return BlocProvider<AppointmentBloc>(
-      create: (context) => AppointmentBloc(),
+      create: (context) => AppointmentBloc()
+        ..add(
+          AppointmentLoad(_selectedDay!),
+        ),
       child: MainLayout(
         currentIndex: 0,
-        title: i10n.appointmentAppBarTitle,
+        title: l10n.appointmentAppBarTitle,
         child: Column(
           children: [
             BlocBuilder<AppointmentBloc, AppointmentState>(
@@ -125,7 +126,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            BlocBuilder<AppointmentBloc, AppointmentState>(
+            BlocConsumer<AppointmentBloc, AppointmentState>(
+              listener: (context, state) {},
               builder: (context, state) {
                 if (state is AppointmentLoading) {
                   return SAIndicator(
@@ -153,7 +155,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   24) {
                                 SASnackBar.show(
                                   context: context,
-                                  message: i10n.unableEditError,
+                                  message: l10n.unableEditError,
                                   isSuccess: false,
                                 );
                               } else {
@@ -167,8 +169,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                             onRemovePressed: () {
                               AlertConfirmDialog.show(
                                 context: context,
-                                title: S.of(context).removeConfirmTitle,
-                                message: S.of(context).removeConfirmMessage,
+                                title: l10n.removeConfirmTitle,
+                                message: l10n.removeConfirmMessage,
                                 onPressedRight: () async {
                                   await AppointmentApi.deleteAppointment(
                                     events[index].id!,
@@ -196,7 +198,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   height: MediaQuery.of(context).size.height / 2,
                   child: Center(
                     child: Text(
-                      i10n.emptyAppointments,
+                      l10n.emptyAppointments,
                       style: textTheme.bodyLarge!.copyWith(
                         color: colorScheme.secondary,
                       ),
