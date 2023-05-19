@@ -1,19 +1,22 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:salon_appointment/core/utils.dart';
-import 'package:salon_appointment/core/widgets/buttons.dart';
-import 'package:salon_appointment/core/widgets/dialog.dart';
-import 'package:salon_appointment/core/widgets/snack_bar.dart';
-import 'package:salon_appointment/features/appointments/api/appointment_api.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
 import '../../../core/storage/user_storage.dart';
+import '../../../core/utils.dart';
+import '../../../core/widgets/buttons.dart';
+import '../../../core/widgets/dialog.dart';
 import '../../../core/widgets/icons.dart';
+import '../../../core/widgets/indicator.dart';
+import '../../../core/widgets/snack_bar.dart';
+import '../api/appointment_api.dart';
+import '../bloc/appointment_bloc.dart';
+import '../bloc/appointment_event.dart';
+import '../bloc/appointment_state.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
 
@@ -28,7 +31,6 @@ class AppointmentScreen extends StatefulWidget {
 
 class _AppointmentScreenState extends State<AppointmentScreen> {
   final appointmentRepo = AppointmentRepository();
-  final eventsController = StreamController<List<Appointment>?>();
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
@@ -41,127 +43,102 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   late Map<String, dynamic> user;
 
-  void _loadEvents() {
-    eventsController.sink.add(null);
-    appointmentRepo.load(_selectedDay!).then((value) {
-      eventsController.sink.add(value);
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
     UserStorage.getUser().then((value) => user = value);
-
-    try {
-      if (_selectedDay != null) {
-        _loadEvents();
-      }
-    } catch (e) {
-      SASnackBar.show(
-        context: context,
-        message: e.toString(),
-        isSuccess: false,
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    eventsController.close();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final double indicatorHeight = MediaQuery.of(context).size.height / 2;
     final i10n = S.of(context);
 
-    return MainLayout(
-      currentIndex: 0,
-      title: i10n.appointmentAppBarTitle,
-      child: Column(
-        children: [
-          TableCalendar<Appointment>(
-            headerVisible: false,
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: CalendarFormat.week,
-            rangeSelectionMode: _rangeSelectionMode,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
-              outsideDaysVisible: false,
-              cellMargin: EdgeInsets.zero,
-              selectedDecoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    colorScheme.onSurface,
-                    colorScheme.primary,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-                shape: BoxShape.rectangle,
-              ),
-              todayDecoration: BoxDecoration(
-                color: colorScheme.primary.withOpacity(0.0798),
-                shape: BoxShape.rectangle,
-              ),
-              todayTextStyle: TextStyle(color: colorScheme.secondary),
-            ),
-            daysOfWeekHeight: 44,
-            onDaySelected: (selectedDay, focusedDay) {
-              if (!isSameDay(_selectedDay, selectedDay)) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay;
-                  _rangeStart = null;
-                  _rangeEnd = null;
-                  _rangeSelectionMode = RangeSelectionMode.toggledOff;
-                });
-
-                _loadEvents();
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-          ),
-          Text(
-            dateFormat.format(_selectedDay!),
-            style: textTheme.labelSmall!.copyWith(
-              color: colorScheme.secondary,
-            ),
-          ),
-          const SizedBox(height: 8),
-          StreamBuilder(
-            stream: eventsController.stream,
-            builder: (_, snapshot) {
-              if (snapshot.hasData) {
-                final events = snapshot.data ?? [];
-                if (events.isEmpty) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: Center(
-                      child: Text(
-                        i10n.emptyAppointments,
-                        style: textTheme.bodyLarge!.copyWith(
-                          color: colorScheme.secondary,
-                        ),
-                      ),
+    return BlocProvider<AppointmentBloc>(
+      create: (context) => AppointmentBloc(),
+      child: MainLayout(
+        currentIndex: 0,
+        title: i10n.appointmentAppBarTitle,
+        child: Column(
+          children: [
+            BlocBuilder<AppointmentBloc, AppointmentState>(
+                builder: (context, state) {
+              return TableCalendar<Appointment>(
+                headerVisible: false,
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                calendarFormat: CalendarFormat.week,
+                rangeSelectionMode: _rangeSelectionMode,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: CalendarStyle(
+                  outsideDaysVisible: false,
+                  cellMargin: EdgeInsets.zero,
+                  selectedDecoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        colorScheme.onSurface,
+                        colorScheme.primary,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
+                    shape: BoxShape.rectangle,
+                  ),
+                  todayDecoration: BoxDecoration(
+                    color: colorScheme.primary.withOpacity(0.0798),
+                    shape: BoxShape.rectangle,
+                  ),
+                  todayTextStyle: TextStyle(color: colorScheme.secondary),
+                ),
+                daysOfWeekHeight: 44,
+                onDaySelected: (selectedDay, focusedDay) {
+                  if (!isSameDay(_selectedDay, selectedDay)) {
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay = focusedDay;
+                      _rangeStart = null;
+                      _rangeEnd = null;
+                      _rangeSelectionMode = RangeSelectionMode.toggledOff;
+                    });
+
+                    context
+                        .read<AppointmentBloc>()
+                        .add(AppointmentLoad(_selectedDay!));
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+              );
+            }),
+            Text(
+              dateFormat.format(_selectedDay!),
+              style: textTheme.labelSmall!.copyWith(
+                color: colorScheme.secondary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            BlocBuilder<AppointmentBloc, AppointmentState>(
+              builder: (context, state) {
+                if (state is AppointmentLoading) {
+                  return SAIndicator(
+                    height: indicatorHeight,
                   );
-                } else {
+                }
+                if (state is AppointmentLoadSuccess &&
+                    state.appointments!.isNotEmpty) {
+                  final events = state.appointments;
                   return Expanded(
                     child: Scrollbar(
                       child: ListView.builder(
-                        itemCount: events.length,
+                        itemCount: events!.length,
                         itemBuilder: (_, index) => Padding(
                           padding: const EdgeInsets.all(8),
                           child: AppointmentCard(
@@ -194,10 +171,13 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                 message: S.of(context).removeConfirmMessage,
                                 onPressedRight: () async {
                                   await AppointmentApi.deleteAppointment(
-                                      events[index]);
+                                    events[index].id!,
+                                  );
 
                                   setState(() {
-                                    _loadEvents();
+                                    context
+                                        .read<AppointmentBloc>()
+                                        .add(AppointmentLoad(_selectedDay!));
                                     Navigator.pop(context, true);
                                   });
                                 },
@@ -212,16 +192,21 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     ),
                   );
                 }
-              }
-              return SizedBox(
-                height: MediaQuery.of(context).size.height / 2,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            },
-          ),
-        ],
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: Center(
+                    child: Text(
+                      i10n.emptyAppointments,
+                      style: textTheme.bodyLarge!.copyWith(
+                        color: colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
