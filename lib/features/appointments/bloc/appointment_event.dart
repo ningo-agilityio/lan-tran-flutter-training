@@ -6,7 +6,11 @@ abstract class AppointmentEvent {
 
 class AppointmentFetch extends AppointmentEvent {}
 
-class AppointmentLoad extends AppointmentEvent {}
+class AppointmentLoad extends AppointmentEvent {
+  const AppointmentLoad(this.date);
+
+  final DateTime date;
+}
 
 class AppointmentAdd extends AppointmentEvent {
   const AppointmentAdd({
