@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salon_appointment/features/appointments/api/appointment_api.dart';
 import 'package:salon_appointment/features/appointments/repository/appointment_repository.dart';
 
 import '../model/appointment.dart';
@@ -8,6 +9,7 @@ import 'appointment_state.dart';
 class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   AppointmentBloc() : super(AppointmentInitial()) {
     on<AppointmentLoad>(_getAppointmentList);
+    on<AppointmentRemovePressed>(_removeAppointment);
   }
 
   Future<void> _getAppointmentList(
@@ -24,6 +26,19 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       );
     } on Exception catch (e) {
       emit(AppointmentLoadError(error: e.toString()));
+    }
+  }
+
+  Future<void> _removeAppointment(
+    AppointmentRemovePressed event,
+    Emitter<AppointmentState> emit,
+  ) async {
+    try {
+      emit(AppointmentLoading());
+      await AppointmentApi.deleteAppointment(event.appointmentId);
+      emit(AppointmentRemoved());
+    } on Exception catch (e) {
+      emit(AppointmentRemoveError(error: e.toString()));
     }
   }
 }
