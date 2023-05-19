@@ -233,16 +233,9 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                           } else {
                             bool isProcessing = true;
                             if (isProcessing) {
-                              unawaited(
-                                showDialog(
-                                  context: context,
-                                  barrierColor: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                  builder: (context) => LoadingIndicator(
-                                    height: indicatorHeight,
-                                  ),
-                                ),
+                              loadingIndicator.show(
+                                context: context,
+                                height: indicatorHeight,
                               );
                             }
                             await AppointmentApi.addAppointment(
@@ -294,7 +287,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
             ),
           );
         }
-        return LoadingIndicator(
+        return SAIndicator(
           height: indicatorHeight,
         );
       },

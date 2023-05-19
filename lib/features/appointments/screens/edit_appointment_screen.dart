@@ -213,13 +213,10 @@ class _EditAppointmentState extends State<EditAppointment> {
                           } else {
                             bool isProcessing = true;
                             if (isProcessing) {
-                              unawaited(showDialog(
+                              loadingIndicator.show(
                                 context: context,
-                                barrierColor: colorScheme.onBackground,
-                                builder: (context) => LoadingIndicator(
-                                  height: indicatorHeight,
-                                ),
-                              ));
+                                height: indicatorHeight,
+                              );
                             }
                             await AppointmentApi.updateAppointment(
                               Appointment(
@@ -269,7 +266,7 @@ class _EditAppointmentState extends State<EditAppointment> {
             ),
           );
         }
-        return LoadingIndicator(
+        return SAIndicator(
           height: indicatorHeight,
         );
       },
