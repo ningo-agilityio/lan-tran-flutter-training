@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salon_appointment/core/storage/user_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/validations/validations.dart';
 import '../model/user.dart';
@@ -48,5 +49,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _handleLogOutEvent(
     LogoutEvent event,
     Emitter<AuthState> emit,
-  ) async {}
+  ) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('user');
+    emit(LogoutSuccess());
+  }
 }
