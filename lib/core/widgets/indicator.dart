@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SAIndicator extends StatelessWidget {
-  const SAIndicator({
+class LoadingIndicator extends StatelessWidget {
+  const LoadingIndicator({
     this.height,
     super.key,
   });
@@ -22,33 +22,3 @@ class SAIndicator extends StatelessWidget {
     );
   }
 }
-
-class LoadingIndicator {
-  bool isLoading = false;
-  void show({
-    required BuildContext context,
-    double? height,
-  }) {
-    if (isLoading) {
-      return;
-    }
-    isLoading = true;
-    showDialog(
-      context: context,
-      barrierColor: Theme.of(context).colorScheme.onBackground,
-      builder: (context) => SAIndicator(
-        height: height,
-      ),
-    );
-  }
-
-  void hide(BuildContext context) {
-    if (!isLoading) {
-      return;
-    }
-    isLoading = false;
-    Navigator.of(context).pop();
-  }
-}
-
-LoadingIndicator loadingIndicator = LoadingIndicator();
