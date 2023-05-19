@@ -47,8 +47,8 @@ class AppointmentApi {
     await http.put(url, body: body, headers: headers);
   }
 
-  static Future<void> deleteAppointment(Appointment appointment) async {
-    final url = Uri.parse('$apiUrl/appointments/${appointment.id}');
+  static Future<void> deleteAppointment(String appointmentId) async {
+    final url = Uri.parse('$apiUrl/appointments/$appointmentId');
 
     await http.delete(url);
   }
