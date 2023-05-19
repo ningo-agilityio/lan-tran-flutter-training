@@ -15,8 +15,6 @@ import '../../../core/widgets/indicator.dart';
 import '../../../core/widgets/snack_bar.dart';
 import '../api/appointment_api.dart';
 import '../bloc/appointment_bloc.dart';
-import '../bloc/appointment_event.dart';
-import '../bloc/appointment_state.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
 
@@ -58,7 +56,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     final l10n = S.of(context);
 
     return BlocProvider<AppointmentBloc>(
-      create: (context) => AppointmentBloc(),
+      create: (context) => AppointmentBloc()
+        ..add(
+          AppointmentLoad(_selectedDay!),
+        ),
       child: MainLayout(
         currentIndex: 0,
         title: l10n.appointmentAppBarTitle,
@@ -125,14 +126,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            BlocListener<AppointmentBloc, AppointmentState>(
+            BlocConsumer<AppointmentBloc, AppointmentState>(
               listener: (context, state) {
-                if (state is AppointmentLoading) {
-                  loadingIndicator.show(
-                    context: context,
-                    height: indicatorHeight,
-                  );
-                }
                 if (state is AppointmentRemoved) {
                   Navigator.pop(context, true);
                   context.read<AppointmentBloc>().add(
@@ -147,81 +142,77 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   );
                 }
               },
-              child: BlocBuilder<AppointmentBloc, AppointmentState>(
-                builder: (context, state) {
-                  if (state is AppointmentLoading) {
-                    return SAIndicator(
-                      height: indicatorHeight,
-                    );
-                  }
-                  if (state is AppointmentLoadSuccess &&
-                      state.appointments!.isNotEmpty) {
-                    final events = state.appointments;
-                    return Expanded(
-                      child: Scrollbar(
-                        child: ListView.builder(
-                          itemCount: events!.length,
-                          itemBuilder: (_, index) => Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: AppointmentCard(
-                              name: user['name'],
-                              avatar: user['avatar'],
-                              appointment: events[index],
-                              onEditPressed: () {
-                                if (events[index]
-                                        .date
-                                        .difference(DateTime.now())
-                                        .inHours <
-                                    24) {
-                                  SASnackBar.show(
-                                    context: context,
-                                    message: l10n.unableEditError,
-                                    isSuccess: false,
-                                  );
-                                } else {
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/edit',
-                                    arguments: events[index],
-                                  );
-                                }
+              builder: (context, state) {
+                if (state is AppointmentLoading) {
+                  return SAIndicator(
+                    height: indicatorHeight,
+                  );
+                }
+                if (state is AppointmentLoadSuccess &&
+                    state.appointments!.isNotEmpty) {
+                  final events = state.appointments;
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: events!.length,
+                      itemBuilder: (_, index) => Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: AppointmentCard(
+                          name: user['name'],
+                          avatar: user['avatar'],
+                          appointment: events[index],
+                          onEditPressed: () {
+                            if (events[index]
+                                    .date
+                                    .difference(DateTime.now())
+                                    .inHours <
+                                24) {
+                              SASnackBar.show(
+                                context: context,
+                                message: l10n.unableEditError,
+                                isSuccess: false,
+                              );
+                            } else {
+                              Navigator.pushNamed(
+                                context,
+                                '/edit',
+                                arguments: events[index],
+                              );
+                            }
+                          },
+                          onRemovePressed: () {
+                            AlertConfirmDialog.show(
+                              context: context,
+                              title: S.of(context).removeConfirmTitle,
+                              message: S.of(context).removeConfirmMessage,
+                              onPressedRight: () {
+                                context.read<AppointmentBloc>().add(
+                                      AppointmentRemovePressed(
+                                        appointmentId: events[index].id!,
+                                      ),
+                                    );
                               },
-                              onRemovePressed: () {
-                                AlertConfirmDialog.show(
-                                  context: context,
-                                  title: l10n.removeConfirmTitle,
-                                  message: l10n.removeConfirmMessage,
-                                  onPressedRight: () {
-                                    context.read<AppointmentBloc>().add(
-                                          AppointmentRemovePressed(
-                                            appointmentId: events[index].id!,
-                                          ),
-                                        );
-                                  },
-                                  onPressedLeft: () {
-                                    Navigator.pop(context, false);
-                                  },
-                                );
+                              onPressedLeft: () {
+                                Navigator.pop(context, false);
                               },
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: Center(
-                      child: Text(
-                        l10n.emptyAppointments,
-                        style: textTheme.bodyLarge!.copyWith(
-                          color: colorScheme.secondary,
+                            );
+                          },
                         ),
                       ),
                     ),
                   );
-                },
-              ),
+                }
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: Center(
+                    child: Text(
+                      l10n.emptyAppointments,
+                      style: textTheme.bodyLarge!.copyWith(
+                        color: colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),

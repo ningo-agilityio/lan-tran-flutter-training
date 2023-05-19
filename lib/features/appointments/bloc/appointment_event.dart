@@ -1,10 +1,8 @@
-import 'package:salon_appointment/features/appointments/model/appointment.dart';
+part of 'appointment_bloc.dart';
 
 abstract class AppointmentEvent {
   const AppointmentEvent();
 }
-
-class AppointmentFetch extends AppointmentEvent {}
 
 class AppointmentLoad extends AppointmentEvent {
   const AppointmentLoad(this.date);

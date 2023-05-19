@@ -11,8 +11,6 @@ import '../../../core/widgets/icons.dart';
 import '../../../core/widgets/indicator.dart';
 import '../../../core/widgets/text.dart';
 import '../bloc/appointment_bloc.dart';
-import '../bloc/appointment_event.dart';
-import '../bloc/appointment_state.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
 
@@ -51,7 +49,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final double indicatorHeight = MediaQuery.of(context).size.height / 4;
 
     return BlocProvider<AppointmentBloc>(
-      create: (context) => AppointmentBloc(),
+      create: (context) =>
+          AppointmentBloc()..add(AppointmentLoad(_selectedDay!)),
       child: MainLayout(
         currentIndex: 1,
         title: S.of(context).calendarAppBarTitle,

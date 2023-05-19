@@ -1,4 +1,4 @@
-import '../model/appointment.dart';
+part of 'appointment_bloc.dart';
 
 abstract class AppointmentState {
   const AppointmentState();
