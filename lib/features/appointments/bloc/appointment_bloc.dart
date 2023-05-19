@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salon_appointment/features/appointments/repository/appointment_repository.dart';
 
 import '../model/appointment.dart';
-import 'appointment_event.dart';
-import 'appointment_state.dart';
+part 'appointment_event.dart';
+part 'appointment_state.dart';
 
 class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   AppointmentBloc() : super(AppointmentInitial()) {
