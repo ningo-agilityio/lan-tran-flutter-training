@@ -1,7 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:salon_appointment/core/storage/appointment_storage.dart';
-import 'package:salon_appointment/core/storage/user_storage.dart';
-import 'package:salon_appointment/features/appointments/api/appointment_api.dart';
+import 'package:salon_appointment/features/appointments/repository/appointment_repository.dart';
 
 import '../model/appointment.dart';
 import 'appointment_event.dart';
@@ -9,16 +7,17 @@ import 'appointment_state.dart';
 
 class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   AppointmentBloc() : super(AppointmentInitial()) {
-    on<AppointmenFetch>((event, emit) => _getAppointmentList(emit));
+    on<AppointmentLoad>(_getAppointmentList);
   }
 
-  Future<void> _getAppointmentList(Emitter emit) async {
+  Future<void> _getAppointmentList(
+    AppointmentLoad event,
+    Emitter<AppointmentState> emit,
+  ) async {
     try {
       emit(AppointmentLoading());
-      final Map<String, dynamic> user = await UserStorage.getUser();
-      final List<Appointment> appointments = user['isAdmin']
-          ? await AppointmentStorage.getAppointments()
-          : await AppointmentApi.getAppointmentsOfUser(user['id']);
+      final List<Appointment> appointments =
+          await AppointmentRepository.load(event.date);
 
       emit(
         AppointmentLoadSuccess(appointments: appointments),
