@@ -125,85 +125,103 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            BlocBuilder<AppointmentBloc, AppointmentState>(
-              builder: (context, state) {
+            BlocListener<AppointmentBloc, AppointmentState>(
+              listener: (context, state) {
                 if (state is AppointmentLoading) {
-                  return SAIndicator(
+                  loadingIndicator.show(
+                    context: context,
                     height: indicatorHeight,
                   );
                 }
-                if (state is AppointmentLoadSuccess &&
-                    state.appointments!.isNotEmpty) {
-                  final events = state.appointments;
-                  return Expanded(
-                    child: Scrollbar(
-                      child: ListView.builder(
-                        itemCount: events!.length,
-                        itemBuilder: (_, index) => Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: AppointmentCard(
-                            name: user['name'],
-                            avatar: user['avatar'],
-                            appointment: events[index],
-                            onEditPressed: () {
-                              if (events[index]
-                                      .date
-                                      .difference(DateTime.now())
-                                      .inHours <
-                                  24) {
-                                SASnackBar.show(
-                                  context: context,
-                                  message: i10n.unableEditError,
-                                  isSuccess: false,
-                                );
-                              } else {
-                                Navigator.pushNamed(
-                                  context,
-                                  '/edit',
-                                  arguments: events[index],
-                                );
-                              }
-                            },
-                            onRemovePressed: () {
-                              AlertConfirmDialog.show(
-                                context: context,
-                                title: S.of(context).removeConfirmTitle,
-                                message: S.of(context).removeConfirmMessage,
-                                onPressedRight: () async {
-                                  await AppointmentApi.deleteAppointment(
-                                    events[index].id!,
+                if (state is AppointmentRemoved) {
+                  Navigator.pop(context, true);
+                  context.read<AppointmentBloc>().add(
+                        AppointmentLoad(_selectedDay!),
+                      );
+                }
+                if (state is AppointmentRemoveError) {
+                  SASnackBar.show(
+                    context: context,
+                    message: state.error!,
+                    isSuccess: false,
+                  );
+                }
+              },
+              child: BlocBuilder<AppointmentBloc, AppointmentState>(
+                builder: (context, state) {
+                  if (state is AppointmentLoading) {
+                    return SAIndicator(
+                      height: indicatorHeight,
+                    );
+                  }
+                  if (state is AppointmentLoadSuccess &&
+                      state.appointments!.isNotEmpty) {
+                    final events = state.appointments;
+                    return Expanded(
+                      child: Scrollbar(
+                        child: ListView.builder(
+                          itemCount: events!.length,
+                          itemBuilder: (_, index) => Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: AppointmentCard(
+                              name: user['name'],
+                              avatar: user['avatar'],
+                              appointment: events[index],
+                              onEditPressed: () {
+                                if (events[index]
+                                        .date
+                                        .difference(DateTime.now())
+                                        .inHours <
+                                    24) {
+                                  SASnackBar.show(
+                                    context: context,
+                                    message: i10n.unableEditError,
+                                    isSuccess: false,
                                   );
-
-                                  setState(() {
-                                    context
-                                        .read<AppointmentBloc>()
-                                        .add(AppointmentLoad(_selectedDay!));
-                                    Navigator.pop(context, true);
-                                  });
-                                },
-                                onPressedLeft: () {
-                                  Navigator.pop(context, false);
-                                },
-                              );
-                            },
+                                } else {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/edit',
+                                    arguments: events[index],
+                                  );
+                                }
+                              },
+                              onRemovePressed: () {
+                                AlertConfirmDialog.show(
+                                  context: context,
+                                  title: S.of(context).removeConfirmTitle,
+                                  message: S.of(context).removeConfirmMessage,
+                                  onPressedRight: () {
+                                    context.read<AppointmentBloc>().add(
+                                          AppointmentRemovePressed(
+                                            appointmentId: events[index].id!,
+                                          ),
+                                        );
+                                  },
+                                  onPressedLeft: () {
+                                    Navigator.pop(context, false);
+                                  },
+                                );
+                              },
+                            ),
                           ),
+                        ),
+                      ),
+                    );
+                  }
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: Center(
+                      child: Text(
+                        i10n.emptyAppointments,
+                        style: textTheme.bodyLarge!.copyWith(
+                          color: colorScheme.secondary,
                         ),
                       ),
                     ),
                   );
-                }
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height / 2,
-                  child: Center(
-                    child: Text(
-                      i10n.emptyAppointments,
-                      style: textTheme.bodyLarge!.copyWith(
-                        color: colorScheme.secondary,
-                      ),
-                    ),
-                  ),
-                );
-              },
+                },
+              ),
             ),
           ],
         ),
