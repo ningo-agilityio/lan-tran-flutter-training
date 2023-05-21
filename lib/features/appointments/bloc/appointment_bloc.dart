@@ -11,6 +11,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     on<AppointmentLoad>(_getAppointmentList);
     on<AppointmentRemovePressed>(_removeAppointment);
     on<AppointmentEdit>(_editAppointment);
+    on<AppointmentAdd>(_addAppointment);
   }
 
   Future<void> _getAppointmentList(
@@ -27,6 +28,19 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       );
     } on Exception catch (e) {
       emit(AppointmentLoadError(error: e.toString()));
+    }
+  }
+
+  Future<void> _addAppointment(
+    AppointmentAdd event,
+    Emitter<AppointmentState> emit,
+  ) async {
+    try {
+      emit(AppointmentAdding());
+      await AppointmentApi.addAppointment(event.appointment);
+      emit(AppointmentAdded());
+    } on Exception catch (e) {
+      emit(AppointmentAddError(error: e.toString()));
     }
   }
 
