@@ -22,11 +22,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(LoginLoading());
     try {
       final List<User> users = await UserStorage.getUsers();
-      if (FormValidation.isValidPassword(event.password) != null ||
-          FormValidation.isValidPhoneNumber(event.phoneNumber) != null) {
-        emit(const LoginError('invalid-account'));
-        return;
-      }
       if (FormValidation.isLoginSuccess(
           users, event.phoneNumber, event.password)) {
         final user = users
