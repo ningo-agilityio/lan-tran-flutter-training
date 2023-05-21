@@ -147,7 +147,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     }
                     if (state is LoginSuccess) {
-                      loadingIndicator.hide(context);
                       Navigator.pushReplacementNamed(context, '/calendar');
                     }
                     if (state is LoginError) {
@@ -178,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
                   },
                   child: BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
+                    builder: (ctx, state) {
                       return SAButton.outlined(
                         child: SAText(
                           text: S.of(context).loginButton,
@@ -187,12 +186,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         onPressed: () {
-                          BlocProvider.of<AuthBloc>(context).add(
-                            LoginEvent(
-                              phoneNumber: phoneNumberController.text,
-                              password: passwordController.text,
-                            ),
-                          );
+                          ctx.read<AuthBloc>().add(
+                                LoginEvent(
+                                  phoneNumber: phoneNumberController.text,
+                                  password: passwordController.text,
+                                ),
+                              );
                         },
                       );
                     },
