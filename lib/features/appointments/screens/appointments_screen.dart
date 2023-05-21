@@ -13,10 +13,11 @@ import '../../../core/widgets/dialog.dart';
 import '../../../core/widgets/icons.dart';
 import '../../../core/widgets/indicator.dart';
 import '../../../core/widgets/snack_bar.dart';
-import '../api/appointment_api.dart';
+import '../../auth/model/user.dart';
 import '../bloc/appointment_bloc.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
+import 'edit_appointment_screen.dart';
 
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({
@@ -39,13 +40,21 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  late Map<String, dynamic> user;
+  late List<User> users;
 
   @override
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    UserStorage.getUser().then((value) => user = value);
+    UserStorage.getUsers().then((value) {
+      setState(() {
+        users = value;
+      });
+    });
+  }
+
+  User findUser(String userId) {
+    return users.where((e) => e.id == userId).first;
   }
 
   @override
@@ -56,17 +65,14 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     final l10n = S.of(context);
 
     return BlocProvider<AppointmentBloc>(
-      create: (context) => AppointmentBloc()
-        ..add(
-          AppointmentLoad(_selectedDay!),
-        ),
+      create: (_) => AppointmentBloc()..add(AppointmentLoad(_selectedDay!)),
       child: MainLayout(
         currentIndex: 0,
         title: l10n.appointmentAppBarTitle,
         child: Column(
           children: [
             BlocBuilder<AppointmentBloc, AppointmentState>(
-                builder: (context, state) {
+                builder: (ctx, state) {
               return TableCalendar<Appointment>(
                 headerVisible: false,
                 firstDay: kFirstDay,
@@ -109,7 +115,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       _rangeSelectionMode = RangeSelectionMode.toggledOff;
                     });
 
-                    context
+                    ctx
                         .read<AppointmentBloc>()
                         .add(AppointmentLoad(_selectedDay!));
                   }
@@ -127,14 +133,39 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             ),
             const SizedBox(height: 8),
             BlocConsumer<AppointmentBloc, AppointmentState>(
-              listener: (context, state) {
-                if (state is AppointmentRemoved) {
-                  Navigator.pop(context, true);
-                  context.read<AppointmentBloc>().add(
+              listener: (ctx, state) {
+                if (state is AppointmentRemoving) {
+                  loadingIndicator.show(
+                    context: context,
+                    height: indicatorHeight,
+                  );
+                } else if (state is AppointmentRemoved) {
+                  Navigator.pop(ctx, true);
+                  ctx.read<AppointmentBloc>().add(
                         AppointmentLoad(_selectedDay!),
                       );
-                }
-                if (state is AppointmentRemoveError) {
+                } else if (state is AppointmentRemoveError) {
+                  SASnackBar.show(
+                    context: context,
+                    message: state.error!,
+                    isSuccess: false,
+                  );
+                } else if (state is AppointmentEditting) {
+                  loadingIndicator.show(
+                    context: context,
+                    height: indicatorHeight,
+                  );
+                } else if (state is AppointmentEditted) {
+                  Navigator.pop(context);
+                  SASnackBar.show(
+                    context: context,
+                    message: l10n.updateSuccess,
+                    isSuccess: true,
+                  );
+                  ctx.read<AppointmentBloc>().add(
+                        AppointmentLoad(_selectedDay!),
+                      );
+                } else if (state is AppointmentEditError) {
                   SASnackBar.show(
                     context: context,
                     message: state.error!,
@@ -142,23 +173,25 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   );
                 }
               },
-              builder: (context, state) {
+              builder: (ctx, state) {
                 if (state is AppointmentLoading) {
                   return SAIndicator(
                     height: indicatorHeight,
                   );
                 }
+
                 if (state is AppointmentLoadSuccess &&
                     state.appointments!.isNotEmpty) {
                   final events = state.appointments;
+
                   return Expanded(
                     child: ListView.builder(
                       itemCount: events!.length,
                       itemBuilder: (_, index) => Padding(
                         padding: const EdgeInsets.all(8),
                         child: AppointmentCard(
-                          name: user['name'],
-                          avatar: user['avatar'],
+                          name: findUser(events[index].userId).name,
+                          avatar: findUser(events[index].userId).avatar,
                           appointment: events[index],
                           onEditPressed: () {
                             if (events[index]
@@ -172,20 +205,27 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                 isSuccess: false,
                               );
                             } else {
-                              Navigator.pushNamed(
+                              Navigator.push(
                                 context,
-                                '/edit',
-                                arguments: events[index],
+                                MaterialPageRoute(
+                                  builder: (_) => BlocProvider.value(
+                                    value: ctx.read<AppointmentBloc>(),
+                                    child: EditAppointment(
+                                      appointment: events[index],
+                                      user: findUser(events[index].userId),
+                                    ),
+                                  ),
+                                ),
                               );
                             }
                           },
                           onRemovePressed: () {
                             AlertConfirmDialog.show(
                               context: context,
-                              title: S.of(context).removeConfirmTitle,
-                              message: S.of(context).removeConfirmMessage,
+                              title: l10n.removeConfirmTitle,
+                              message: l10n.removeConfirmMessage,
                               onPressedRight: () {
-                                context.read<AppointmentBloc>().add(
+                                ctx.read<AppointmentBloc>().add(
                                       AppointmentRemovePressed(
                                         appointmentId: events[index].id!,
                                       ),
