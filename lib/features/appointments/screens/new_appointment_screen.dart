@@ -1,8 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:salon_appointment/core/storage/appointment_storage.dart';
 import 'package:salon_appointment/core/utils.dart';
+import 'package:salon_appointment/features/appointments/bloc/appointment_bloc.dart';
 
 import '../../../core/constants/assets.dart';
 import '../../../core/generated/l10n.dart';
@@ -16,7 +16,6 @@ import '../../../core/widgets/input.dart';
 import '../../../core/widgets/snack_bar.dart';
 import '../../../core/widgets/text.dart';
 import '../../../core/widgets/time_picker.dart';
-import '../api/appointment_api.dart';
 import '../model/appointment.dart';
 
 class NewAppointmentScreen extends StatefulWidget {
@@ -40,13 +39,24 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
   late DateTime endTime = autoAddHalfHour(startTime);
 
   String? selectedValue;
+  late Map<String, dynamic> user;
+
+  @override
+  void initState() {
+    super.initState();
+
+    UserStorage.getUser().then((value) {
+      setState(() {
+        user = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final TextTheme textTheme = Theme.of(context).textTheme;
     final double indicatorHeight = MediaQuery.of(context).size.height / 2;
-    late Map<String, dynamic> user;
 
     const List<String> items = [
       'Back',
@@ -54,36 +64,56 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
       'Non-Invasive Body Contouring',
     ];
 
-    return FutureBuilder(
-      future: UserStorage.getUser(),
-      builder: (_, snapshot) {
-        if (snapshot.hasError) {
-          return SnackBar(content: Text(snapshot.error.toString()));
-        }
-        if (snapshot.hasData) {
-          user = snapshot.data!;
-
-          return Scaffold(
-            appBar: AppBar(
-              title: SAText.appBarTitle(
-                text: S.of(context).newAppointmentAppBarTitle,
-                style: textTheme.titleLarge!,
+    return BlocProvider<AppointmentBloc>(
+      create: (context) => AppointmentBloc(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: SAText.appBarTitle(
+            text: S.of(context).newAppointmentAppBarTitle,
+            style: textTheme.titleLarge!,
+          ),
+          automaticallyImplyLeading: false,
+          actions: [
+            SAButton.icon(
+              onPressed: () => Navigator.of(context).pop(),
+              child: SAIcons(
+                icon: Assets.closeIcon,
+                color: colorScheme.secondaryContainer,
               ),
-              automaticallyImplyLeading: false,
-              actions: [
-                SAButton.icon(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: SAIcons(
-                    icon: Assets.closeIcon,
-                    color: colorScheme.secondaryContainer,
-                  ),
-                ),
-              ],
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Center(
-                child: Column(
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Center(
+            child: BlocConsumer<AppointmentBloc, AppointmentState>(
+              listener: (context, state) {
+                if (state is AppointmentAdding) {
+                  loadingIndicator.show(
+                    context: context,
+                    height: indicatorHeight,
+                  );
+                } else if (state is AppointmentAdded) {
+                  SASnackBar.show(
+                    context: context,
+                    message: S.of(context).addSuccess,
+                    isSuccess: true,
+                  );
+
+                  Navigator.pushReplacementNamed(
+                    context,
+                    '/appointment',
+                  );
+                } else if (state is AppointmentAddError) {
+                  SASnackBar.show(
+                    context: context,
+                    message: state.error!,
+                    isSuccess: false,
+                  );
+                }
+              },
+              builder: (context, state) {
+                return Column(
                   children: [
                     const SizedBox(height: 12),
                     Text(
@@ -210,65 +240,40 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          if (isBreakTime(startTime, endTime)) {
-                            SASnackBar.show(
-                              context: context,
-                              message: S.of(context).breakTimeConflictError,
-                              isSuccess: false,
-                            );
-                          } else if (isClosedTime(startTime, endTime)) {
-                            SASnackBar.show(
-                              context: context,
-                              message: S.of(context).closedTimeError,
-                              isSuccess: false,
-                            );
-                          } else if (selectedValue == null) {
-                            SASnackBar.show(
-                              context: context,
-                              message: S.of(context).emptyServicesError,
-                              isSuccess: false,
-                            );
-                          } else {
-                            bool isProcessing = true;
-                            if (isProcessing) {
-                              loadingIndicator.show(
-                                context: context,
-                                height: indicatorHeight,
-                              );
-                            }
-                            await AppointmentApi.addAppointment(
-                              Appointment(
-                                userId: user['id'],
-                                date: dateTime,
-                                startTime: startTime,
-                                endTime: endTime,
-                                services: selectedValue!,
-                                description: descpController.text == ''
-                                    ? S.of(context).defaultDescription
-                                    : descpController.text,
-                              ),
-                            );
-                            setState(() {
-                              isProcessing = false;
-                              SASnackBar.show(
-                                context: context,
-                                message: S.of(context).addSuccess,
-                                isSuccess: true,
-                              );
-                              Navigator.pushReplacementNamed(
-                                context,
-                                '/calendar',
-                              );
-                            });
-                          }
-                        } catch (e) {
+                      onPressed: () {
+                        if (isBreakTime(startTime, endTime)) {
                           SASnackBar.show(
                             context: context,
-                            message: e.toString(),
+                            message: S.of(context).breakTimeConflictError,
                             isSuccess: false,
                           );
+                        } else if (isClosedTime(startTime, endTime)) {
+                          SASnackBar.show(
+                            context: context,
+                            message: S.of(context).closedTimeError,
+                            isSuccess: false,
+                          );
+                        } else if (selectedValue == null) {
+                          SASnackBar.show(
+                            context: context,
+                            message: S.of(context).emptyServicesError,
+                            isSuccess: false,
+                          );
+                        } else {
+                          context.read<AppointmentBloc>().add(
+                                AppointmentAdd(
+                                  appointment: Appointment(
+                                    userId: user['id'],
+                                    date: dateTime,
+                                    startTime: startTime,
+                                    endTime: endTime,
+                                    services: selectedValue!,
+                                    description: descpController.text == ''
+                                        ? S.of(context).defaultDescription
+                                        : descpController.text,
+                                  ),
+                                ),
+                              );
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -280,17 +285,14 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                           color: colorScheme.onPrimary,
                         ),
                       ),
-                    )
+                    ),
                   ],
-                ),
-              ),
+                );
+              },
             ),
-          );
-        }
-        return SAIndicator(
-          height: indicatorHeight,
-        );
-      },
+          ),
+        ),
+      ),
     );
   }
 }
