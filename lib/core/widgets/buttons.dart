@@ -12,6 +12,8 @@ class SAButton extends StatelessWidget {
     VoidCallback? onPressed,
     double height,
     double width,
+    Color bgColor,
+    double elevation,
   }) = _SAFloatingButton;
 
   const factory SAButton.text({
@@ -108,21 +110,28 @@ class _SAFloatingButton extends SAButton {
     super.onPressed,
     this.height = 56,
     this.width = 56,
+    this.bgColor = Colors.transparent,
+    this.elevation = 0,
   });
 
   final double height;
   final double width;
+  final Color bgColor;
+  final double elevation;
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return FloatingActionButton(
+      backgroundColor: bgColor,
+      elevation: elevation,
       onPressed: onPressed,
       child: Container(
         height: height,
         width: width,
         decoration: BoxDecoration(
+          border: Border.all(color: Colors.white, width: 6),
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
