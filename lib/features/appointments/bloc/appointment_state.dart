@@ -20,6 +20,8 @@ class AppointmentLoadError extends AppointmentState {
   final String? error;
 }
 
+class AppointmentAdding extends AppointmentState {}
+
 class AppointmentAdded extends AppointmentState {}
 
 class AppointmentAddError extends AppointmentState {
@@ -27,6 +29,18 @@ class AppointmentAddError extends AppointmentState {
 
   final String? error;
 }
+
+class AppointmentEditting extends AppointmentState {}
+
+class AppointmentEditted extends AppointmentState {}
+
+class AppointmentEditError extends AppointmentState {
+  const AppointmentEditError({this.error});
+
+  final String? error;
+}
+
+class AppointmentRemoving extends AppointmentState {}
 
 class AppointmentRemoved extends AppointmentState {}
 
