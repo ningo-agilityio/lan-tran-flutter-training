@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/constants/assets.dart';
+import '../../../core/constants/date_format.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
 import '../../../core/utils.dart';
@@ -25,8 +25,6 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   final appointmentRepo = AppointmentRepository();
-
-  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
 
@@ -191,7 +189,6 @@ class CalendarSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
@@ -215,7 +212,7 @@ class CalendarSchedule extends StatelessWidget {
               children: [
                 const SizedBox(height: 22),
                 SAText.calendarSchedule(
-                  text: dateFormat.format(appointment.date),
+                  text: monthCharFormat.format(appointment.date),
                   style: textTheme.labelLarge!,
                 ),
                 const SizedBox(height: 7),

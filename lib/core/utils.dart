@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../features/appointments/model/appointment.dart';
+import 'constants/date_format.dart';
 
 /// Returns a list of [DateTime] objects from [first] to [last], inclusive.
 List<DateTime> daysInRange(DateTime first, DateTime last) {
@@ -30,7 +30,6 @@ DateTime setDateTime(DateTime date, TimeOfDay time) {
 
 /// Returns a [String] of [DateTime] formatted from [time]
 String formatTime(DateTime time) {
-  final DateFormat timeFormat = DateFormat('HH:mm');
   return timeFormat.format(time).toString();
 }
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/constants/assets.dart';
+import '../../../core/constants/date_format.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
 import '../../../core/storage/user_storage.dart';
@@ -32,8 +32,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   final appointmentRepo = AppointmentRepository();
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
-
-  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
 
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -126,7 +124,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               );
             }),
             Text(
-              dateFormat.format(_selectedDay!),
+              monthCharFormat.format(_selectedDay!),
               style: textTheme.labelSmall!.copyWith(
                 color: colorScheme.secondary,
               ),
@@ -358,7 +356,7 @@ class Time extends StatelessWidget {
               width: 10,
             ),
             Text(
-              '${formatTime(startTime)}-${formatTime(endTime)}',
+              '${formatTime(startTime)} - ${formatTime(endTime)}',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ],
