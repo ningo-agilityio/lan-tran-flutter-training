@@ -10,6 +10,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
   AppointmentBloc() : super(AppointmentInitial()) {
     on<AppointmentLoad>(_getAppointmentList);
     on<AppointmentRemovePressed>(_removeAppointment);
+    on<AppointmentEdit>(_editAppointment);
   }
 
   Future<void> _getAppointmentList(
@@ -29,12 +30,25 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     }
   }
 
+  Future<void> _editAppointment(
+    AppointmentEdit event,
+    Emitter<AppointmentState> emit,
+  ) async {
+    try {
+      emit(AppointmentEditting());
+      await AppointmentApi.updateAppointment(event.appointment);
+      emit(AppointmentEditted());
+    } on Exception catch (e) {
+      emit(AppointmentEditError(error: e.toString()));
+    }
+  }
+
   Future<void> _removeAppointment(
     AppointmentRemovePressed event,
     Emitter<AppointmentState> emit,
   ) async {
     try {
-      emit(AppointmentLoading());
+      emit(AppointmentRemoving());
       await AppointmentApi.deleteAppointment(event.appointmentId);
       emit(AppointmentRemoved());
     } on Exception catch (e) {
