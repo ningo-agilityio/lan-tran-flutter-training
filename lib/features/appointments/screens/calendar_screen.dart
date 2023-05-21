@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salon_appointment/core/widgets/buttons.dart';
+import 'package:salon_appointment/features/appointments/screens/appointments_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/constants/assets.dart';
@@ -156,7 +158,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         end: Alignment.bottomCenter,
                       ),
                     ),
-                    child: CalendarSchedule(appointment: events!.first),
+                    child: CalendarSchedule(
+                      appointment: events!.first,
+                      countOfAppointments: events.length,
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AppointmentScreen(
+                              selectedDay: _selectedDay,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   );
                 }
                 return SizedBox(
@@ -182,10 +197,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
 class CalendarSchedule extends StatelessWidget {
   const CalendarSchedule({
     required this.appointment,
+    required this.countOfAppointments,
+    this.onPressed,
     super.key,
   });
 
   final Appointment appointment;
+  final int countOfAppointments;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -218,7 +237,7 @@ class CalendarSchedule extends StatelessWidget {
                 const SizedBox(height: 7),
                 SAText.calendarSchedule(
                   text:
-                      '${formatTime(appointment.startTime)}-${formatTime(appointment.endTime)}',
+                      '${formatTime(appointment.startTime)} - ${formatTime(appointment.endTime)}',
                   style: textTheme.bodyLarge!.copyWith(
                     height: 24 / 14,
                   ),
@@ -227,6 +246,16 @@ class CalendarSchedule extends StatelessWidget {
                 SAText.calendarSchedule(
                   text: appointment.description,
                   style: textTheme.bodySmall!,
+                ),
+                const Spacer(),
+                SAButton.text(
+                  onPressed: onPressed,
+                  child: SAText.calendarSchedule(
+                    text: 'Show appointments ($countOfAppointments)',
+                    style: textTheme.bodySmall!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
             ),
