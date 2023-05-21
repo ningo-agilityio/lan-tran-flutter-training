@@ -102,37 +102,33 @@ class CustomBottomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      clipBehavior: Clip.antiAlias,
-      child: BottomNavigationBar(
-        backgroundColor: colorScheme.onPrimary,
-        currentIndex: currentIndex,
-        onTap: onTap,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: colorScheme.primary,
-        unselectedItemColor: colorScheme.onTertiary,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(Assets.checkIcon),
-            label: S.of(context).appointmentsLabel,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Assets.scheduleIcon),
-            label: S.of(context).calendarLabel,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Assets.personIcon),
-            label: S.of(context).profileLabel,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Assets.notificationsIcon),
-            label: S.of(context).notificationsLabel,
-          ),
-        ],
-      ),
+    return BottomNavigationBar(
+      backgroundColor: colorScheme.onPrimary,
+      currentIndex: currentIndex,
+      onTap: onTap,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: colorScheme.primary,
+      unselectedItemColor: colorScheme.onTertiary,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: const Icon(Assets.checkIcon),
+          label: S.of(context).appointmentsLabel,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Assets.scheduleIcon),
+          label: S.of(context).calendarLabel,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Assets.personIcon),
+          label: S.of(context).profileLabel,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Assets.notificationsIcon),
+          label: S.of(context).notificationsLabel,
+        ),
+      ],
     );
   }
 }
