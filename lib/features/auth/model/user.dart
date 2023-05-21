@@ -28,7 +28,7 @@ class User {
         'isAdmin': isAdmin,
       };
 
-  final String id;
+  late final String id;
   final String name;
   final String phoneNumber;
   final String avatar;
