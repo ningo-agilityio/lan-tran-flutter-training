@@ -22,9 +22,12 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       emit(AppointmentLoading());
       final List<Appointment> appointments =
           await AppointmentRepository.load(event.date);
-
+      final List<User> users = await UserStorage.getUsers();
       emit(
-        AppointmentLoadSuccess(appointments: appointments),
+        AppointmentLoadSuccess(
+          users: users,
+          appointments: appointments,
+        ),
       );
     } on Exception catch (e) {
       emit(AppointmentLoadError(error: e.toString()));
