@@ -114,10 +114,12 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 },
               );
             }),
+            const SizedBox(height: 8),
             Text(
               monthCharFormat.format(_selectedDay!),
               style: textTheme.labelSmall!.copyWith(
                 color: colorScheme.secondary,
+                fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 8),
