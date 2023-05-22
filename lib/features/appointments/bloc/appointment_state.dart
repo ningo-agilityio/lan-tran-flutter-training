@@ -9,9 +9,13 @@ class AppointmentInitial extends AppointmentState {}
 class AppointmentLoading extends AppointmentState {}
 
 class AppointmentLoadSuccess extends AppointmentState {
-  const AppointmentLoadSuccess({this.appointments});
+  const AppointmentLoadSuccess({
+    required this.users,
+    this.appointments,
+  });
 
   final List<Appointment>? appointments;
+  final List<User> users;
 }
 
 class AppointmentLoadError extends AppointmentState {
