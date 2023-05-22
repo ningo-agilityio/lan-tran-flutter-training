@@ -88,7 +88,8 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                     context: context,
                     height: indicatorHeight,
                   );
-                } else if (state is AppointmentAdded) {
+                }
+                if (state is AppointmentAdded) {
                   SASnackBar.show(
                     context: context,
                     message: S.of(context).addSuccess,
@@ -99,7 +100,8 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                     context,
                     '/appointment',
                   );
-                } else if (state is AppointmentAddError) {
+                }
+                if (state is AppointmentAddError) {
                   SASnackBar.show(
                     context: context,
                     message: state.error!,
@@ -155,24 +157,20 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                               setDateTime(dateTime, time);
 
                           if (isBeforeNow(tempStartTime)) {
-                            setState(() {
-                              SASnackBar.show(
-                                context: context,
-                                message: S.of(context).invalidStartTimeError,
-                                isSuccess: false,
-                              );
-                            });
+                            SASnackBar.show(
+                              context: context,
+                              message: S.of(context).invalidStartTimeError,
+                              isSuccess: false,
+                            );
                           } else if (time !=
                               TimeOfDay.fromDateTime(startTime)) {
                             if (isFullAppointments(
                                 appointments, tempStartTime)) {
-                              setState(() {
-                                SASnackBar.show(
-                                  context: context,
-                                  message: S.of(context).fullAppointmentsError,
-                                  isSuccess: false,
-                                );
-                              });
+                              SASnackBar.show(
+                                context: context,
+                                message: S.of(context).fullAppointmentsError,
+                                isSuccess: false,
+                              );
                             } else {
                               setState(() {
                                 startTime = tempStartTime;
@@ -191,13 +189,11 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                           final DateTime tempEndTime =
                               setDateTime(dateTime, time);
                           if (!isAfterStartTime(startTime, tempEndTime)) {
-                            setState(() {
-                              SASnackBar.show(
-                                context: context,
-                                message: S.of(context).invalidEndTimeError,
-                                isSuccess: false,
-                              );
-                            });
+                            SASnackBar.show(
+                              context: context,
+                              message: S.of(context).invalidEndTimeError,
+                              isSuccess: false,
+                            );
                           } else if (time != TimeOfDay.fromDateTime(endTime)) {
                             setState(() {
                               endTime = tempEndTime;

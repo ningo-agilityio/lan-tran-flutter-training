@@ -141,13 +141,11 @@ class _EditAppointmentState extends State<EditAppointment> {
                             setDateTime(_appointment.date, time);
                         if (!isAfterStartTime(
                             _appointment.startTime, tempEndTime)) {
-                          setState(() {
-                            SASnackBar.show(
-                              context: context,
-                              message: S.of(context).invalidEndTimeError,
-                              isSuccess: false,
-                            );
-                          });
+                          SASnackBar.show(
+                            context: context,
+                            message: S.of(context).invalidEndTimeError,
+                            isSuccess: false,
+                          );
                         } else if (time !=
                             TimeOfDay.fromDateTime(_appointment.endTime)) {
                           setState(() {
