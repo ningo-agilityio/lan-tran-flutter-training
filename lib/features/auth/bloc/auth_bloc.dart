@@ -13,6 +13,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(LoginLoading()) {
     on<LoginEvent>(_handleLoginEvent);
     on<LogoutEvent>(_handleLogOutEvent);
+    on<UserLoad>(_getUser);
   }
 
   Future<void> _handleLoginEvent(
@@ -53,5 +54,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('user');
     emit(LogoutSuccess());
+  }
+
+  Future<void> _getUser(
+    UserLoad event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      final user = await UserStorage.getUser();
+      emit(UserLoaded(User.fromJson(user)));
+    } on Exception catch (e) {
+      emit(UserLoadError(error: e.toString()));
+    }
   }
 }

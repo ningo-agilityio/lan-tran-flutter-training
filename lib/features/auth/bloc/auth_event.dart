@@ -20,3 +20,7 @@ class LoginEvent extends AuthEvent {
 class LogoutEvent extends AuthEvent {
   const LogoutEvent();
 }
+
+class UserLoad extends AuthEvent {
+  const UserLoad();
+}

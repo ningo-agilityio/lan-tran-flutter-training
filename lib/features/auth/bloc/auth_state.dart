@@ -18,3 +18,15 @@ class LoginError extends AuthState {
 class LoginSuccess extends AuthState {}
 
 class LogoutSuccess extends AuthState {}
+
+class UserLoaded extends AuthState {
+  const UserLoaded(this.user);
+
+  final User user;
+}
+
+class UserLoadError extends AuthState {
+  const UserLoadError({this.error});
+
+  final String? error;
+}
