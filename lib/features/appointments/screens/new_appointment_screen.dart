@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salon_appointment/features/appointments/screens/appointments_screen.dart';
 
 import '../../../core/constants/assets.dart';
 import '../../../core/constants/constants.dart';
@@ -96,9 +97,13 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                     isSuccess: true,
                   );
 
-                  Navigator.pushReplacementNamed(
+                  Navigator.pushReplacement(
                     context,
-                    '/appointment',
+                    MaterialPageRoute(
+                      builder: (context) => AppointmentScreen(
+                        selectedDay: dateTime,
+                      ),
+                    ),
                   );
                 }
                 if (state is AppointmentAddError) {
