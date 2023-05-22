@@ -10,7 +10,6 @@ import '../../../core/widgets/input.dart';
 import '../../../core/widgets/snack_bar.dart';
 import '../../../core/widgets/text.dart';
 import '../bloc/auth_bloc.dart';
-import '../model/user.dart';
 import '../repository/user_repository.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -34,23 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String phoneNumber = '';
   String password = '';
-
-  List<User> users = [];
-
-  @override
-  void initState() {
-    try {
-      userRepo.load().then((value) => users = value);
-    } catch (e) {
-      SASnackBar.show(
-        context: context,
-        message: e.toString(),
-        isSuccess: false,
-      );
-    }
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +132,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (state is LoginError) {
                     loadingIndicator.hide(context);
                     switch (state.error) {
+                      case 'invalid-account':
+                        SASnackBar.show(
+                          context: context,
+                          message: S.of(context).invalidAccountError,
+                          isSuccess: false,
+                        );
+                        break;
                       case 'incorrect-account':
                         SASnackBar.show(
                           context: context,
