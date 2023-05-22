@@ -140,23 +140,27 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     context: context,
                     height: indicatorHeight,
                   );
-                } else if (state is AppointmentRemoved) {
+                }
+                if (state is AppointmentRemoved) {
                   Navigator.pop(ctx, true);
                   ctx.read<AppointmentBloc>().add(
                         AppointmentLoad(_selectedDay!),
                       );
-                } else if (state is AppointmentRemoveError) {
+                }
+                if (state is AppointmentRemoveError) {
                   SASnackBar.show(
                     context: context,
                     message: state.error!,
                     isSuccess: false,
                   );
-                } else if (state is AppointmentEditting) {
+                }
+                if (state is AppointmentEditting) {
                   loadingIndicator.show(
                     context: context,
                     height: indicatorHeight,
                   );
-                } else if (state is AppointmentEditted) {
+                }
+                if (state is AppointmentEditted) {
                   Navigator.pop(context);
                   SASnackBar.show(
                     context: context,
@@ -166,7 +170,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   ctx.read<AppointmentBloc>().add(
                         AppointmentLoad(_selectedDay!),
                       );
-                } else if (state is AppointmentEditError) {
+                }
+                if (state is AppointmentEditError) {
                   SASnackBar.show(
                     context: context,
                     message: state.error!,
