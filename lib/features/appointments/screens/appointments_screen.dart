@@ -1,26 +1,31 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:salon_appointment/core/utils.dart';
-import 'package:salon_appointment/core/widgets/buttons.dart';
-import 'package:salon_appointment/core/widgets/dialog.dart';
-import 'package:salon_appointment/core/widgets/snack_bar.dart';
-import 'package:salon_appointment/features/appointments/api/appointment_api.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../core/constants/assets.dart';
+import '../../../core/constants/date_format.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
 import '../../../core/storage/user_storage.dart';
+import '../../../core/utils.dart';
+import '../../../core/widgets/buttons.dart';
+import '../../../core/widgets/dialog.dart';
 import '../../../core/widgets/icons.dart';
+import '../../../core/widgets/indicator.dart';
+import '../../../core/widgets/snack_bar.dart';
+import '../../auth/model/user.dart';
+import '../bloc/appointment_bloc.dart';
 import '../model/appointment.dart';
 import '../repository/appointment_repository.dart';
+import 'edit_appointment_screen.dart';
 
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({
+    this.selectedDay,
     super.key,
   });
+
+  final DateTime? selectedDay;
 
   @override
   State<AppointmentScreen> createState() => _AppointmentScreenState();
@@ -28,200 +33,230 @@ class AppointmentScreen extends StatefulWidget {
 
 class _AppointmentScreenState extends State<AppointmentScreen> {
   final appointmentRepo = AppointmentRepository();
-  final eventsController = StreamController<List<Appointment>?>();
 
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
-
-  DateFormat dateFormat = DateFormat('dd MMMM, EEEE');
 
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  late Map<String, dynamic> user;
-
-  void _loadEvents() {
-    eventsController.sink.add(null);
-    appointmentRepo.load(_selectedDay!).then((value) {
-      eventsController.sink.add(value);
-    });
-  }
+  late List<User> users;
 
   @override
   void initState() {
     super.initState();
-    _selectedDay = _focusedDay;
-    UserStorage.getUser().then((value) => user = value);
-
-    try {
-      if (_selectedDay != null) {
-        _loadEvents();
-      }
-    } catch (e) {
-      SASnackBar.show(
-        context: context,
-        message: e.toString(),
-        isSuccess: false,
-      );
-    }
+    _selectedDay = widget.selectedDay ?? _focusedDay;
+    UserStorage.getUsers().then((value) {
+      setState(() {
+        users = value;
+      });
+    });
   }
 
-  @override
-  void dispose() {
-    eventsController.close();
-    super.dispose();
+  User findUser(String userId) {
+    return users.where((e) => e.id == userId).first;
   }
 
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final i10n = S.of(context);
+    final double indicatorHeight = MediaQuery.of(context).size.height / 2;
+    final l10n = S.of(context);
 
-    return MainLayout(
-      currentIndex: 0,
-      title: i10n.appointmentAppBarTitle,
-      child: Column(
-        children: [
-          TableCalendar<Appointment>(
-            headerVisible: false,
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: CalendarFormat.week,
-            rangeSelectionMode: _rangeSelectionMode,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
-              outsideDaysVisible: false,
-              cellMargin: EdgeInsets.zero,
-              selectedDecoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    colorScheme.onSurface,
-                    colorScheme.primary,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-                shape: BoxShape.rectangle,
-              ),
-              todayDecoration: BoxDecoration(
-                color: colorScheme.primary.withOpacity(0.0798),
-                shape: BoxShape.rectangle,
-              ),
-              todayTextStyle: TextStyle(color: colorScheme.secondary),
-            ),
-            daysOfWeekHeight: 44,
-            onDaySelected: (selectedDay, focusedDay) {
-              if (!isSameDay(_selectedDay, selectedDay)) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay;
-                  _rangeStart = null;
-                  _rangeEnd = null;
-                  _rangeSelectionMode = RangeSelectionMode.toggledOff;
-                });
-
-                _loadEvents();
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-          ),
-          Text(
-            dateFormat.format(_selectedDay!),
-            style: textTheme.labelSmall!.copyWith(
-              color: colorScheme.secondary,
-            ),
-          ),
-          const SizedBox(height: 8),
-          StreamBuilder(
-            stream: eventsController.stream,
-            builder: (_, snapshot) {
-              if (snapshot.hasData) {
-                final events = snapshot.data ?? [];
-                if (events.isEmpty) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: Center(
-                      child: Text(
-                        i10n.emptyAppointments,
-                        style: textTheme.bodyLarge!.copyWith(
-                          color: colorScheme.secondary,
-                        ),
-                      ),
+    return BlocProvider<AppointmentBloc>(
+      create: (_) => AppointmentBloc()..add(AppointmentLoad(_selectedDay!)),
+      child: MainLayout(
+        currentIndex: 0,
+        title: l10n.appointmentAppBarTitle,
+        child: Column(
+          children: [
+            BlocBuilder<AppointmentBloc, AppointmentState>(
+                builder: (ctx, state) {
+              return TableCalendar<Appointment>(
+                headerVisible: false,
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                focusedDay: _focusedDay,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                calendarFormat: CalendarFormat.week,
+                rangeSelectionMode: _rangeSelectionMode,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: CalendarStyle(
+                  outsideDaysVisible: false,
+                  cellMargin: EdgeInsets.zero,
+                  selectedDecoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        colorScheme.onSurface,
+                        colorScheme.primary,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
-                  );
-                } else {
-                  return Expanded(
-                    child: Scrollbar(
-                      child: ListView.builder(
-                        itemCount: events.length,
-                        itemBuilder: (_, index) => Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: AppointmentCard(
-                            name: user['name'],
-                            avatar: user['avatar'],
-                            appointment: events[index],
-                            onEditPressed: () {
-                              if (events[index]
-                                      .date
-                                      .difference(DateTime.now())
-                                      .inHours <
-                                  24) {
-                                SASnackBar.show(
-                                  context: context,
-                                  message: i10n.unableEditError,
-                                  isSuccess: false,
-                                );
-                              } else {
-                                Navigator.pushNamed(
-                                  context,
-                                  '/edit',
-                                  arguments: events[index],
-                                );
-                              }
-                            },
-                            onRemovePressed: () {
-                              AlertConfirmDialog.show(
-                                context: context,
-                                title: S.of(context).removeConfirmTitle,
-                                message: S.of(context).removeConfirmMessage,
-                                onPressedRight: () async {
-                                  await AppointmentApi.deleteAppointment(
-                                      events[index]);
+                    shape: BoxShape.rectangle,
+                  ),
+                  todayDecoration: BoxDecoration(
+                    color: colorScheme.primary.withOpacity(0.0798),
+                    shape: BoxShape.rectangle,
+                  ),
+                  todayTextStyle: TextStyle(color: colorScheme.secondary),
+                ),
+                daysOfWeekHeight: 44,
+                onDaySelected: (selectedDay, focusedDay) {
+                  if (!isSameDay(_selectedDay, selectedDay)) {
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay = focusedDay;
+                      _rangeStart = null;
+                      _rangeEnd = null;
+                      _rangeSelectionMode = RangeSelectionMode.toggledOff;
+                    });
 
-                                  setState(() {
-                                    _loadEvents();
-                                    Navigator.pop(context, true);
-                                  });
-                                },
-                                onPressedLeft: () {
-                                  Navigator.pop(context, false);
-                                },
+                    ctx
+                        .read<AppointmentBloc>()
+                        .add(AppointmentLoad(_selectedDay!));
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+              );
+            }),
+            Text(
+              monthCharFormat.format(_selectedDay!),
+              style: textTheme.labelSmall!.copyWith(
+                color: colorScheme.secondary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            BlocConsumer<AppointmentBloc, AppointmentState>(
+              listener: (ctx, state) {
+                if (state is AppointmentRemoving) {
+                  loadingIndicator.show(
+                    context: context,
+                    height: indicatorHeight,
+                  );
+                } else if (state is AppointmentRemoved) {
+                  Navigator.pop(ctx, true);
+                  ctx.read<AppointmentBloc>().add(
+                        AppointmentLoad(_selectedDay!),
+                      );
+                } else if (state is AppointmentRemoveError) {
+                  SASnackBar.show(
+                    context: context,
+                    message: state.error!,
+                    isSuccess: false,
+                  );
+                } else if (state is AppointmentEditting) {
+                  loadingIndicator.show(
+                    context: context,
+                    height: indicatorHeight,
+                  );
+                } else if (state is AppointmentEditted) {
+                  Navigator.pop(context);
+                  SASnackBar.show(
+                    context: context,
+                    message: l10n.updateSuccess,
+                    isSuccess: true,
+                  );
+                  ctx.read<AppointmentBloc>().add(
+                        AppointmentLoad(_selectedDay!),
+                      );
+                } else if (state is AppointmentEditError) {
+                  SASnackBar.show(
+                    context: context,
+                    message: state.error!,
+                    isSuccess: false,
+                  );
+                }
+              },
+              builder: (ctx, state) {
+                if (state is AppointmentLoading) {
+                  return SAIndicator(
+                    height: indicatorHeight,
+                  );
+                }
+
+                if (state is AppointmentLoadSuccess &&
+                    state.appointments!.isNotEmpty) {
+                  final events = state.appointments;
+
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: events!.length,
+                      itemBuilder: (_, index) => Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: AppointmentCard(
+                          name: findUser(events[index].userId).name,
+                          avatar: findUser(events[index].userId).avatar,
+                          appointment: events[index],
+                          onEditPressed: () {
+                            if (events[index]
+                                    .date
+                                    .difference(DateTime.now())
+                                    .inHours <
+                                24) {
+                              SASnackBar.show(
+                                context: context,
+                                message: l10n.unableEditError,
+                                isSuccess: false,
                               );
-                            },
-                          ),
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => BlocProvider.value(
+                                    value: ctx.read<AppointmentBloc>(),
+                                    child: EditAppointment(
+                                      appointment: events[index],
+                                      user: findUser(events[index].userId),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          onRemovePressed: () {
+                            AlertConfirmDialog.show(
+                              context: context,
+                              title: l10n.removeConfirmTitle,
+                              message: l10n.removeConfirmMessage,
+                              onPressedRight: () {
+                                ctx.read<AppointmentBloc>().add(
+                                      AppointmentRemovePressed(
+                                        appointmentId: events[index].id!,
+                                      ),
+                                    );
+                              },
+                              onPressedLeft: () {
+                                Navigator.pop(context, false);
+                              },
+                            );
+                          },
                         ),
                       ),
                     ),
                   );
                 }
-              }
-              return SizedBox(
-                height: MediaQuery.of(context).size.height / 2,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            },
-          ),
-        ],
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: Center(
+                    child: Text(
+                      l10n.emptyAppointments,
+                      style: textTheme.bodyLarge!.copyWith(
+                        color: colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -324,7 +359,7 @@ class Time extends StatelessWidget {
               width: 10,
             ),
             Text(
-              '${formatTime(startTime)}-${formatTime(endTime)}',
+              '${formatTime(startTime)} - ${formatTime(endTime)}',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
+import '../constants/date_format.dart';
 
 class DatePicker extends StatelessWidget {
   const DatePicker({
@@ -13,8 +14,6 @@ class DatePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-
     return Padding(
       padding: const EdgeInsets.only(left: 10),
       child: Row(

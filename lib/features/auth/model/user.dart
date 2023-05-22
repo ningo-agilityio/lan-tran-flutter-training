@@ -5,6 +5,7 @@ class User {
     required this.phoneNumber,
     required this.avatar,
     required this.password,
+    required this.isAdmin,
   });
 
   factory User.fromJson(Map<String, dynamic> user) {
@@ -14,6 +15,7 @@ class User {
       phoneNumber: user['phoneNumber'] as String,
       avatar: user['avatar'] as String,
       password: user['password'] as String,
+      isAdmin: user['isAdmin'] as bool,
     );
   }
 
@@ -23,11 +25,13 @@ class User {
         'phoneNumber': phoneNumber,
         'avatar': avatar,
         'password': password,
+        'isAdmin': isAdmin,
       };
 
-  final String id;
+  late final String id;
   final String name;
   final String phoneNumber;
   final String avatar;
   final String password;
+  final bool isAdmin;
 }

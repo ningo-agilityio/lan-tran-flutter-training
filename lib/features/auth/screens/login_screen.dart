@@ -150,13 +150,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (state is LoginError) {
                     loadingIndicator.hide(context);
                     switch (state.error) {
-                      case 'invalid-account':
-                        SASnackBar.show(
-                          context: context,
-                          message: S.of(context).invalidAccountError,
-                          isSuccess: false,
-                        );
-                        break;
                       case 'incorrect-account':
                         SASnackBar.show(
                           context: context,
@@ -175,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
                 child: BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
+                  builder: (ctx, state) {
                     return SAButton.outlined(
                       child: SAText(
                         text: S.of(context).loginButton,
@@ -184,12 +177,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       onPressed: () {
-                        BlocProvider.of<AuthBloc>(context).add(
-                          LoginEvent(
-                            phoneNumber: phoneNumberController.text,
-                            password: passwordController.text,
-                          ),
-                        );
+                        ctx.read<AuthBloc>().add(
+                              LoginEvent(
+                                phoneNumber: phoneNumberController.text,
+                                password: passwordController.text,
+                              ),
+                            );
                       },
                     );
                   },
