@@ -83,7 +83,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                 }
                 if (state is AppointmentAdding) {
                   loadingIndicator.show(
-                    context: context,
+                    context: ctx,
                     height: indicatorHeight,
                   );
                 }
@@ -94,7 +94,7 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
                     isSuccess: true,
                   );
 
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => AppointmentScreen(

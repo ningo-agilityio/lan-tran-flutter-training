@@ -54,7 +54,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     final l10n = S.of(context);
 
     return BlocProvider<AppointmentBloc>(
-      create: (_) => AppointmentBloc()..add(AppointmentLoad(_selectedDay!)),
+      create: (context) =>
+          AppointmentBloc()..add(AppointmentLoad(_selectedDay!)),
       child: MainLayout(
         currentIndex: 0,
         title: l10n.appointmentAppBarTitle,
@@ -127,12 +128,12 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               listener: (ctx, state) {
                 if (state is AppointmentRemoving) {
                   loadingIndicator.show(
-                    context: context,
+                    context: ctx,
                     height: indicatorHeight,
                   );
                 }
                 if (state is AppointmentRemoved) {
-                  Navigator.pop(ctx, true);
+                  Navigator.pop(context, true);
                   ctx.read<AppointmentBloc>().add(
                         AppointmentLoad(_selectedDay!),
                       );
@@ -146,12 +147,12 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 }
                 if (state is AppointmentEditting) {
                   loadingIndicator.show(
-                    context: context,
+                    context: ctx,
                     height: indicatorHeight,
                   );
                 }
                 if (state is AppointmentEditted) {
-                  Navigator.pop(context);
+                  Navigator.pop(context, true);
                   SASnackBar.show(
                     context: context,
                     message: l10n.updateSuccess,
@@ -221,7 +222,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           },
                           onRemovePressed: () {
                             AlertConfirmDialog.show(
-                              context: context,
+                              context: ctx,
                               title: l10n.removeConfirmTitle,
                               message: l10n.removeConfirmMessage,
                               onPressedRight: () {
