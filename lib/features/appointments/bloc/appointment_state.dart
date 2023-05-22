@@ -4,6 +4,18 @@ abstract class AppointmentState {
   const AppointmentState();
 }
 
+class UserLoaded extends AppointmentState {
+  const UserLoaded(this.user);
+
+  final User user;
+}
+
+class UserLoadError extends AppointmentState {
+  const UserLoadError({this.error});
+
+  final String? error;
+}
+
 class AppointmentInitial extends AppointmentState {}
 
 class AppointmentLoading extends AppointmentState {}
