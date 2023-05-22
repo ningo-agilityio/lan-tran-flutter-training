@@ -6,7 +6,6 @@ import '../../../core/constants/assets.dart';
 import '../../../core/constants/date_format.dart';
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
-import '../../../core/storage/user_storage.dart';
 import '../../../core/utils.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/dialog.dart';
@@ -41,21 +40,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  late List<User> users;
-
   @override
   void initState() {
     super.initState();
     _selectedDay = widget.selectedDay ?? _focusedDay;
-    UserStorage.getUsers().then((value) {
-      setState(() {
-        users = value;
-      });
-    });
-  }
-
-  User findUser(String userId) {
-    return users.where((e) => e.id == userId).first;
   }
 
   @override
@@ -189,6 +177,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 if (state is AppointmentLoadSuccess &&
                     state.appointments!.isNotEmpty) {
                   final events = state.appointments;
+                  final users = state.users;
+                  User findUser(String userId) {
+                    return users.where((e) => e.id == userId).first;
+                  }
 
                   return Expanded(
                     child: ListView.builder(
