@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salon_appointment/core/storage/user_storage.dart';
 import 'package:salon_appointment/features/appointments/api/appointment_api.dart';
 import 'package:salon_appointment/features/appointments/repository/appointment_repository.dart';
 
+import '../../auth/model/user.dart';
 import '../model/appointment.dart';
 part 'appointment_event.dart';
 part 'appointment_state.dart';
@@ -12,6 +14,7 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     on<AppointmentRemovePressed>(_removeAppointment);
     on<AppointmentEdit>(_editAppointment);
     on<AppointmentAdd>(_addAppointment);
+    on<UserLoad>(_getUser);
   }
 
   Future<void> _getAppointmentList(
@@ -70,6 +73,18 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
       emit(AppointmentRemoved());
     } on Exception catch (e) {
       emit(AppointmentRemoveError(error: e.toString()));
+    }
+  }
+
+  Future<void> _getUser(
+    UserLoad event,
+    Emitter<AppointmentState> emit,
+  ) async {
+    try {
+      final user = await UserStorage.getUser();
+      emit(UserLoaded(User.fromJson(user)));
+    } on Exception catch (e) {
+      emit(UserLoadError(error: e.toString()));
     }
   }
 }
