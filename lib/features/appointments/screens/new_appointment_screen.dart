@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:salon_appointment/core/storage/appointment_storage.dart';
-import 'package:salon_appointment/core/utils.dart';
-import 'package:salon_appointment/features/appointments/bloc/appointment_bloc.dart';
 
 import '../../../core/constants/assets.dart';
+import '../../../core/constants/constants.dart';
 import '../../../core/generated/l10n.dart';
+import '../../../core/storage/appointment_storage.dart';
 import '../../../core/storage/user_storage.dart';
+import '../../../core/utils.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/date_picker.dart';
 import '../../../core/widgets/dropdown.dart';
@@ -16,6 +16,7 @@ import '../../../core/widgets/input.dart';
 import '../../../core/widgets/snack_bar.dart';
 import '../../../core/widgets/text.dart';
 import '../../../core/widgets/time_picker.dart';
+import '../bloc/appointment_bloc.dart';
 import '../model/appointment.dart';
 
 class NewAppointmentScreen extends StatefulWidget {
@@ -57,12 +58,6 @@ class _NewAppointmentScreenState extends State<NewAppointmentScreen> {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final TextTheme textTheme = Theme.of(context).textTheme;
     final double indicatorHeight = MediaQuery.of(context).size.height / 2;
-
-    const List<String> items = [
-      'Back',
-      'Neck & Shoulders',
-      'Non-Invasive Body Contouring',
-    ];
 
     return BlocProvider<AppointmentBloc>(
       create: (context) => AppointmentBloc(),
