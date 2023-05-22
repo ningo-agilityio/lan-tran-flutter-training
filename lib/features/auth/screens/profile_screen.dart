@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/generated/l10n.dart';
 import '../../../core/layouts/main_layout.dart';
-import '../../../core/storage/user_storage.dart';
 import '../../../core/widgets/buttons.dart';
 import '../../../core/widgets/dialog.dart';
 import '../../../core/widgets/indicator.dart';
 import '../../../core/widgets/text.dart';
 import '../bloc/auth_bloc.dart';
+import '../model/user.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -18,18 +18,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late Map<String, dynamic> user;
-
-  @override
-  void initState() {
-    super.initState();
-    UserStorage.getUser().then((value) {
-      setState(() {
-        user = value;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final double indicatorHeight = MediaQuery.of(context).size.height / 2;
@@ -39,7 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final l10n = S.of(context);
 
     return BlocProvider(
-      create: (context) => AuthBloc(),
+      create: (context) => AuthBloc()..add(const UserLoad()),
       child: MainLayout(
         title: l10n.profileAppBarTitle,
         currentIndex: 2,
@@ -55,84 +43,92 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 100,
-                ),
-                Container(
-                  width: 150,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: colorScheme.onPrimary,
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(user['avatar']),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                SAText(
-                  text: user['name'],
-                  style: textTheme.displaySmall!.copyWith(
-                    color: colorScheme.onPrimary,
-                  ),
-                ),
-                const SizedBox(
-                  height: 200,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: colorScheme.primary.withOpacity(0.1),
-                  ),
-                  child: BlocListener<AuthBloc, AuthState>(
-                    listener: (context, state) {
-                      if (state is LogoutSuccess) {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/login',
-                          (route) => false,
-                        );
-                      }
-                    },
-                    child: BlocBuilder<AuthBloc, AuthState>(
-                      builder: (ctx, state) {
-                        return SAButton.icon(
-                          child: Icon(
-                            Icons.logout,
-                            color: colorScheme.onPrimary,
-                            size: 24,
+            child: BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is UserLoaded) {
+                  final User user = state.user;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 100,
+                      ),
+                      Container(
+                        width: 150,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: colorScheme.onPrimary,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(user.avatar),
                           ),
-                          onPressed: () {
-                            AlertConfirmDialog.show(
-                              context: context,
-                              title: l10n.logoutConfirmTitle,
-                              message: l10n.logoutConfirmMessage,
-                              onPressedRight: () {
-                                loadingIndicator.show(
-                                  context: context,
-                                  height: indicatorHeight,
-                                );
-                                ctx.read<AuthBloc>().add(
-                                      const LogoutEvent(),
-                                    );
-                              },
-                              onPressedLeft: () {
-                                Navigator.pop(context, false);
-                              },
-                            );
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      SAText(
+                        text: user.name,
+                        style: textTheme.displaySmall!.copyWith(
+                          color: colorScheme.onPrimary,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 200,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: colorScheme.primary.withOpacity(0.1),
+                        ),
+                        child: BlocListener<AuthBloc, AuthState>(
+                          listener: (context, state) {
+                            if (state is LogoutSuccess) {
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/login',
+                                (route) => false,
+                              );
+                            }
                           },
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
+                          child: BlocBuilder<AuthBloc, AuthState>(
+                            builder: (ctx, state) {
+                              return SAButton.icon(
+                                child: Icon(
+                                  Icons.logout,
+                                  color: colorScheme.onPrimary,
+                                  size: 24,
+                                ),
+                                onPressed: () {
+                                  AlertConfirmDialog.show(
+                                    context: context,
+                                    title: l10n.logoutConfirmTitle,
+                                    message: l10n.logoutConfirmMessage,
+                                    onPressedRight: () {
+                                      loadingIndicator.show(
+                                        context: context,
+                                        height: indicatorHeight,
+                                      );
+                                      ctx.read<AuthBloc>().add(
+                                            const LogoutEvent(),
+                                          );
+                                    },
+                                    onPressedLeft: () {
+                                      Navigator.pop(context, false);
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return Container();
+              },
             ),
           ),
         ),
