@@ -166,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       onPressed: () {
+                        FocusScope.of(context).unfocus();
                         ctx.read<AuthBloc>().add(
                               LoginEvent(
                                 phoneNumber: phoneNumberController.text,
