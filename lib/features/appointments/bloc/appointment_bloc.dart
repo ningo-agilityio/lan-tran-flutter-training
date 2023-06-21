@@ -55,9 +55,9 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
     Emitter<AppointmentState> emit,
   ) async {
     try {
-      emit(AppointmentEditting());
+      emit(AppointmentEditing());
       await AppointmentApi.updateAppointment(event.appointment);
-      emit(AppointmentEditted());
+      emit(AppointmentEdited());
     } on Exception catch (e) {
       emit(AppointmentEditError(error: e.toString()));
     }

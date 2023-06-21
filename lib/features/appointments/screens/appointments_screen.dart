@@ -145,13 +145,13 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     isSuccess: false,
                   );
                 }
-                if (state is AppointmentEditting) {
+                if (state is AppointmentEditing) {
                   loadingIndicator.show(
                     context: ctx,
                     height: indicatorHeight,
                   );
                 }
-                if (state is AppointmentEditted) {
+                if (state is AppointmentEdited) {
                   Navigator.pop(context, true);
                   SASnackBar.show(
                     context: context,
