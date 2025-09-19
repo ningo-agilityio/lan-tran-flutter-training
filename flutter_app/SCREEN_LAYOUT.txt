@@ -1,0 +1,49 @@
+┌─────────────────────────────────────────────────────────┐
+│                    Nutrio Sign Up Screen                    │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│                                                         │
+│   Join Nutrio Today ✨                                  │
+│                                                         │
+│   Create a Nutrio account to track your meals,         │
+│   stay active, and achieve your health goals.          │
+│                                                         │
+│                                                         │
+│   Email                                                 │
+│   ┌─────────────────────────────────────────────────┐   │
+│   │ 📧 Enter your email                            │   │
+│   └─────────────────────────────────────────────────┘   │
+│                                                         │
+│   Password                                              │
+│   ┌─────────────────────────────────────────────────┐   │
+│   │ 🔒 Enter your password                      👁   │   │
+│   └─────────────────────────────────────────────────┘   │
+│                                                         │
+│   ☑️ I agree to the Terms & Conditions                  │
+│                                                         │
+│   ┌─────────────────────────────────────────────────┐   │
+│   │               Sign up                           │   │
+│   └─────────────────────────────────────────────────┘   │
+│                                                         │
+│            Already have an account? Sign in             │
+│                                                         │
+│   ─────────── Or sign up with ───────────              │
+│                                                         │
+│     [G]    [🍎]    [f]    [X]                          │
+│   Google  Apple Facebook  X                            │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+
+Features Implemented:
+✅ Localized title and subtitle from l10n/app_en.arb
+✅ Email field with email icon and validation
+✅ Password field with lock icon and visibility toggle
+✅ Terms checkbox with green checkmark when selected
+✅ Sign up button enabled only when terms accepted
+✅ Sign in link styled in green
+✅ Social sign up buttons with proper spacing
+✅ Clean, modern design with rounded corners
+✅ Proper padding and spacing throughout
+✅ Accessibility features and semantic labels
+✅ Form validation with helpful error messages
+✅ State management for all interactive elements
