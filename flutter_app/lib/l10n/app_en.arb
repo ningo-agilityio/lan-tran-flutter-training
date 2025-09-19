@@ -1,0 +1,43 @@
+{
+  "@@locale": "en",
+  "joinNutrioToday": "Join Nutrio Today ✨",
+  "@joinNutrioToday": {
+    "description": "The main title for the sign up screen"
+  },
+  "createAccountSubtitle": "Create a Nutrio account to track your meals, stay active, and achieve your health goals.",
+  "@createAccountSubtitle": {
+    "description": "The subtitle explaining the benefits of creating an account"
+  },
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Label for email input field"
+  },
+  "emailPlaceholder": "Enter your email",
+  "@emailPlaceholder": {
+    "description": "Placeholder text for email input field"
+  },
+  "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Label for password input field"
+  },
+  "passwordPlaceholder": "Enter your password",
+  "@passwordPlaceholder": {
+    "description": "Placeholder text for password input field"
+  },
+  "termsAndConditions": "I agree to the Terms & Conditions",
+  "@termsAndConditions": {
+    "description": "Text for terms and conditions agreement checkbox"
+  },
+  "signInLink": "Already have an account? Sign in",
+  "@signInLink": {
+    "description": "Text for the sign in link"
+  },
+  "signUpButton": "Sign up",
+  "@signUpButton": {
+    "description": "Text for the sign up button"
+  },
+  "orSignUpWith": "Or sign up with",
+  "@orSignUpWith": {
+    "description": "Text displayed above social sign up buttons"
+  }
+}
